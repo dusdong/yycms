@@ -1,0 +1,405 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="ProductEditCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li><a href="/Product">产品列表</a></li>
+        <li class="active">新增产品</li>
+        <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+    </ol>
+    <br />
+    <form name="myForm" ng-submit="SubmitForm(myForm.$valid)" class="form-horizontal" role="form" novalidate>
+
+        <ul class="nav nav-tabs" ng-init="TabIndex=0">
+            <li role="presentation" ng-class="{active:TabIndex==0}"><a href="javascript:void(0)" ng-click="TabIndex=0">基础信息</a></li>
+            <li role="presentation" ng-class="{active:TabIndex==1}"><a href="javascript:void(0)" ng-click="TabIndex=1">内容详情</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane" ng-class="{active:TabIndex==0}">
+                <div class="col-md-6 animated fadeInRight">
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.Title.$valid,'has-error':myForm.Title.$invalid&&myForm.Title.$dirty}">
+                        <label class="col-sm-2 control-label">产品名称</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="Title"
+                                   id="Title"
+                                   ng-model="Entity.Title"
+                                   ng-pattern="/^.{4,200}$/"
+                                   required class="form-control" />
+                            <span class="help-block">产品名称，由4至200字组成。</span>
+                            <span ng-if="myForm.Title.$valid&&!myForm.Title.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.Title.$invalid&&!myForm.Title.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.KeyWords.$valid,'has-error':myForm.KeyWords.$invalid&&myForm.KeyWords.$dirty}">
+                        <label class="col-sm-2 control-label">关键字</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="KeyWords"
+                                   id="KeyWords"
+                                   ng-model="Entity.KeyWords"
+                                   ng-pattern="/^.{2,200}$/"
+                                   required class="form-control" />
+                            <span class="help-block">关键字，多个关键字用逗号分隔，2至200个字。</span>
+                            <span ng-if="myForm.KeyWords.$valid&&!myForm.KeyWords.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.KeyWords.$invalid&&!myForm.KeyWords.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.Price.$valid,'has-error':myForm.Price.$invalid&&myForm.Price.$dirty}">
+                        <label class="col-sm-2 control-label">产品售价</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="Price"
+                                   id="Price"
+                                   ng-model="Entity.Price"
+                                   ng-pattern="/^[0-9]{1}\.?[0-9]{2}$/"
+                                   required class="form-control" />
+                            <span class="help-block">精确到小数点后2位,如1.00。</span>
+                            <span ng-if="myForm.Price.$valid&&!myForm.Price.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.Price.$invalid&&!myForm.Price.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.Summary.$valid,'has-error':myForm.Summary.$invalid&&myForm.Summary.$dirty}">
+                        <label class="col-sm-2 control-label">产品摘要</label>
+                        <div class="col-sm-10">
+                            <textarea id="Summary"
+                                      rows="3"
+                                      name="Summary"
+                                      ng-model="Entity.Summary"
+                                      ng-pattern="/^.{10,500}$/"
+                                      required
+                                      class="form-control"></textarea>
+                            <span class="help-block">产品中摘取最主要的信息，10至500个字。</span>
+                            <span ng-if="myForm.Summary.$valid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.Summary.$invalid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-init="Photo_List=[]">
+                        <label for="HeadImgUrl" class="col-sm-2 control-label">产品图片</label>
+                        <div class="col-sm-10" id="ImportDataForm">
+                            <div id="SuperSlideShow">
+                                <a id="UploadButton" href="" class="btn btn-default"><i class="icon_plus"></i> 选择图片</a>
+                            </div>
+                            <span class="help-block">产品图片将在首页显示。</span>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10" ng-show="Photo_List.length>0" style="margin-top:15px;">
+                            <div id="filelist"></div>
+                            <div id="console"></div>
+                            <div id="MechantLogos" class="carousel slide" data-ride="carousel" style="border:solid 1px #ccc; padding:20px;">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#MechantLogos" ng-repeat="d in Photo_List" data-slide-to="{{$index}}" ng-class="{active:$index==0}"></li>
+                                </ol>
+                                <div class="carousel-inner" role="listbox" style="text-align:center;">
+                                    <div class="item" ng-repeat="d in Photo_List" ng-class="{active:$index==0}">
+                                        <img class="img-circle" src="{{d}}" width="140" height="140" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.Recommend.$valid,'has-error':myForm.Recommend.$invalid&&myForm.Recommend.$dirty}">
+                        <label class="col-sm-2 control-label">是否推荐</label>
+                        <div class="col-sm-10">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a class="btn btn-default"
+                                   ng-repeat="d in Recommend"
+                                   ng-class="{active:Entity.Recommend==d.ID}"
+                                   ng-click="Entity.Recommend=d.ID">
+                                    {{d.Name}}
+                                </a>
+                                <input type="hidden"
+                                       name="Recommend"
+                                       ng-pattern="/^[0-9]{1,12}$/"
+                                       ng-model="Entity.Recommend"
+                                       required="" />
+                            </div>
+                            <span class="help-block">设置当前新闻是否推荐到首页。</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.CanReply.$valid,'has-error':myForm.CanReply.$invalid&&myForm.CanReply.$dirty}">
+                        <label class="col-sm-2 control-label">可否评论</label>
+                        <div class="col-sm-10">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a class="btn btn-default"
+                                   ng-repeat="d in CanReply"
+                                   ng-class="{active:Entity.CanReply==d.ID}"
+                                   ng-click="Entity.CanReply=d.ID">
+                                    {{d.Name}}
+                                </a>
+                                <input type="hidden"
+                                       name="CanReply"
+                                       ng-pattern="/^[0-9]{1,12}$/"
+                                       ng-model="Entity.CanReply"
+                                       required="" />
+                            </div>
+                            <span class="help-block">设置当前产品是否允许用户评论。</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.IsShow.$valid,'has-error':myForm.IsShow.$invalid&&myForm.IsShow.$dirty}">
+                        <label class="col-sm-2 control-label">是否显示</label>
+                        <div class="col-sm-10">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a class="btn btn-default"
+                                   ng-repeat="d in IsShow"
+                                   ng-class="{active:Entity.IsShow==d.ID}"
+                                   ng-click="Entity.IsShow=d.ID">
+                                    {{d.Name}}
+                                </a>
+                                <input type="hidden"
+                                       name="IsShow"
+                                       ng-pattern="/^[0-9]{1,12}$/"
+                                       ng-model="Entity.IsShow"
+                                       required="" />
+                            </div>
+                            <span class="help-block">隐藏后的产品将不会在网站显示。</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">同步平台</label>
+                        <div class="col-sm-10" ng-init="TargetPlatforms=[]">
+                            <label class="checkbox-inline" ng-repeat="d in Platforms">
+                                <input type="checkbox" value="d.ID" ng-model="TargetPlatforms[$index]" ng-true-value="{{d.ID}}"> {{d.Name}}
+                            </label>
+                            <span class="help-block">将产品自动对接到勾选的平台中。</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 animated fadeInLeft">
+                    <div class="form-group">
+                        <label for="Permission" class="col-sm-2 control-label">所属分类</label>
+                        <div class="col-sm-10">
+                            <span class="help-block">&nbsp;当前产品的对应的产品分类。</span>
+                            <ul id="PermissionTree" class="ztree" style="margin-top: 0; width: 180px;"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" ng-class="{active:TabIndex==1}">
+                <script type="text/plain" id="editor" class="animated fadeInRight">
+                </script>
+            </div>
+        </div>
+        <submit-btn></submit-btn>
+    </form>
+</div>
+<link href="/Scripts/ZTree/zTreeStyle.css" rel="stylesheet" />
+<script src="/Scripts/ZTree/jquery.ztree.all-3.5.min.js"></script>
+<script src="/Scripts/plupload/plupload.full.min.js"></script>
+<script src="/ueditor/ueditor.config.js"></script>
+<script src="/ueditor/ueditor.all.min.js"></script>
+<script src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+    var ZTreeObject = null;
+    function ZTree_Init(nodes)
+    {
+        var nodeArr = new Array();
+        for (var i = 0; i < nodes.length; i++)
+        {
+            nodeArr.push({ id: nodes[i].ID, pId: nodes[i].PID, name: nodes[i].Name, open: false, nocheck: false });
+        }
+        ZTreeObject = $.fn.zTree.init($("#PermissionTree"),
+            {
+                view: {selectedMulti: true },
+                edit: { enable: false, editNameSelectAll: true },
+                data: { simpleData: { enable: true } },
+                check: { enable: true, chkboxType: { "Y": "ps", "N": "ps" } }
+            }, nodeArr);
+
+        ZTreeObject.expandAll(true);
+    }
+    angular.module("app").controller("ProductEditCtrl", function ($location, $scope, API_Product)
+    {
+
+        $scope.Entity = {};
+        $scope.CanReply = [{ ID: 0, Name: '允许' }, { ID: 1, Name: '禁止' }];
+        $scope.IsShow = [{ ID: 1, Name: '正常' }, { ID: 0, Name: '隐藏' }];
+        $scope.Recommend = [{ ID: 1, Name: '是' }, { ID: 0, Name: '否' }];
+        $scope.Roles = [{ ID: 1, Name: "自动", Desc: "自动同步。" }, { ID: 2, Name: "手动", Desc: "手动确认发布。" }, { ID: 3, Name: "人工", Desc: "人工编辑发布" }];
+        $scope.Platforms = APP.Platforms;
+        $scope.OnSubmit = false;
+        $scope.SubmitForm = function (isValid)
+        {
+            if (!isValid) { toastr.error('验证失败'); return; }
+            var newsInfo = UE.getEditor("editor").getContent();
+            if ($scope.Photo_List.length<1) { toastr.error('请上传产品图片。'); return; }
+            if (newsInfo == "" || newsInfo == undefined) { toastr.error('请填写产品详情。'); return; }
+
+            $scope.OnSubmit = true;
+
+            var pmsIDs = new Array();
+            var ckdNodes = ZTreeObject.getCheckedNodes(true);
+            for (var i = 0; i < ckdNodes.length; i++) {
+                pmsIDs.push(ckdNodes[i].id);
+            }
+            if (pmsIDs.length > 0) { $scope.Entity.TypeIDs = pmsIDs.join(","); }
+            else { $scope.Entity.TypeIDs = ""; }
+
+            var plts = new Array();
+            for (var i = 0; i < $scope.TargetPlatforms.length; i++)
+            {
+                var pltID = parseInt($scope.TargetPlatforms[i]);
+                if (isNaN(pltID)) { continue; }
+                plts.push(pltID);
+            }
+            $scope.Entity.DefaultImg = $scope.Photo_List[0];
+            $scope.Entity.ImgList = "";
+            $scope.Entity.UserID = APP.User.ID;
+            $scope.Entity.Info = newsInfo;
+            if (plts.length > 0) {
+                $scope.Entity.TargetPlatforms = "," + plts.join(",") + ",";
+            }
+            else {
+                $scope.Entity.TargetPlatforms = "";
+            }
+            $scope.Entity.CreateDate = new Date();
+
+            API_Product.Put($scope.Entity).then(function (r)
+            {
+                $scope.OnSubmit = false;
+                if(r.code==0)
+                {
+                    toastr.success('更新成功！');
+                    window.document.location.href="../Index";
+                }
+                else
+                {
+                    toastr.error(r.Msg);
+                }
+            });
+        };
+
+        var InitUpload = function () {
+            var uploader = new plupload.Uploader({
+                runtimes: 'html5,flash,silverlight,html4',
+                browse_button: 'UploadButton',
+                multi_selection: true,
+                container: document.getElementById('ImportDataForm'),
+                url: '/api/Common/Upload',
+                flash_swf_url: '/scripts/plupload/Moxie.swf',
+                silverlight_xap_url: '/scripts/plupload/Moxie.xap',
+                filters: {
+                    max_file_size: '10mb',
+                    mime_types: [
+                         { title: "Image files", extensions: "jpg,gif,png" },
+                    ]
+                },
+                init: {
+                    PostInit: function () {
+                        $('#filelist').html('');
+                    },
+                    FilesAdded: function (up, files) {
+                        plupload.each(files, function (file) {
+                            $('#filelist').append('<div id="' + file.id + '" class="alert alert-info"><button data-val="' + file.id + '" type="button" class="close">×</button>' + file.name + ' (' + plupload.formatSize(file.size) + ')<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" style="width:0%;"></div></div></div>');
+                        });
+                        uploader.start();
+                    },
+                    UploadProgress: function (up, file) {
+                        $("#" + file.id + " .progress-bar").css("width", file.percent + "%").html(file.percent + "%");
+                        if (file.percent >= 100) {
+                            $("#" + file.id + " .progress-bar").html('正在上传图片，请稍等...');
+                        }
+                    },
+                    Error: function (up, err) {
+                        $('#console').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>错误代码：' + err.code + '，错误信息：' + err.message + '</div');
+                    },
+                    UploadComplete: function (up, files) {
+                        toastr.info('上传图片成功！');
+                        uploader.files.splice(0, uploader.files.length);
+                        $("#filelist").empty();
+                    },
+                    FileUploaded: function (up, files, res) {
+                        $scope.Photo_List = new Array();
+                        $scope.Photo_List.push(res.response.substr(1, res.response.length - 2));
+                        $scope.$apply();
+                    }
+                }
+            });
+
+            uploader.init();
+        }
+
+        API_Product.Detail(@Html.ViewContext.RouteData.Values["id"]).then(function (r)
+        {
+            $scope.Entity = r;
+            $scope.Entity.Price = $scope.Entity.Price.toFixed(2);
+            $scope.Photo_List = new Array();
+            $scope.Photo_List.push(r.DefaultImg);
+            var ue = UE.getEditor("editor");
+            ue.ready(function () {
+                ue.setContent(r.Info);
+            });
+
+            ZTree_Init(@MvcHtmlString.Create(ViewBag.Types));
+
+            var ckdIds = r.TypeIDs.split(",");
+            if (ckdIds.length > 0) {
+                for (var i = 0; i < ckdIds.length; i++) {
+                    var node = ZTreeObject.getNodeByParam("id", ckdIds[i], null);
+                    if (node == null) { continue; }
+                    ZTreeObject.checkNode(node);
+                }
+            }
+
+            var ckdIds2 = r.TargetPlatforms.split(",");
+            if (ckdIds2.length > 0) {
+                for (var q = 0; q < APP.Platforms.length; q++)
+                {
+                    for (var i = 0; i < ckdIds2.length; i++)
+                    {
+                        var pltid = parseInt(ckdIds2[i]);
+                        if (isNaN(pltid)) { continue; }
+                        if (APP.Platforms[q].ID == pltid)
+                        {
+                            $scope.TargetPlatforms[q] = pltid;
+                        }
+                    }
+                }
+            }
+
+        });
+
+        $(function ()
+        {
+            $(".demoTip").popover({ placement: "top", trigger: "hover" });
+            InitUpload();
+        });
+
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: "<p>1，产品是抓取产品源的定时任务。</p><p>2，产品不会影响网站性能，由后台服务运行。</p><p>3，产品会自动给自己打分，评估好坏。</p>"
+                  },
+                  {
+                      intro: "<p>1，产品抓取后产品源将同步到的平台。</p><p>2，您可是设置抓取后直接自动同步，也可以手动点击同步按钮，或是单个编辑后同步到平台。</p>"
+                  },
+                  {
+                      intro: '<p>最规则时需要查看XPath，用Chrome浏览器打开一个网页，F12，在弹出的小窗口中选中一个标签，右键，看到“copy XPath”了吧！</p>'
+                  }
+                ]
+            });
+            intro.start();
+        };
+    });
+</script>

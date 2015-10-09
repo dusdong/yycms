@@ -1,0 +1,303 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="PageTypesIndexCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li class="active">模板列表</li>
+                   <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+                <table class="table ListTable helpStep1">
+                    <tbody>
+                        <tr>
+                            <td width="125px">
+                                <div class="btn-group">
+                                    <a href="" class="btn btn-success" data-toggle="modal" data-target="#myModal">导入模板</a>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="javascript:void(0)" ng-click="IDeleteByIDs()"><i class="icon_trash_alt"></i> 卸载选中模板</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td width="160px">
+                                <select class="form-control filterSelect" ng-model="Filter.TypeID" ng-change="IData_Get()">
+                                    <option value="0">查看全部</option>
+                                    <option value="1">电脑端模板</option>
+                                    <option value="2">移动端模板</option>
+                                    <option value="3">电脑、移动端模板</option>
+                                </select>
+                            </td>
+
+                          
+                            <td>
+                                <div class="input-group">
+                                    <a ng-if="Filter.Title!=null" ng-click="Filter.Title=null" class="clearBtn animated bounceIn" data-icon="Q"></a>
+                                    <input type="text" ng-keypress="OnEnterPress($event);" class="form-control" placeholder="输入模板标题..." ng-model="Filter.Title" />
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="input-group" style="display:none;">
+                                    <div class="input-group-addon">时间</div>
+                                    <input type="date" class="form-control" ng-model="Filter.StartTime" />
+                                    <div class="input-group-addon">至</div>
+                                    <input type="date" class="form-control" ng-model="Filter.EndTime" />
+                                </div>
+                            </td>
+                            <td width="110px">
+                                    <button type="button" class="btn btn-primary" ng-click="Pager.PageIndex=0; IData_Get();"><i class="icon_search"></i> 查询</button>
+                            </td>
+                            <td width="90px">
+                                <table-pager-top></table-pager-top>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr />
+                <loading></loading>
+
+                <div class="row animated" ng-if="loading==false&&Pager.Data.length>0" ng-class="{fadeIn:loading==false}">
+                    <div class="PageTypeItem col-md-4 animated fadeInRight" ng-repeat="d in Pager.Data">
+                        <div class="bd">
+                            <div class="PageTypeItemLayer2" ng-class="{In:d.ShowSummary==true}">
+                                <a href="" class="hideSummary" ng-click="d.ShowSummary=false"><i class="fa fa-remove"></i></a>
+                                <div style="clear:both; line-height: 2;font-size: 13px;font-family:微软雅黑;padding:0px 10px;">
+                                    <h4>{{d.Name}} v{{d.Version}}.0</h4>
+                                    <h5>供应商：{{d.Author}}</h5>
+                                </div>
+                                <div style="padding: 0px 10px;margin-bottom: 10px;word-wrap: break-word;height: 160px;overflow-y: scroll;border-top: solid 1px #fff;background-color: #FFF;color: #000;">
+                                    {{d.Summary}}
+                                </div>
+                                <div style="padding:0px 10px 10px 10px;line-height:1.7;">  电话：{{d.Mobile}}<br />QQ：{{d.QQ}}<br />邮箱：{{d.Email}}</div>
+                                <a href="{{d.Website}}" target="_blank" class="btn btn-warning" style="color: #fff;"><i class="fa fa-reply"></i> 查看官网</a>
+                            </div>
+                            <div class="PageTypeItemLayer">
+                                <div class="btn-group" role="group">
+                                    <a href="/Page/Build/{{d.ID}}" class="btn btn-default">生成</a>
+                                    <a href="Index/{{d.ID}}" class="btn btn-default">编辑</a>
+                                    <a href="" class="btn btn-default" ng-click="d.ShowSummary=true">简介</a>
+                                    <a href="" class="btn btn-default" ng-click="ConfirmDelete(d.ID)">卸载</a>
+                                </div>
+                            </div>
+                            <div id="picturegroup{{d.ID}}" class="carousel slide picturegroup" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#picturegroup{{d.ID}}" ng-repeat="dd in d.Images" data-slide-to="{{$index}}" ng-class="{active:$index==0}"></li>
+                                </ol>
+                                <div class="carousel-inner" role="listbox" style="text-align:center;">
+                                    <div class="item" ng-repeat="dd in d.Images" ng-class="{active:$index==0}">
+                                        <img ng-src="/skin/{{d.Name_En}}{{d.Version}}/{{dd.src}}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <h2>
+                            <span class="platformIcon">
+                                <i class="fa fa-tv" ng-if="d.SupportPlatform==1||d.SupportPlatform==3"></i>
+                                <i class="icon_mobile" ng-if="d.SupportPlatform==2||d.SupportPlatform==3"></i>
+                            </span>
+                            </h2>
+                            <p>{{d.Name}}</p>
+                        </div>
+                    </div>
+                </div>
+                <table-pager class="helpStep3"></table-pager>
+                <dialog-delete></dialog-delete>
+            </div>
+        </div>
+
+        <div class="modal fade bs-example-modal-sm" id="myModal">
+            <div class="modal-dialog" style="width:400px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">导入模板</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="ImportDataForm" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">模板文件</label>
+                                <div class="col-sm-9">
+                                    <a id="pickfiles" href="" class="btn btn-default"><i class="icon_folder-add_alt"></i> 点击选择</a>
+                                    <span class="help-block">选择你要上传的模板包文件。</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <div id="filelist"></div>
+                                    <div id="console"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-success" id="SubmitImportFormBtn">确认上传</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="/Scripts/plupload/plupload.full.min.js"></script>
+<script type="text/javascript">
+    angular.module("app").controller("PageTypesIndexCtrl", function ($location, $scope,$timeout, API_PageType) {
+        $scope.TableHeads = [
+            { Title: "编号", Name: "ID" },
+            { Title: "标题", Name: "Title" },
+            { Title: "浏览次数", Name: "LookCount" },
+            { Title: "创建时间", Name: "CreateDate" }
+        ];
+        $scope.IHelp=function()
+        {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress:false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: "<h4>模板中心</h4><p>您可以导入供应商开发的模板包或自己开发。</p>"
+                  }
+                ]
+            });
+            intro.start();
+        };
+        $scope.Pager = { PageIndex: 0, PageSize: 20 };
+        $scope.Filter = { IsDesc: true, OrderBy: "ID" };
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_PageType.Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.Title,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc,
+                $scope.Filter.TypeID).then(function (r) {
+                    $scope.loading = false;
+                    NProgress.done();
+                    $scope.Pager = r;
+                    $scope.Pager.PageRange = APP.Range(r.PageCount);
+                    setTimeout(function () { $(".tip").tooltip(); }, 500);
+                });
+        }
+        $scope.ConfirmDelete = function (id) {
+            $scope.DeleteID = id;
+            $("#DeleteConfirmModal").modal("show");
+        }
+        $scope.IDelete = function () {
+            $("#DeleteConfirmModal").modal("hide");
+            API_PageType.Delete($scope.DeleteID).then(function () {  toastr.info('删除成功！'); $scope.IData_Get();});
+        }
+        $scope.OnEnterPress = function (evt) {
+            if (evt.keyCode == 13) {
+                $scope.IData_Get();
+            }
+        }
+
+        $scope.IDeleteByIDs=function()
+        {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+
+            if(cksIDs.length<1)
+            {  toastr.error('未选择任何模板。'); return;}
+
+            $scope.loading = true;
+            API_PageType.DeleteByIDs(cksIDs.join(",")).then(function () 
+            {
+                $scope.loading = false;
+                toastr.info('删除成功！'); 
+                $scope.IData_Get();
+            });
+        }
+
+        $(function () {
+            var uploader = new plupload.Uploader({
+                runtimes: 'html5,flash,silverlight,html4',
+                browse_button: 'pickfiles',
+                multi_selection: false,
+                container: document.getElementById('ImportDataForm'),
+                url: '/api/Common/UploadSkinPackage',
+                flash_swf_url: '/lib/plupload/Moxie.swf',
+                silverlight_xap_url: '/lib/plupload/Moxie.xap',
+                filters: {
+                    max_file_size: '100mb',
+                    mime_types: [
+                        { title: "选择模板包", extensions: "zip" }
+                    ]
+                },
+
+                init: {
+                    PostInit: function () {
+                        $('#filelist').html('');
+                        $('#SubmitImportFormBtn').click(function () {
+                           uploader.start();
+                        });
+                    },
+                    BeforeUpload: function (up, file) {
+                     
+                    },
+                    FilesAdded: function (up, files) {
+                        if (uploader.files.length > 1) {
+                            uploader.files.splice(0, 1);
+                            $("#filelist").empty();
+                        }
+
+                        plupload.each(files, function (file) {
+                            $('#filelist').append('<div id="' + file.id + '" class="alert alert-info"><button data-val="' + file.id + '" type="button" class="close">×</button>' + file.name + ' (' + plupload.formatSize(file.size) + ')<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" style="width:0%;"></div></div></div>');
+                        });
+                    },
+                    UploadProgress: function (up, file) {
+                        $("#" + file.id + " .progress-bar").css("width", file.percent + "%").html(file.percent + "%");
+
+                        if (file.percent >= 100) {
+                            $("#" + file.id + " .progress-bar").html('<i class="fa fa-refresh fa-spin"></i> 正在分析数据，请稍等...');
+                        }
+                    },
+                    Error: function (up, err)
+                    {
+                        $('#console').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>错误代码：' + err.code + '，错误信息：' + err.message + '</div');
+                    },
+                    UploadComplete: function (){},
+                    FileUploaded: function (uploader, file, responseObject)
+                    {
+                        var resobj = JSON.parse(responseObject.response);
+                        if (resobj.code == 0)
+                        {
+                            toastr.info('导入模板包成功！');
+                            $scope.IData_Get();
+                        }
+                        else
+                        {
+                            toastr.error(resobj.msg);
+                        }
+                        $("#filelist").empty();
+                        $("#myModal").modal("hide");
+                    }
+                }
+            });
+            uploader.init();
+            /*删除上传的文件*/
+            $(document).on('click', '#filelist button.close', function () {
+                $(this).parent().remove();
+                var id = $(this).attr("data-val");
+                for (var i in uploader.files) {
+                    if (uploader.files[i].id === id) {
+                        toremove = i;
+                    }
+                }
+                uploader.files.splice(toremove, 1);
+            });
+        });
+    });
+</script>

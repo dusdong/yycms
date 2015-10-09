@@ -1,0 +1,7 @@
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.union\bin\Debug\yycms.union.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.union\bin\Debug\yycms.union.pdb
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.union\bin\Debug\Newtonsoft.Json.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.union\bin\Debug\Newtonsoft.Json.xml
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.union\obj\Debug\yycms.union.csprojResolveAssemblyReference.cache
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.union\obj\Debug\yycms.union.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.union\obj\Debug\yycms.union.pdb

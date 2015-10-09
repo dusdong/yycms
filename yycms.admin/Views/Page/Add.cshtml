@@ -1,0 +1,374 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="PageAddCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li><a href="/Page/Types">模板列表</a></li>
+        <li><a href="/Page/Index/@Html.ViewContext.RouteData.Values["id"]">编辑模板</a></li>
+        <li class="active">发布页面</li>
+        <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+    </ol>
+    <br />
+    <form name="myForm" ng-submit="SubmitForm(myForm.$valid)" class="form-horizontal" role="form" novalidate>
+        <ul class="nav nav-tabs" ng-init="TabIndex=0">
+            <li role="presentation" ng-class="{active:TabIndex==0}"><a href="javascript:void(0)" ng-click="TabIndex=0">基础信息</a></li>
+            <li role="presentation" ng-class="{active:TabIndex==1}"><a href="javascript:void(0)" ng-click="TabIndex=1">页面代码</a></li>
+            <li role="presentation" ng-class="{active:TabIndex==2}"><a href="javascript:void(0)" ng-click="TabIndex=2">编译预览</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane" ng-class="{active:TabIndex==0}">
+                <div class="col-md-6 animated fadeInRight">
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.PageName.$valid,'has-error':myForm.PageName.$invalid&&myForm.PageName.$dirty}">
+                        <label class="col-sm-2 control-label">页面名称</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="PageName"
+                                   id="PageName"
+                                   ng-model="Entity.PageName"
+                                   ng-pattern="/^.{4,200}$/"
+                                   required class="form-control" />
+                            <span class="help-block">页面名称，由4至200字组成。</span>
+                            <span ng-if="myForm.PageName.$valid&&!myForm.PageName.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.PageName.$invalid&&!myForm.PageName.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.PageKind.$valid,'has-error':myForm.PageKind.$invalid&&myForm.PageKind.$dirty}">
+                        <label class="col-sm-2 control-label">页面类型</label>
+                        <div class="col-sm-10">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a class="btn btn-default"
+                                   ng-repeat="d in PageKindList"
+                                   ng-class="{active:Entity.PageKind==d.ID}"
+                                   ng-click="Entity.PageKind=d.ID">
+                                    {{d.Name}}
+                                </a>
+                                <input type="hidden"
+                                       name="PageKind"
+                                       ng-pattern="/^[0-9]{1,12}$/"
+                                       ng-model="Entity.PageKind"
+                                       required="" />
+                            </div>
+                            <span class="help-block animated fadeIn"
+                                  ng-if="Entity.PageKind==d.ID"
+                                  ng-repeat="d in PageKindList">{{d.Desc}}</span>
+                            <span class="help-block" ng-if="Entity.PageKind==null">设置当前页面的类型。</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.CanBuild.$valid,'has-error':myForm.CanBuild.$invalid&&myForm.CanBuild.$dirty}">
+                        <label class="col-sm-2 control-label">一键生成</label>
+                        <div class="col-sm-10">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a class="btn btn-default"
+                                   ng-repeat="d in CanBuilds"
+                                   ng-class="{active:Entity.CanBuild==d.ID}"
+                                   ng-click="Entity.CanBuild=d.ID">
+                                    {{d.Name}}
+                                </a>
+                                <input type="hidden"
+                                       name="CanBuild"
+                                       ng-pattern="/^[0-9]{1,12}$/"
+                                       ng-model="Entity.CanBuild"
+                                       required="" />
+                            </div>
+                            <span class="help-block">当前页面是否集成到一键生成。</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.SavePath.$valid,'has-error':myForm.SavePath.$invalid&&myForm.SavePath.$dirty}">
+                        <label class="col-sm-2 control-label">生成路径</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="SavePath"
+                                   id="SavePath"
+                                   ng-model="Entity.SavePath"
+                                   ng-pattern="/^.{1,200}$/"
+                                   required class="form-control" />
+                            <span class="help-block">"~/"代表当前模板包的根目录,结尾无需带"/"。</span>
+                            <span ng-if="myForm.SavePath.$valid&&!myForm.SavePath.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.SavePath.$invalid&&!myForm.SavePath.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.ExtensionName.$valid,'has-error':myForm.ExtensionName.$invalid&&myForm.ExtensionName.$dirty}">
+                        <label class="col-sm-2 control-label">名称规则</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="ExtensionName"
+                                   id="ExtensionName"
+                                   ng-model="Entity.ExtensionName"
+                                   ng-pattern="/^.{4,200}$/"
+                                   required class="form-control" />
+                            <span class="help-block">设置文件名称。{0}当前ID，{1}当前时间，{2}当前索引,{3}DataID。</span>
+                            <span ng-if="myForm.ExtensionName.$valid&&!myForm.ExtensionName.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.ExtensionName.$invalid&&!myForm.ExtensionName.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.Summary.$valid,'has-error':myForm.Summary.$invalid&&myForm.Summary.$dirty}">
+                        <label class="col-sm-2 control-label">页面摘要</label>
+                        <div class="col-sm-10">
+                            <textarea id="Summary"
+                                      rows="3"
+                                      name="Summary"
+                                      ng-model="Entity.Summary"
+                                      ng-pattern="/^.{10,500}$/"
+                                      required
+                                      class="form-control"></textarea>
+                            <span class="help-block">页面中摘取最主要的信息，10至500个字。</span>
+                            <span ng-if="myForm.Summary.$valid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.Summary.$invalid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 animated fadeInLeft">
+                </div>
+            </div>
+            <div class="tab-pane" ng-class="{active:TabIndex==1}">
+                <div class="col-md-12" style="margin-bottom:15px;">
+                    <div class="btn-group">
+                        <a href="" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            页面模板
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="">新闻列表</a></li>
+                            <li><a href="">新闻详情</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="">产品列表</a></li>
+                            <li><a href="">产品详情</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="">相册列表</a></li>
+                            <li><a href="">相册详情</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="">视频列表</a></li>
+                            <li><a href="">视频详情</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="">单页数据</a></li>
+                            <li><a href="">静态页面</a></li>
+                        </ul>
+                    </div>
+                    &nbsp;
+                    <div class="btn-group">
+                        <a href="" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            编辑器风格
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="" ng-click="changeTheme('clouds')">Clouds</a></li>
+                            <li><a href="" ng-click="changeTheme('clouds_midnight')">Clouds Midnight</a></li>
+                            <li><a href="" ng-click="changeTheme('cobalt')">Cobalt</a></li>
+                            <li><a href="" ng-click="changeTheme('crimson_editor')">Crimson Editor</a></li>
+                            <li><a href="" ng-click="changeTheme('dawn')">Dawn</a></li>
+                            <li><a href="" ng-click="changeTheme('eclipse')">Eclipse</a></li>
+                            <li><a href="" ng-click="changeTheme('idle_fingers')">Idle Fingers</a></li>
+                            <li><a href="" ng-click="changeTheme('kr_theme')">Kr Theme</a></li>
+                            <li><a href="" ng-click="changeTheme('merbivore')">Merbivore</a></li>
+                            <li><a href="" ng-click="changeTheme('merbivore_soft')">Merbivore Soft</a></li>
+                            <li><a href="" ng-click="changeTheme('mono_industrial')">Mono Industrial</a></li>
+                            <li><a href="" ng-click="changeTheme('monokai')">Monokai</a></li>
+                            <li><a href="" ng-click="changeTheme('pastel_on_dark')">Pastel On Dark</a></li>
+                            <li><a href="" ng-click="changeTheme('solarized_dark')">Solarized Dark</a></li>
+                            <li><a href="" ng-click="changeTheme('solarized_light')">Solarized Light</a></li>
+                            <li><a href="" ng-click="changeTheme('textmate')">Textmate</a></li>
+                            <li><a href="" ng-click="changeTheme('twilight')">Twilight</a></li>
+                            <li><a href="" ng-click="changeTheme('vibrant_ink')">Vibrant Ink</a></li>
+                        </ul>
+                    </div>
+                    &nbsp;&nbsp;
+                    <a href="" ng-if="OnBuild==false" class="btn btn-default" ng-click="BuildPage()">编译预览</a>
+                    <a href="" ng-if="OnBuild==true" class="btn btn-default disabled">Loading...</a>
+                </div>
+                <div class="col-md-12">
+                    <pre id="editor" style=" margin: 0;min-height:600px;" class="animated fadeInRight">
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;cn&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot; /&gt;
+&lt;title&gt;&lt;/title&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;&quot; /&gt;
+&lt;meta name=&quot;description&quot; content=&quot;&quot; /&gt;
+&lt;meta name=&quot;copyright&quot; content=&quot;&quot; /&gt;
+&lt;link rel=&quot;icon&quot; href=&quot;/favicon.ico&quot; type=&quot;image/x-icon&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+                </div>
+                </div>
+            <div class="tab-pane" ng-class="{active:TabIndex==2}">
+                <div class="col-md-12" style="margin-bottom:15px;">
+                    <div class="alert alert-warning">
+                        您可以编译源码以保证模板页面代码书写正确，但编译后的结果不会保存。
+                        <a href="" ng-if="OnBuild==true" class="btn btn-default disabled">Loading...</a>
+                        <a href="" ng-if="OnBuild==false" class="btn btn-default" ng-click="BuildPage()">编译源码</a>
+                        &nbsp;
+                        <div class="btn-group">
+                            <a href="" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                代码着色
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="" onclick="changeCodeTheme('Default')">默认样式</a></li>
+                                <li><a href="" onclick="changeCodeTheme('Emacs')">Emacs样式</a></li>
+                                <li><a href="" onclick="changeCodeTheme('Eclipse')">Eclipse样式</a></li>
+                                <li><a href="" onclick="changeCodeTheme('Django')">Django样式</a></li>
+                                <li><a href="" onclick="changeCodeTheme('FadeToGrey')">FadeToGrey样式</a></li>
+                                <li><a href="" onclick="changeCodeTheme('MDUltra')">MDUltra样式</a></li>
+                                <li><a href="" onclick="changeCodeTheme('Midnight')">Midnight样式</a></li>
+                                <li><a href="" onclick="changeCodeTheme('RDark')">RDark样式</a></li>
+                            </ul>
+                        </div>&nbsp;
+                        <a id="copy-button" href="" class="btn btn-default" data-clipboard-target="BuildedCode2">复制源码</a>
+                    </div>
+                    <pre class="animated fadeInLeft brush:html" ng-if="CompileResult!=null" id="BuildedCode">{{CompileResult}}</pre>
+                    <textarea id="BuildedCode2" ng-show="false">{{CompileResult}}</textarea>
+                </div>
+            </div>
+            <div id="testlayer" style="display:none;"></div>
+        <submit-btn></submit-btn>
+    </form>
+</div>
+
+<link id="css" href="/Scripts/shighlighter/shCoreDefault.css" rel="stylesheet" />
+<script src="/Scripts/ZeroClipboard.min.js"></script>
+<script src="/Scripts/shighlighter/shCore.js"></script>
+<script src="/Scripts/shighlighter/shBrushAll.js"></script>
+
+<script src="/Scripts/ace/ace.js"></script>
+<script type="text/javascript">
+    function changeCodeTheme(_typeName)
+    {
+        var css = document.getElementById("css");
+        css.setAttribute("href", "/Scripts/shighlighter/shCore" + _typeName + ".css");
+        SyntaxHighlighter.highlight();
+    }
+
+    angular.module("app").controller("PageAddCtrl", function ($location, $scope, API_Page)
+    {
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/eclipse");
+        editor.getSession().setMode("ace/mode/html");
+
+        $scope.changeTheme = function (theme)
+        {
+            editor.setTheme("ace/theme/" + theme);
+        }
+
+        $(function () 
+        {
+            setTimeout(function() {
+                $("#BtmLayer a").attr("href", "/Page/Index/" + $scope.Entity.TypeID);
+            },100);
+
+            $(".demoTip").popover({ placement: "top", trigger: "hover" });
+
+            chat.client.compileevent = function (code, msg)
+            {
+                if (code == 0)
+                {
+                    toastr.success('编译成功！');
+                }
+                $timeout(function ()
+                {
+                    $scope.CompileResult = msg;
+                    $scope.TabIndex = 2;
+                    setTimeout(function () { 
+                        SyntaxHighlighter.highlight();
+                    }, 10);
+                    $scope.OnBuild = false;
+                }, 100);
+            };
+            $.connection.hub.start();
+        });
+
+        $scope.OnBuild = false;
+        $scope.BuildPage = function ()
+        {
+            var pgcd = editor.getValue();
+            if (pgcd == "") {
+                toastr.error('源码为空，无法编译。');
+                return;
+            }
+            $("#BuildedCode").empty();
+            $scope.CompileResult = null;
+            $scope.OnBuild = true;
+            API_Page.Build({ PageCode: pgcd }).then(function (r) {
+                if (r.code != 0) {
+                    toastr.error(r.msg);
+                }
+            });
+        };
+
+        $scope.Entity = {TypeID:@Html.ViewContext.RouteData.Values["id"]};
+        $scope.PageKindList = [
+        { ID: 0, Name: "单页模版",Desc:"如“首页、关于我们”单个页面模板，配合YYTag标签。" },
+        { ID: 1, Name: "组件", Desc: "代码片段，用于单页/列表页调用，配合YYTag标签。" },
+        { ID: 2, Name: "列表页模版", Desc: "如“商品/新闻列表页”，配合YYPager标签。" },
+        { ID: 3, Name: "其他", Desc: "自定义页面类型，用于其他场景。" }];
+
+        $scope.CanBuilds = [{ ID: 1, Name: '支持' }, { ID: 0, Name: '不支持' }];
+        $scope.OnSubmit = false;
+        $scope.SubmitForm = function (isValid)
+        {
+            if (!isValid)
+            {
+                toastr.error('验证失败');
+                return;
+            }
+            $scope.OnSubmit = true;
+            $scope.Entity.PageCode = encodeURIComponent(editor.getValue());;
+            $scope.Entity.CreateDate = new Date();
+            $scope.Entity.LastUpdateTime = new Date();
+            API_Page.Post($scope.Entity).then(function (r)
+            {
+                $scope.OnSubmit = false;
+                if(r.code==0)
+                {
+                    toastr.success('添加成功！');
+                    window.document.location.href="/Page/Index/@Html.ViewContext.RouteData.Values["id"]";
+                }
+                else
+                {
+                    toastr.error(r.Msg);
+                }
+            });
+        };
+
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: "<p>1，页面是抓取页面源的定时任务。</p><p>2，页面不会影响网站性能，由后台服务运行。</p><p>3，页面会自动给自己打分，评估好坏。</p>"
+                  },
+                  {
+                      intro: "<p>1，页面抓取后页面源将同步到的平台。</p><p>2，您可是设置抓取后直接自动同步，也可以手动点击同步按钮，或是单个编辑后同步到平台。</p>"
+                  },
+                  {
+                      intro: '<p>最规则时需要查看XPath，用Chrome浏览器打开一个网页，F12，在弹出的小窗口中选中一个标签，右键，看到“copy XPath”了吧！</p>'
+                  }
+                ]
+            });
+            intro.start();
+        };
+    });
+
+    var clientTarget = new ZeroClipboard($("#copy-button"));
+    clientTarget.on("aftercopy", function (clientTarget, args) {
+        toastr.success('复制成功。');
+    });
+</script>

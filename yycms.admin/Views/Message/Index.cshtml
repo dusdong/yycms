@@ -1,0 +1,172 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="MessageCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li class="active">消息列表</li>
+                    <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+                <table class="table ListTable helpStep1">
+                    <tbody>
+                        <tr>
+                            <td width="160px">
+                                <div class="btn-group">
+                                    <a href="" class="btn btn-success" ng-click="ICKAll()"><i class="fa fa-hand-paper-o"></i> 全选 / 反选</a>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="javascript:void(0)" ng-click="IDeleteByIDs()"><i class="icon_trash_alt"></i> 删除选中</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td width="150px">
+                                <select class="form-control filterSelect" ng-model="Filter.TypeID" ng-change="IData_Get()">
+                                    <option value="0">查看全部</option>
+                                    <optgroup ng-repeat="d in Types" ng-if="d.PID==0" label="{{d.Name}}">
+                                        <option value="{{d.ID}}">全部</option>
+                                        <option value="{{dd.ID}}" ng-repeat="dd in Types" ng-if="dd.PID==d.ID">{{dd.Name}}</option>
+                                    </optgroup>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <span ng-if="Filter.UserName!=null" ng-click="Filter.UserName=null" class="clearBtn animated bounceIn" data-icon="Q"></span>
+                                    <input type="text" ng-keypress="OnEnterPress($event);" class="form-control" placeholder="输入消息标题..." ng-model="Filter.UserName" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group" style="display:none;">
+                                    <div class="input-group-addon">时间</div>
+                                    <input type="date" class="form-control" ng-model="Filter.StartTime" />
+                                    <div class="input-group-addon">至</div>
+                                    <input type="date" class="form-control" ng-model="Filter.EndTime" />
+                                </div>
+                            </td>
+                            <td width="130px">
+                                <filter-btn></filter-btn>
+                            </td>
+                            <td width="90px">
+                                <table-pager-top></table-pager-top>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <loading></loading>
+                <table id="MainTable" ng-if="loading==false&&Pager.Data.length>0" ng-class="{fadeIn:loading==false}" class="table table-bordered table-striped table-hover animated helpStep2">
+                    <thead>
+                        <tr>
+                            <th width="40px"><input type="checkbox" ng-click="ICKAll()" ng-checked="ckAll==true" /></th>
+                            <th ng-repeat="d in TableHeads" ng-click="Filter.OrderBy=d.Name;Filter.IsDesc=!Filter.IsDesc;IData_Get();">
+                                {{d.Title}}
+                                <i ng-if="Filter.IsDesc==true&&Filter.OrderBy==d.Name" class="arrow_carrot-up"></i>
+                                <i ng-if="Filter.IsDesc!=true||Filter.OrderBy!=d.Name" class="arrow_carrot-down"></i>
+                            </th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in Pager.Data" ng-class="{warning:d.Status!=1}">
+                            <td><input type="checkbox" value="{{d.ID}}" class="EntityItem" ng-checked="ckAll==true" /></td>
+                            <td>{{$index+1}}</td>
+                            <td>{{d.Title}}</td>
+                            <td>{{d.Mobile}}</td>
+                            <td>{{d.CreateDate}}</td>
+                            <td>
+                                <a href="/Message/Edit/{{d.ID}}" class="tip" title="查看"><i class="fa fa-eye"></i></a>
+                                <a href="javascript:void(0)" ng-click="ConfirmDelete(d.ID)" class="tip" title="删除"><i class="icon_trash_alt"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table-pager></table-pager>
+                <dialog-delete></dialog-delete>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    angular.module("app").controller("MessageCtrl", function ($location, $scope, API_Message) 
+    {
+        $scope.ckAll=false;
+        $scope.ICKAll=function()
+        {
+            $scope.ckAll=!$scope.ckAll;
+        };
+
+        $scope.ckAll=false;
+        $scope.ICKAll=function()
+        {
+            $scope.ckAll=!$scope.ckAll;
+        };
+
+        $scope.TableHeads = [
+            { "Title": "编号",     "Name": "ID"  },
+            { "Title": "消息标题", "Name": "Title" },
+            { "Title": "手机号码", "Name": "Mobile" },
+            { "Title": "创建日期", "Name": "CreateDate" }];
+
+        $scope.Pager = { PageIndex: 0, PageSize: 20 };
+        $scope.Filter = { IsDesc: true, OrderBy: "ID" };
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_Message.Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.UserName,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc,
+                $scope.Filter.Role).then(function (r) {
+                    $scope.loading = false;
+                    NProgress.done();
+                    $scope.Pager = r;
+                    $scope.Pager.PageRange = APP.Range(r.PageCount);
+                    setTimeout(function () { $(".tip").tooltip(); }, 500);
+
+                });
+        }
+        $scope.IData_Get();
+        $scope.ConfirmDelete = function (id) {
+            $scope.DeleteID = id;
+            $("#DeleteConfirmModal").modal("show");
+        }
+        $scope.IDelete = function () {
+            $("#DeleteConfirmModal").modal("hide");
+            API_Message.Delete($scope.DeleteID).then(function () { $scope.IData_Get(); toastr.info('删除成功！'); });
+        }
+
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      position: "bottom",
+                      element: '.helpStep1',
+                      intro: "<p>批量删除消息，消息数据筛选、查询、翻页操作栏。</p>"
+                  },
+                  {
+                      position: "top",
+                      element: '.helpStep2',
+                      intro: "<p>消息列表，您可以阅读、删除消息。</p>"
+                  },
+                  {
+                      position: "top",
+                      element: '.helpStep3',
+                      intro: '<p>消息数量统计，翻页操作。</p>'
+                  }
+                ]
+            });
+            intro.start();
+        };
+    });
+</script>

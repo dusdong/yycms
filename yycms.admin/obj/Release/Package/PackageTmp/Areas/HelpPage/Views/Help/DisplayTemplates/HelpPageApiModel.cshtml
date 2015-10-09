@@ -1,0 +1,164 @@
+@using System.Web.Http.Description
+@using yycms.admin.Areas.HelpPage.Models
+@model HelpPageApiModel
+
+@{
+    ApiDescription description = Model.ApiDescription;
+}
+<style type="text/css">
+    .panel-heading {
+        padding: 12px 7px;
+    }
+
+    .panel-title {
+        font-family: 微软雅黑;
+    }
+
+    .table > thead:first-child > tr:first-child > th {
+        font-weight: normal;
+        font-family: 微软雅黑;
+    }
+
+    .table > thead > tr > th {
+        border-bottom: 1px solid #ddd;
+    }
+</style>
+<div class="bs-callout bs-callout-success">
+    <h3>
+        <span class="label label-success" style="font-size:14px;">@description.HttpMethod.Method</span>
+        <span style="font-size:18px;">
+            @description.RelativePath
+                &nbsp;(@description.Documentation)
+    </span>
+    </h3>
+</div>
+    
+<div class="panel-group" id="Parameters" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="ParametersHD">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#ParametersHD" href="#ParametersBD" aria-expanded="false" aria-controls="ParametersBD">
+                    URI参数
+                </a>
+            </h4>
+        </div>
+        <div id="ParametersBD" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="Parameters">
+            <div class="panel-body">
+                @Html.DisplayFor(m => m.UriParameters, "Parameters")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel-group" id="BizParameters" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="BizParametersHD">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#BizParametersHD" href="#BizParametersBD" aria-expanded="false" aria-controls="BizParametersBD">
+                    业务参数 
+                </a>
+                <span style="float:right;">@Html.DisplayFor(m => m.RequestModelDescription.ModelType, "ModelDescriptionLink", new { modelDescription = Model.RequestModelDescription })</span>
+            </h4>
+        </div>
+        <div id="BizParametersBD" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="BizParameters">
+            <div class="panel-body">
+                @if (!String.IsNullOrEmpty(Model.RequestDocumentation))
+                {
+                    <div class="alert alert-warning">@Model.RequestDocumentation</div>
+                }
+                @if (Model.RequestModelDescription != null)
+                {
+                    if (Model.RequestBodyParameters != null)
+                    {
+                        @Html.DisplayFor(m => m.RequestBodyParameters, "Parameters")
+                    }
+                }
+                else
+                {
+                    <p>无。</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel-group" id="Samples" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="SamplesHD">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#SamplesHD" href="#SamplesBD" aria-expanded="false" aria-controls="SamplesBD">
+                    请求示例
+                </a>
+            </h4>
+        </div>
+        <div id="SamplesBD" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="Samples">
+            <div class="panel-body">
+                @if (Model.SampleRequests.Count > 0)
+                {
+                    @Html.DisplayFor(m => m.SampleRequests, "Samples")
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel-group" id="ModelDescriptionLink" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="ModelDescriptionLinkHD">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#ModelDescriptionLinkHD" href="#ModelDescriptionLinkBD" aria-expanded="false" aria-controls="ModelDescriptionLinkBD">
+                    响应实体
+                </a>
+                <span style="float:right;">
+                    @if (Model.ResourceDescription != null)
+                    {
+                        @Html.DisplayFor(m => m.ResourceDescription.ModelType, "ModelDescriptionLink", new { modelDescription = Model.ResourceDescription })
+                    }
+                </span>
+            </h4>
+        </div>
+        <div id="ModelDescriptionLinkBD" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="ModelDescriptionLink">
+            <div class="panel-body">
+               @if (!String.IsNullOrEmpty(description.ResponseDescription.Documentation))
+               {
+                <div class="alert alert-warning">
+                    @description.ResponseDescription.Documentation
+                </div>
+               }
+                @if (Model.ResourceDescription != null)
+                {
+
+                    if (Model.ResourceProperties != null)
+                    {
+                        @Html.DisplayFor(m => m.ResourceProperties, "Parameters")
+                    }
+                }
+                else
+                {
+                    <p>无。</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel-group" id="Samples2" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="Samples2HD">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#Samples2HD" href="#Samples2BD" aria-expanded="false" aria-controls="Samples2BD">
+                    返回示例
+                </a>
+            </h4>
+        </div>
+        <div id="Samples2BD" class="panel-collapse collapse" role="tabpanel" aria-labelledby="Samples2">
+            <div class="panel-body">
+                @if (Model.SampleResponses.Count > 0)
+                {
+                    @Html.DisplayFor(m => m.SampleResponses, "Samples")
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

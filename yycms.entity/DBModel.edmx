@@ -1,0 +1,1908 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="yy_Banner">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="TypeIDs" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LinkUrl" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Banner_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PID" Type="bigint" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Fans_Wechat">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="openid" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="nickname" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="language" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="sex" Type="int" Nullable="false" />
+          <Property Name="province" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="city" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="country" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="headimgurl" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Latitude" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Longitude" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Precision" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="remark" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="unionid" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LOCATIONUpdateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_FriendLink">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="KeyWords" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Info" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Recommend" Type="int" Nullable="false" />
+          <Property Name="SiteUrl" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DefaultImg" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Score" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="LookCount" Type="bigint" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CanReply" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Keywords">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="ApplyType" Type="int" Nullable="false" />
+          <Property Name="TypeIDs" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ReplaceContent" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="ReplaceCount" Type="int" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Message">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="Platform" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mail" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_News">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="TypeIDs" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="TargetPlatforms" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="KeyWords" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="LookCount" Type="bigint" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="DefaultImg" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ImgList" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Info" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Recommend" Type="int" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CanReply" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="WechatMediaID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="WechatNewsUrl" Type="nvarchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_News_Schedule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="TypeIDs" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="KeyWords" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LookCount" Type="bigint" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DefaultImg" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ImgList" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Info" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="Unions" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="ReleaseDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_News_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PID" Type="bigint" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Page">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PageName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BuildType" Type="int" Nullable="false" />
+          <Property Name="TypeID" Type="bigint" Nullable="false" />
+          <Property Name="PageKind" Type="int" Nullable="false" />
+          <Property Name="SavePath" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ExtensionName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PageCode" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CanBuild" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Page_Build_Config">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PageTypeID" Type="bigint" Nullable="false" />
+          <Property Name="PageID" Type="bigint" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" Nullable="false" />
+          <Property Name="BuildType" Type="int" Nullable="false" />
+          <Property Name="DataTypeIDs" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Page_Build_Task">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="TypeID" Type="bigint" Nullable="false" />
+          <Property Name="PageID" Type="bigint" Nullable="false" />
+          <Property Name="BuildEntity" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TotalCount" Type="bigint" Nullable="false" />
+          <Property Name="BuildCount" Type="bigint" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="BuildHistory" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Page_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="IsMaster" Type="int" Nullable="false" />
+          <Property Name="SupportPlatform" Type="bigint" Nullable="false" />
+          <Property Name="Author" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Website" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="QQ" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name_En" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Images" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Version" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Permission">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="TypeID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="MenuName" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="MenuLink" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="PageName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ShowIndex" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Icon" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Permission_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Icon" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ShowIndex" Type="int" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Photo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="KeyWords" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="TypeIDs" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Recommend" Type="int" Nullable="false" />
+          <Property Name="LookCount" Type="bigint" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="TargetPlatforms" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CanReply" Type="int" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Photo_Item">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PhotoID" Type="bigint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ImgUrl" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Photo_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PID" Type="bigint" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Platforms">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Link" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Code" Type="int" Nullable="false" />
+          <Property Name="APPKey" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPSecret" Type="nvarchar" MaxLength="500" />
+          <Property Name="APPAdminID" Type="nvarchar" MaxLength="500" />
+          <Property Name="Access_token" Type="nvarchar" MaxLength="500" />
+          <Property Name="Access_token_Expires_in" Type="datetime" Nullable="false" />
+          <Property Name="Refresh_token" Type="nvarchar" MaxLength="500" />
+          <Property Name="APPPayID" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPPayKey" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPPayCert" Type="nvarchar" MaxLength="500" />
+          <Property Name="APPID" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPName" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="jsapi_ticket" Type="nvarchar" MaxLength="500" />
+          <Property Name="jsapi_ticket_Expires_in" Type="datetime" Nullable="false" />
+          <Property Name="api_ticket" Type="nvarchar" MaxLength="500" />
+          <Property Name="api_ticket_Expires_in" Type="datetime" Nullable="false" />
+          <Property Name="PlatformConfig" Type="nvarchar" MaxLength="500" />
+          <Property Name="RecallUrl" Type="nvarchar" MaxLength="500" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="JSSDK" Type="nvarchar(max)" />
+          <Property Name="QRCode" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="TypeIDs" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="TargetPlatforms" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="KeyWords" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Specifications" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LookCount" Type="bigint" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="DefaultImg" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ImgList" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Info" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Recommend" Type="int" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CanReply" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Product_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PID" Type="bigint" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_RedPack">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="MerchantID" Type="bigint" Nullable="false" />
+          <Property Name="AgencyID" Type="bigint" Nullable="false" />
+          <Property Name="hb_type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="nick_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="send_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="current_amount" Type="bigint" Nullable="false" />
+          <Property Name="total_amount" Type="bigint" Nullable="false" />
+          <Property Name="min_value" Type="bigint" Nullable="false" />
+          <Property Name="max_value" Type="bigint" Nullable="false" />
+          <Property Name="Quantity" Type="bigint" Nullable="false" />
+          <Property Name="total_num" Type="int" Nullable="false" />
+          <Property Name="wishing" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="act_name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="remark" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="logo_imgurl" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="share_content" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="share_url" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="share_imgurl" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="GetLimit" Type="bigint" Nullable="false" />
+          <Property Name="GetEmptyLimit" Type="bigint" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_RedPack_Order">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="red_packID" Type="bigint" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="MechantID" Type="bigint" Nullable="false" />
+          <Property Name="AgencyID" Type="bigint" Nullable="false" />
+          <Property Name="re_openid" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="mch_billno" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="detail_id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="red_money" Type="bigint" Nullable="false" />
+          <Property Name="status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_SinglePage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="KeyWords" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Info" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="LookCount" Type="bigint" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_SiteSetting">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteAddress" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Watermark" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="EnabelWatermark" Type="int" Nullable="false" />
+          <Property Name="MailServer" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="MailPort" Type="int" Nullable="false" />
+          <Property Name="MailAccount" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="MailPassword" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="SystemTopBar" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Spider">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="KeyWords" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TypeIDs" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Quality" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SourceUrls" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RuleConfig" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="LookCount" Type="bigint" Nullable="false" />
+          <Property Name="SpiderMode" Type="int" Nullable="false" />
+          <Property Name="TargetPlatforms" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ExecutionInterval" Type="bigint" Nullable="false" />
+          <Property Name="LastStartTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Spider_Log">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SpiderID" Type="bigint" Nullable="false" />
+          <Property Name="TotalUrl" Type="bigint" Nullable="false" />
+          <Property Name="SuccessUrl" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Spider_News">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="Identifer" Type="bigint" Nullable="false" />
+          <Property Name="SpiderID" Type="bigint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="SourceUrl" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DefaultImage" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="KeyWords" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Info" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsSync" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Statistics">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PID" Type="bigint" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_SynchronousTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Platform" Type="int" Nullable="false" />
+          <Property Name="BusinessType" Type="int" Nullable="false" />
+          <Property Name="RelationID" Type="bigint" Nullable="false" />
+          <Property Name="OperationType" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="MaxTry" Type="int" Nullable="false" />
+          <Property Name="TriedCount" Type="int" Nullable="false" />
+          <Property Name="Data" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_SysError">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogKey" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Source" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="StackTrace" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="HelpLink" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TargetSite" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HeadImgUrl" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Mail" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserPwd" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Gender" Type="int" Nullable="false" />
+          <Property Name="Role" Type="int" Nullable="false" />
+          <Property Name="Permission" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CountryID" Type="int" Nullable="false" />
+          <Property Name="ProvinceID" Type="int" Nullable="false" />
+          <Property Name="DistrictID" Type="int" Nullable="false" />
+          <Property Name="CityID" Type="int" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LockFlag" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_User_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Permission" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="PID" Type="bigint" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Video">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="KeyWords" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="TypeIDs" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="SourceUrl" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Recommend" Type="int" Nullable="false" />
+          <Property Name="TargetPlatforms" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CanReply" Type="int" Nullable="false" />
+          <Property Name="LookCount" Type="bigint" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Video_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PID" Type="bigint" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="ShowIndex" Type="bigint" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="DBModelStoreContainer">
+          <EntitySet Name="yy_Banner" EntityType="Self.yy_Banner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Banner_Type" EntityType="Self.yy_Banner_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Fans_Wechat" EntityType="Self.yy_Fans_Wechat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_FriendLink" EntityType="Self.yy_FriendLink" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Keywords" EntityType="Self.yy_Keywords" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Message" EntityType="Self.yy_Message" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_News" EntityType="Self.yy_News" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_News_Schedule" EntityType="Self.yy_News_Schedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_News_Type" EntityType="Self.yy_News_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Page" EntityType="Self.yy_Page" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Page_Build_Config" EntityType="Self.yy_Page_Build_Config" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Page_Build_Task" EntityType="Self.yy_Page_Build_Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Page_Type" EntityType="Self.yy_Page_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Permission" EntityType="Self.yy_Permission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Permission_Type" EntityType="Self.yy_Permission_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Photo" EntityType="Self.yy_Photo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Photo_Item" EntityType="Self.yy_Photo_Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Photo_Type" EntityType="Self.yy_Photo_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Platforms" EntityType="Self.yy_Platforms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Product" EntityType="Self.yy_Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Product_Type" EntityType="Self.yy_Product_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_RedPack" EntityType="Self.yy_RedPack" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_RedPack_Order" EntityType="Self.yy_RedPack_Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_SinglePage" EntityType="Self.yy_SinglePage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_SiteSetting" EntityType="Self.yy_SiteSetting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Spider" EntityType="Self.yy_Spider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Spider_Log" EntityType="Self.yy_Spider_Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Spider_News" EntityType="Self.yy_Spider_News" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Statistics" EntityType="Self.yy_Statistics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_SynchronousTask" EntityType="Self.yy_SynchronousTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_SysError" EntityType="Self.yy_SysError" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_User" EntityType="Self.yy_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_User_Type" EntityType="Self.yy_User_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Video" EntityType="Self.yy_Video" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="yy_Video_Type" EntityType="Self.yy_Video_Type" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DBConnection" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="yy_Banner" EntityType="DBModel.yy_Banner" />
+          <EntitySet Name="yy_Banner_Type" EntityType="DBModel.yy_Banner_Type" />
+          <EntitySet Name="yy_Fans_Wechat" EntityType="DBModel.yy_Fans_Wechat" />
+          <EntitySet Name="yy_FriendLink" EntityType="DBModel.yy_FriendLink" />
+          <EntitySet Name="yy_Keywords" EntityType="DBModel.yy_Keywords" />
+          <EntitySet Name="yy_Message" EntityType="DBModel.yy_Message" />
+          <EntitySet Name="yy_News" EntityType="DBModel.yy_News" />
+          <EntitySet Name="yy_News_Schedule" EntityType="DBModel.yy_News_Schedule" />
+          <EntitySet Name="yy_News_Type" EntityType="DBModel.yy_News_Type" />
+          <EntitySet Name="yy_Page" EntityType="DBModel.yy_Page" />
+          <EntitySet Name="yy_Page_Build_Config" EntityType="DBModel.yy_Page_Build_Config" />
+          <EntitySet Name="yy_Page_Build_Task" EntityType="DBModel.yy_Page_Build_Task" />
+          <EntitySet Name="yy_Page_Type" EntityType="DBModel.yy_Page_Type" />
+          <EntitySet Name="yy_Permission" EntityType="DBModel.yy_Permission" />
+          <EntitySet Name="yy_Permission_Type" EntityType="DBModel.yy_Permission_Type" />
+          <EntitySet Name="yy_Photo" EntityType="DBModel.yy_Photo" />
+          <EntitySet Name="yy_Photo_Item" EntityType="DBModel.yy_Photo_Item" />
+          <EntitySet Name="yy_Photo_Type" EntityType="DBModel.yy_Photo_Type" />
+          <EntitySet Name="yy_Platforms" EntityType="DBModel.yy_Platforms" />
+          <EntitySet Name="yy_Product" EntityType="DBModel.yy_Product" />
+          <EntitySet Name="yy_Product_Type" EntityType="DBModel.yy_Product_Type" />
+          <EntitySet Name="yy_RedPack" EntityType="DBModel.yy_RedPack" />
+          <EntitySet Name="yy_RedPack_Order" EntityType="DBModel.yy_RedPack_Order" />
+          <EntitySet Name="yy_SinglePage" EntityType="DBModel.yy_SinglePage" />
+          <EntitySet Name="yy_SiteSetting" EntityType="DBModel.yy_SiteSetting" />
+          <EntitySet Name="yy_Spider" EntityType="DBModel.yy_Spider" />
+          <EntitySet Name="yy_Spider_Log" EntityType="DBModel.yy_Spider_Log" />
+          <EntitySet Name="yy_Spider_News" EntityType="DBModel.yy_Spider_News" />
+          <EntitySet Name="yy_Statistics" EntityType="DBModel.yy_Statistics" />
+          <EntitySet Name="yy_SynchronousTask" EntityType="DBModel.yy_SynchronousTask" />
+          <EntitySet Name="yy_SysError" EntityType="DBModel.yy_SysError" />
+          <EntitySet Name="yy_User" EntityType="DBModel.yy_User" />
+          <EntitySet Name="yy_User_Type" EntityType="DBModel.yy_User_Type" />
+          <EntitySet Name="yy_Video" EntityType="DBModel.yy_Video" />
+          <EntitySet Name="yy_Video_Type" EntityType="DBModel.yy_Video_Type" />
+        </EntityContainer>
+        <EntityType Name="yy_Banner">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="TypeIDs" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LinkUrl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Banner_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PID" Type="Int64" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Fans_Wechat">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="openid" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="nickname" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="language" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sex" Type="Int32" Nullable="false" />
+          <Property Name="province" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="country" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="headimgurl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Longitude" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Precision" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="unionid" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATIONUpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_FriendLink">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="KeyWords" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Info" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Recommend" Type="Int32" Nullable="false" />
+          <Property Name="SiteUrl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultImg" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Score" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="LookCount" Type="Int64" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CanReply" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Keywords">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="ApplyType" Type="Int32" Nullable="false" />
+          <Property Name="TypeIDs" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ReplaceContent" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ReplaceCount" Type="Int32" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Message">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Platform" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mail" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_News">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="TypeIDs" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TargetPlatforms" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="KeyWords" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LookCount" Type="Int64" Nullable="false" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultImg" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImgList" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Info" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Recommend" Type="Int32" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CanReply" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="WechatMediaID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WechatNewsUrl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="yy_News_Schedule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="TypeIDs" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="KeyWords" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LookCount" Type="Int64" Nullable="false" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultImg" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImgList" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Info" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="Unions" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReleaseDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_News_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PID" Type="Int64" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Page">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PageName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BuildType" Type="Int32" Nullable="false" />
+          <Property Name="TypeID" Type="Int64" Nullable="false" />
+          <Property Name="PageKind" Type="Int32" Nullable="false" />
+          <Property Name="SavePath" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ExtensionName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PageCode" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CanBuild" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Page_Build_Config">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PageTypeID" Type="Int64" Nullable="false" />
+          <Property Name="PageID" Type="Int64" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="BuildType" Type="Int32" Nullable="false" />
+          <Property Name="DataTypeIDs" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Page_Build_Task">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TypeID" Type="Int64" Nullable="false" />
+          <Property Name="PageID" Type="Int64" Nullable="false" />
+          <Property Name="BuildEntity" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TotalCount" Type="Int64" Nullable="false" />
+          <Property Name="BuildCount" Type="Int64" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="BuildHistory" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Page_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="IsMaster" Type="Int32" Nullable="false" />
+          <Property Name="SupportPlatform" Type="Int64" Nullable="false" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="QQ" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Name_En" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Images" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Version" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Permission">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="TypeID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MenuName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="MenuLink" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PageName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ShowIndex" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Icon" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Permission_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Icon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ShowIndex" Type="Int32" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Photo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="KeyWords" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="TypeIDs" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Recommend" Type="Int32" Nullable="false" />
+          <Property Name="LookCount" Type="Int64" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="TargetPlatforms" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CanReply" Type="Int32" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Photo_Item">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PhotoID" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImgUrl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Photo_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PID" Type="Int64" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Platforms">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Link" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="Int32" Nullable="false" />
+          <Property Name="APPKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPSecret" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="APPAdminID" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Access_token" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Access_token_Expires_in" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Refresh_token" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="APPPayID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPPayKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPPayCert" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="APPID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="jsapi_ticket" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="jsapi_ticket_Expires_in" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="api_ticket" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="api_ticket_Expires_in" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PlatformConfig" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RecallUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="JSSDK" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QRCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="TypeIDs" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TargetPlatforms" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="KeyWords" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Specifications" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LookCount" Type="Int64" Nullable="false" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultImg" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImgList" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Info" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Recommend" Type="Int32" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CanReply" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Product_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PID" Type="Int64" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_RedPack">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="MerchantID" Type="Int64" Nullable="false" />
+          <Property Name="AgencyID" Type="Int64" Nullable="false" />
+          <Property Name="hb_type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="nick_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="send_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="current_amount" Type="Int64" Nullable="false" />
+          <Property Name="total_amount" Type="Int64" Nullable="false" />
+          <Property Name="min_value" Type="Int64" Nullable="false" />
+          <Property Name="max_value" Type="Int64" Nullable="false" />
+          <Property Name="Quantity" Type="Int64" Nullable="false" />
+          <Property Name="total_num" Type="Int32" Nullable="false" />
+          <Property Name="wishing" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="act_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="remark" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="logo_imgurl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="share_content" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="share_url" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="share_imgurl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GetLimit" Type="Int64" Nullable="false" />
+          <Property Name="GetEmptyLimit" Type="Int64" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_RedPack_Order">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="red_packID" Type="Int64" Nullable="false" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="MechantID" Type="Int64" Nullable="false" />
+          <Property Name="AgencyID" Type="Int64" Nullable="false" />
+          <Property Name="re_openid" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="mch_billno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="detail_id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="red_money" Type="Int64" Nullable="false" />
+          <Property Name="status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_SinglePage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="KeyWords" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Info" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="LookCount" Type="Int64" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_SiteSetting">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteAddress" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Watermark" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EnabelWatermark" Type="Int32" Nullable="false" />
+          <Property Name="MailServer" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="MailPort" Type="Int32" Nullable="false" />
+          <Property Name="MailAccount" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MailPassword" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SystemTopBar" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Spider">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="KeyWords" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TypeIDs" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Quality" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="SourceUrls" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RuleConfig" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="LookCount" Type="Int64" Nullable="false" />
+          <Property Name="SpiderMode" Type="Int32" Nullable="false" />
+          <Property Name="TargetPlatforms" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ExecutionInterval" Type="Int64" Nullable="false" />
+          <Property Name="LastStartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Spider_Log">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SpiderID" Type="Int64" Nullable="false" />
+          <Property Name="TotalUrl" Type="Int64" Nullable="false" />
+          <Property Name="SuccessUrl" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="yy_Spider_News">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Identifer" Type="Int64" Nullable="false" />
+          <Property Name="SpiderID" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SourceUrl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultImage" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="KeyWords" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Info" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsSync" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Statistics">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PID" Type="Int64" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_SynchronousTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Platform" Type="Int32" Nullable="false" />
+          <Property Name="BusinessType" Type="Int32" Nullable="false" />
+          <Property Name="RelationID" Type="Int64" Nullable="false" />
+          <Property Name="OperationType" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="MaxTry" Type="Int32" Nullable="false" />
+          <Property Name="TriedCount" Type="Int32" Nullable="false" />
+          <Property Name="Data" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_SysError">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogKey" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Source" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StackTrace" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HelpLink" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TargetSite" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HeadImgUrl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Mail" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserPwd" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Int32" Nullable="false" />
+          <Property Name="Role" Type="Int32" Nullable="false" />
+          <Property Name="Permission" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CountryID" Type="Int32" Nullable="false" />
+          <Property Name="ProvinceID" Type="Int32" Nullable="false" />
+          <Property Name="DistrictID" Type="Int32" Nullable="false" />
+          <Property Name="CityID" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LockFlag" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_User_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Permission" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PID" Type="Int64" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Video">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="KeyWords" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="TypeIDs" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SourceUrl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Recommend" Type="Int32" Nullable="false" />
+          <Property Name="TargetPlatforms" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CanReply" Type="Int32" Nullable="false" />
+          <Property Name="LookCount" Type="Int64" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="yy_Video_Type">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PID" Type="Int64" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="ShowIndex" Type="Int64" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBModelStoreContainer" CdmEntityContainer="DBConnection">
+          <EntitySetMapping Name="yy_Banner">
+            <EntityTypeMapping TypeName="DBModel.yy_Banner">
+              <MappingFragment StoreEntitySet="yy_Banner">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="LinkUrl" ColumnName="LinkUrl" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="TypeIDs" ColumnName="TypeIDs" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Banner_Type">
+            <EntityTypeMapping TypeName="DBModel.yy_Banner_Type">
+              <MappingFragment StoreEntitySet="yy_Banner_Type">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Fans_Wechat">
+            <EntityTypeMapping TypeName="DBModel.yy_Fans_Wechat">
+              <MappingFragment StoreEntitySet="yy_Fans_Wechat">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="LOCATIONUpdateTime" ColumnName="LOCATIONUpdateTime" />
+                <ScalarProperty Name="unionid" ColumnName="unionid" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="Precision" ColumnName="Precision" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="headimgurl" ColumnName="headimgurl" />
+                <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="province" ColumnName="province" />
+                <ScalarProperty Name="sex" ColumnName="sex" />
+                <ScalarProperty Name="language" ColumnName="language" />
+                <ScalarProperty Name="nickname" ColumnName="nickname" />
+                <ScalarProperty Name="openid" ColumnName="openid" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_FriendLink">
+            <EntityTypeMapping TypeName="DBModel.yy_FriendLink">
+              <MappingFragment StoreEntitySet="yy_FriendLink">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CanReply" ColumnName="CanReply" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="LookCount" ColumnName="LookCount" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="DefaultImg" ColumnName="DefaultImg" />
+                <ScalarProperty Name="SiteUrl" ColumnName="SiteUrl" />
+                <ScalarProperty Name="Recommend" ColumnName="Recommend" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="KeyWords" ColumnName="KeyWords" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Keywords">
+            <EntityTypeMapping TypeName="DBModel.yy_Keywords">
+              <MappingFragment StoreEntitySet="yy_Keywords">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="ReplaceCount" ColumnName="ReplaceCount" />
+                <ScalarProperty Name="ReplaceContent" ColumnName="ReplaceContent" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="TypeIDs" ColumnName="TypeIDs" />
+                <ScalarProperty Name="ApplyType" ColumnName="ApplyType" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Message">
+            <EntityTypeMapping TypeName="DBModel.yy_Message">
+              <MappingFragment StoreEntitySet="yy_Message">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Mail" ColumnName="Mail" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Platform" ColumnName="Platform" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_News">
+            <EntityTypeMapping TypeName="DBModel.yy_News">
+              <MappingFragment StoreEntitySet="yy_News">
+                <ScalarProperty Name="WechatNewsUrl" ColumnName="WechatNewsUrl" />
+                <ScalarProperty Name="WechatMediaID" ColumnName="WechatMediaID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CanReply" ColumnName="CanReply" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="Recommend" ColumnName="Recommend" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="ImgList" ColumnName="ImgList" />
+                <ScalarProperty Name="DefaultImg" ColumnName="DefaultImg" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="LookCount" ColumnName="LookCount" />
+                <ScalarProperty Name="KeyWords" ColumnName="KeyWords" />
+                <ScalarProperty Name="TargetPlatforms" ColumnName="TargetPlatforms" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="TypeIDs" ColumnName="TypeIDs" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_News_Schedule">
+            <EntityTypeMapping TypeName="DBModel.yy_News_Schedule">
+              <MappingFragment StoreEntitySet="yy_News_Schedule">
+                <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Unions" ColumnName="Unions" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ImgList" ColumnName="ImgList" />
+                <ScalarProperty Name="DefaultImg" ColumnName="DefaultImg" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="LookCount" ColumnName="LookCount" />
+                <ScalarProperty Name="KeyWords" ColumnName="KeyWords" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="TypeIDs" ColumnName="TypeIDs" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_News_Type">
+            <EntityTypeMapping TypeName="DBModel.yy_News_Type">
+              <MappingFragment StoreEntitySet="yy_News_Type">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Page">
+            <EntityTypeMapping TypeName="DBModel.yy_Page">
+              <MappingFragment StoreEntitySet="yy_Page">
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CanBuild" ColumnName="CanBuild" />
+                <ScalarProperty Name="PageCode" ColumnName="PageCode" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="ExtensionName" ColumnName="ExtensionName" />
+                <ScalarProperty Name="SavePath" ColumnName="SavePath" />
+                <ScalarProperty Name="PageKind" ColumnName="PageKind" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="BuildType" ColumnName="BuildType" />
+                <ScalarProperty Name="PageName" ColumnName="PageName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Page_Build_Config">
+            <EntityTypeMapping TypeName="DBModel.yy_Page_Build_Config">
+              <MappingFragment StoreEntitySet="yy_Page_Build_Config">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="DataTypeIDs" ColumnName="DataTypeIDs" />
+                <ScalarProperty Name="BuildType" ColumnName="BuildType" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="PageID" ColumnName="PageID" />
+                <ScalarProperty Name="PageTypeID" ColumnName="PageTypeID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Page_Build_Task">
+            <EntityTypeMapping TypeName="DBModel.yy_Page_Build_Task">
+              <MappingFragment StoreEntitySet="yy_Page_Build_Task">
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="BuildHistory" ColumnName="BuildHistory" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="BuildCount" ColumnName="BuildCount" />
+                <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+                <ScalarProperty Name="BuildEntity" ColumnName="BuildEntity" />
+                <ScalarProperty Name="PageID" ColumnName="PageID" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Page_Type">
+            <EntityTypeMapping TypeName="DBModel.yy_Page_Type">
+              <MappingFragment StoreEntitySet="yy_Page_Type">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Images" ColumnName="Images" />
+                <ScalarProperty Name="Name_En" ColumnName="Name_En" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="SupportPlatform" ColumnName="SupportPlatform" />
+                <ScalarProperty Name="IsMaster" ColumnName="IsMaster" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Permission">
+            <EntityTypeMapping TypeName="DBModel.yy_Permission">
+              <MappingFragment StoreEntitySet="yy_Permission">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="PageName" ColumnName="PageName" />
+                <ScalarProperty Name="MenuLink" ColumnName="MenuLink" />
+                <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Permission_Type">
+            <EntityTypeMapping TypeName="DBModel.yy_Permission_Type">
+              <MappingFragment StoreEntitySet="yy_Permission_Type">
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Photo">
+            <EntityTypeMapping TypeName="DBModel.yy_Photo">
+              <MappingFragment StoreEntitySet="yy_Photo">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="CanReply" ColumnName="CanReply" />
+                <ScalarProperty Name="TargetPlatforms" ColumnName="TargetPlatforms" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="LookCount" ColumnName="LookCount" />
+                <ScalarProperty Name="Recommend" ColumnName="Recommend" />
+                <ScalarProperty Name="TypeIDs" ColumnName="TypeIDs" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="KeyWords" ColumnName="KeyWords" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Photo_Item">
+            <EntityTypeMapping TypeName="DBModel.yy_Photo_Item">
+              <MappingFragment StoreEntitySet="yy_Photo_Item">
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PhotoID" ColumnName="PhotoID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Photo_Type">
+            <EntityTypeMapping TypeName="DBModel.yy_Photo_Type">
+              <MappingFragment StoreEntitySet="yy_Photo_Type">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Platforms">
+            <EntityTypeMapping TypeName="DBModel.yy_Platforms">
+              <MappingFragment StoreEntitySet="yy_Platforms">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="QRCode" ColumnName="QRCode" />
+                <ScalarProperty Name="JSSDK" ColumnName="JSSDK" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="RecallUrl" ColumnName="RecallUrl" />
+                <ScalarProperty Name="PlatformConfig" ColumnName="PlatformConfig" />
+                <ScalarProperty Name="api_ticket_Expires_in" ColumnName="api_ticket_Expires_in" />
+                <ScalarProperty Name="api_ticket" ColumnName="api_ticket" />
+                <ScalarProperty Name="jsapi_ticket_Expires_in" ColumnName="jsapi_ticket_Expires_in" />
+                <ScalarProperty Name="jsapi_ticket" ColumnName="jsapi_ticket" />
+                <ScalarProperty Name="APPNumber" ColumnName="APPNumber" />
+                <ScalarProperty Name="APPName" ColumnName="APPName" />
+                <ScalarProperty Name="APPID" ColumnName="APPID" />
+                <ScalarProperty Name="APPPayCert" ColumnName="APPPayCert" />
+                <ScalarProperty Name="APPPayKey" ColumnName="APPPayKey" />
+                <ScalarProperty Name="APPPayID" ColumnName="APPPayID" />
+                <ScalarProperty Name="Refresh_token" ColumnName="Refresh_token" />
+                <ScalarProperty Name="Access_token_Expires_in" ColumnName="Access_token_Expires_in" />
+                <ScalarProperty Name="Access_token" ColumnName="Access_token" />
+                <ScalarProperty Name="APPAdminID" ColumnName="APPAdminID" />
+                <ScalarProperty Name="APPSecret" ColumnName="APPSecret" />
+                <ScalarProperty Name="APPKey" ColumnName="APPKey" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Product">
+            <EntityTypeMapping TypeName="DBModel.yy_Product">
+              <MappingFragment StoreEntitySet="yy_Product">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CanReply" ColumnName="CanReply" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="Recommend" ColumnName="Recommend" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ImgList" ColumnName="ImgList" />
+                <ScalarProperty Name="DefaultImg" ColumnName="DefaultImg" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="LookCount" ColumnName="LookCount" />
+                <ScalarProperty Name="Specifications" ColumnName="Specifications" />
+                <ScalarProperty Name="KeyWords" ColumnName="KeyWords" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="TargetPlatforms" ColumnName="TargetPlatforms" />
+                <ScalarProperty Name="TypeIDs" ColumnName="TypeIDs" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Product_Type">
+            <EntityTypeMapping TypeName="DBModel.yy_Product_Type">
+              <MappingFragment StoreEntitySet="yy_Product_Type">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_RedPack">
+            <EntityTypeMapping TypeName="DBModel.yy_RedPack">
+              <MappingFragment StoreEntitySet="yy_RedPack">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="GetEmptyLimit" ColumnName="GetEmptyLimit" />
+                <ScalarProperty Name="GetLimit" ColumnName="GetLimit" />
+                <ScalarProperty Name="share_imgurl" ColumnName="share_imgurl" />
+                <ScalarProperty Name="share_url" ColumnName="share_url" />
+                <ScalarProperty Name="share_content" ColumnName="share_content" />
+                <ScalarProperty Name="logo_imgurl" ColumnName="logo_imgurl" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="act_name" ColumnName="act_name" />
+                <ScalarProperty Name="wishing" ColumnName="wishing" />
+                <ScalarProperty Name="total_num" ColumnName="total_num" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="max_value" ColumnName="max_value" />
+                <ScalarProperty Name="min_value" ColumnName="min_value" />
+                <ScalarProperty Name="total_amount" ColumnName="total_amount" />
+                <ScalarProperty Name="current_amount" ColumnName="current_amount" />
+                <ScalarProperty Name="send_name" ColumnName="send_name" />
+                <ScalarProperty Name="nick_name" ColumnName="nick_name" />
+                <ScalarProperty Name="hb_type" ColumnName="hb_type" />
+                <ScalarProperty Name="AgencyID" ColumnName="AgencyID" />
+                <ScalarProperty Name="MerchantID" ColumnName="MerchantID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_RedPack_Order">
+            <EntityTypeMapping TypeName="DBModel.yy_RedPack_Order">
+              <MappingFragment StoreEntitySet="yy_RedPack_Order">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="red_money" ColumnName="red_money" />
+                <ScalarProperty Name="detail_id" ColumnName="detail_id" />
+                <ScalarProperty Name="mch_billno" ColumnName="mch_billno" />
+                <ScalarProperty Name="re_openid" ColumnName="re_openid" />
+                <ScalarProperty Name="AgencyID" ColumnName="AgencyID" />
+                <ScalarProperty Name="MechantID" ColumnName="MechantID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="red_packID" ColumnName="red_packID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_SinglePage">
+            <EntityTypeMapping TypeName="DBModel.yy_SinglePage">
+              <MappingFragment StoreEntitySet="yy_SinglePage">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="LookCount" ColumnName="LookCount" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="KeyWords" ColumnName="KeyWords" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_SiteSetting">
+            <EntityTypeMapping TypeName="DBModel.yy_SiteSetting">
+              <MappingFragment StoreEntitySet="yy_SiteSetting">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="SystemTopBar" ColumnName="SystemTopBar" />
+                <ScalarProperty Name="MailPassword" ColumnName="MailPassword" />
+                <ScalarProperty Name="MailAccount" ColumnName="MailAccount" />
+                <ScalarProperty Name="MailPort" ColumnName="MailPort" />
+                <ScalarProperty Name="MailServer" ColumnName="MailServer" />
+                <ScalarProperty Name="EnabelWatermark" ColumnName="EnabelWatermark" />
+                <ScalarProperty Name="Watermark" ColumnName="Watermark" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="SiteAddress" ColumnName="SiteAddress" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Spider">
+            <EntityTypeMapping TypeName="DBModel.yy_Spider">
+              <MappingFragment StoreEntitySet="yy_Spider">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="LastStartTime" ColumnName="LastStartTime" />
+                <ScalarProperty Name="ExecutionInterval" ColumnName="ExecutionInterval" />
+                <ScalarProperty Name="TargetPlatforms" ColumnName="TargetPlatforms" />
+                <ScalarProperty Name="SpiderMode" ColumnName="SpiderMode" />
+                <ScalarProperty Name="LookCount" ColumnName="LookCount" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="RuleConfig" ColumnName="RuleConfig" />
+                <ScalarProperty Name="SourceUrls" ColumnName="SourceUrls" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="TypeIDs" ColumnName="TypeIDs" />
+                <ScalarProperty Name="KeyWords" ColumnName="KeyWords" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Spider_Log">
+            <EntityTypeMapping TypeName="DBModel.yy_Spider_Log">
+              <MappingFragment StoreEntitySet="yy_Spider_Log">
+                <ScalarProperty Name="SuccessUrl" ColumnName="SuccessUrl" />
+                <ScalarProperty Name="TotalUrl" ColumnName="TotalUrl" />
+                <ScalarProperty Name="SpiderID" ColumnName="SpiderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Spider_News">
+            <EntityTypeMapping TypeName="DBModel.yy_Spider_News">
+              <MappingFragment StoreEntitySet="yy_Spider_News">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsSync" ColumnName="IsSync" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="KeyWords" ColumnName="KeyWords" />
+                <ScalarProperty Name="DefaultImage" ColumnName="DefaultImage" />
+                <ScalarProperty Name="SourceUrl" ColumnName="SourceUrl" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="SpiderID" ColumnName="SpiderID" />
+                <ScalarProperty Name="Identifer" ColumnName="Identifer" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Statistics">
+            <EntityTypeMapping TypeName="DBModel.yy_Statistics">
+              <MappingFragment StoreEntitySet="yy_Statistics">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_SynchronousTask">
+            <EntityTypeMapping TypeName="DBModel.yy_SynchronousTask">
+              <MappingFragment StoreEntitySet="yy_SynchronousTask">
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="TriedCount" ColumnName="TriedCount" />
+                <ScalarProperty Name="MaxTry" ColumnName="MaxTry" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="OperationType" ColumnName="OperationType" />
+                <ScalarProperty Name="RelationID" ColumnName="RelationID" />
+                <ScalarProperty Name="BusinessType" ColumnName="BusinessType" />
+                <ScalarProperty Name="Platform" ColumnName="Platform" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_SysError">
+            <EntityTypeMapping TypeName="DBModel.yy_SysError">
+              <MappingFragment StoreEntitySet="yy_SysError">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="TargetSite" ColumnName="TargetSite" />
+                <ScalarProperty Name="HelpLink" ColumnName="HelpLink" />
+                <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="LogKey" ColumnName="LogKey" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_User">
+            <EntityTypeMapping TypeName="DBModel.yy_User">
+              <MappingFragment StoreEntitySet="yy_User">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="LockFlag" ColumnName="LockFlag" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+                <ScalarProperty Name="DistrictID" ColumnName="DistrictID" />
+                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="Permission" ColumnName="Permission" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="UserPwd" ColumnName="UserPwd" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Mail" ColumnName="Mail" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="HeadImgUrl" ColumnName="HeadImgUrl" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_User_Type">
+            <EntityTypeMapping TypeName="DBModel.yy_User_Type">
+              <MappingFragment StoreEntitySet="yy_User_Type">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Permission" ColumnName="Permission" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Video">
+            <EntityTypeMapping TypeName="DBModel.yy_Video">
+              <MappingFragment StoreEntitySet="yy_Video">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="LookCount" ColumnName="LookCount" />
+                <ScalarProperty Name="CanReply" ColumnName="CanReply" />
+                <ScalarProperty Name="TargetPlatforms" ColumnName="TargetPlatforms" />
+                <ScalarProperty Name="Recommend" ColumnName="Recommend" />
+                <ScalarProperty Name="SourceUrl" ColumnName="SourceUrl" />
+                <ScalarProperty Name="TypeIDs" ColumnName="TypeIDs" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="KeyWords" ColumnName="KeyWords" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="yy_Video_Type">
+            <EntityTypeMapping TypeName="DBModel.yy_Video_Type">
+              <MappingFragment StoreEntitySet="yy_Video_Type">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

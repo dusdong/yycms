@@ -1,0 +1,358 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="VideoEditCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li><a href="/Video">视频列表</a></li>
+        <li class="active">新增视频</li>
+        <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+    </ol>
+    <br />
+    <form name="myForm" ng-submit="SubmitForm(myForm.$valid)" class="form-horizontal" role="form" novalidate>
+        <div class="col-md-6 animated fadeInRight">
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.Title.$valid,'has-error':myForm.Title.$invalid&&myForm.Title.$dirty}">
+                <label class="col-sm-2 control-label">视频名称</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="Title"
+                           id="Title"
+                           ng-model="Entity.Title"
+                           ng-pattern="/^.{4,200}$/"
+                           required class="form-control" />
+                    <span class="help-block">视频名称，由4至200字组成。</span>
+                    <span ng-if="myForm.Title.$valid&&!myForm.Title.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.Title.$invalid&&!myForm.Title.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.KeyWords.$valid,'has-error':myForm.KeyWords.$invalid&&myForm.KeyWords.$dirty}">
+                <label class="col-sm-2 control-label">关键字</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="KeyWords"
+                           id="KeyWords"
+                           ng-model="Entity.KeyWords"
+                           ng-pattern="/^.{2,200}$/"
+                           required class="form-control" />
+                    <span class="help-block">关键字，多个关键字用逗号分隔，2至200个字。</span>
+                    <span ng-if="myForm.KeyWords.$valid&&!myForm.KeyWords.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.KeyWords.$invalid&&!myForm.KeyWords.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.Summary.$valid,'has-error':myForm.Summary.$invalid&&myForm.Summary.$dirty}">
+                <label class="col-sm-2 control-label">视频摘要</label>
+                <div class="col-sm-10">
+                    <textarea id="Summary"
+                              rows="3"
+                              name="Summary"
+                              ng-model="Entity.Summary"
+                              ng-pattern="/^.{10,500}$/"
+                              required
+                              class="form-control"></textarea>
+                    <span class="help-block">视频中摘取最主要的信息，10至500个字。</span>
+                    <span ng-if="myForm.Summary.$valid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.Summary.$invalid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group" ng-init="Photo_List=[]">
+                <label for="HeadImgUrl" class="col-sm-2 control-label">视频文件</label>
+                <div class="col-sm-10" id="ImportDataForm">
+                    <a id="UploadButton" href="" class="btn btn-default"><i class="icon_plus"></i> 选择视频文件</a>
+                    <span class="help-block">视频大小不超过20MB。</span>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10" ng-show="Photo_List.length>0" style="margin-top:15px;">
+                    <div id="filelist"></div>
+                    <div id="console"></div>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.SourceUrl.$valid,'has-error':myForm.SourceUrl.$invalid&&myForm.SourceUrl.$dirty}">
+                <label class="col-sm-2 control-label">视频地址</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           id="SourceUrl"
+                           name="SourceUrl"
+                           ng-model="Entity.SourceUrl"
+                           required
+                           ng-pattern="/^.{5,500}$/"
+                           class="form-control" />
+                    <span class="help-block">如果是外部的视频，请填写链接网址。</span>
+                    <span ng-if="myForm.SourceUrl.$valid&&!myForm.SourceUrl.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.SourceUrl.$invalid&&!myForm.SourceUrl.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.Recommend.$valid,'has-error':myForm.Recommend.$invalid&&myForm.Recommend.$dirty}">
+                <label class="col-sm-2 control-label">是否推荐</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a class="btn btn-default"
+                           ng-repeat="d in Recommend"
+                           ng-class="{active:Entity.Recommend==d.ID}"
+                           ng-click="Entity.Recommend=d.ID">
+                            {{d.Name}}
+                        </a>
+                        <input type="hidden"
+                               name="Recommend"
+                               ng-pattern="/^[0-9]{1,12}$/"
+                               ng-model="Entity.Recommend"
+                               required="" />
+                    </div>
+                    <span class="help-block">设置当前视频是否推荐到首页。</span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.CanReply.$valid,'has-error':myForm.CanReply.$invalid&&myForm.CanReply.$dirty}">
+                <label class="col-sm-2 control-label">可否评论</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a class="btn btn-default"
+                           ng-repeat="d in CanReply"
+                           ng-class="{active:Entity.CanReply==d.ID}"
+                           ng-click="Entity.CanReply=d.ID">
+                            {{d.Name}}
+                        </a>
+                        <input type="hidden"
+                               name="CanReply"
+                               ng-pattern="/^[0-9]{1,12}$/"
+                               ng-model="Entity.CanReply"
+                               required="" />
+                    </div>
+                    <span class="help-block">设置当前视频是否允许用户评论。</span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.IsShow.$valid,'has-error':myForm.IsShow.$invalid&&myForm.IsShow.$dirty}">
+                <label class="col-sm-2 control-label">是否显示</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a class="btn btn-default"
+                           ng-repeat="d in IsShow"
+                           ng-class="{active:Entity.IsShow==d.ID}"
+                           ng-click="Entity.IsShow=d.ID">
+                            {{d.Name}}
+                        </a>
+                        <input type="hidden"
+                               name="IsShow"
+                               ng-pattern="/^[0-9]{1,12}$/"
+                               ng-model="Entity.IsShow"
+                               required="" />
+                    </div>
+                    <span class="help-block">隐藏后的视频将不会在网站显示。</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">同步平台</label>
+                <div class="col-sm-10" ng-init="TargetPlatforms=[]">
+                    <label class="checkbox-inline" ng-repeat="d in Platforms">
+                        <input type="checkbox" value="d.ID" ng-model="TargetPlatforms[$index]" ng-true-value="{{d.ID}}"> {{d.Name}}
+                    </label>
+                    <span class="help-block">将视频自动对接到勾选的平台中。</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 animated fadeInLeft">
+            <div class="form-group">
+                <label for="Permission" class="col-sm-2 control-label">所属分类</label>
+                <div class="col-sm-10">
+                    <span class="help-block">&nbsp;当前视频的对应的分类。</span>
+                    <ul id="PermissionTree" class="ztree" style="margin-top: 0; width: 180px;"></ul>
+                </div>
+            </div>
+        </div>
+        <submit-btn></submit-btn>
+    </form>
+</div>
+<link href="/Scripts/ZTree/zTreeStyle.css" rel="stylesheet" />
+<script src="/Scripts/ZTree/jquery.ztree.all-3.5.min.js"></script>
+<script src="/Scripts/plupload/plupload.full.min.js"></script>
+<script type="text/javascript">
+    var ZTreeObject = null;
+    function ZTree_Init(nodes)
+    {
+        var nodeArr = new Array();
+        for (var i = 0; i < nodes.length; i++)
+        {
+            nodeArr.push({ id: nodes[i].ID, pId: nodes[i].PID, name: nodes[i].Name, open: false, nocheck: false });
+        }
+        ZTreeObject = $.fn.zTree.init($("#PermissionTree"),
+            {
+                view: {selectedMulti: true },
+                edit: { enable: false, editNameSelectAll: true },
+                data: { simpleData: { enable: true } },
+                check: { enable: true, chkboxType: { "Y": "ps", "N": "ps" } }
+            }, nodeArr);
+
+        ZTreeObject.expandAll(true);
+    }
+    angular.module("app").controller("VideoEditCtrl", function ($location, $scope, API_Video)
+    {
+        $scope.Entity = {};
+        $scope.CanReply = [{ ID: 0, Name: '允许' }, { ID: 1, Name: '禁止' }];
+        $scope.IsShow = [{ ID: 1, Name: '正常' }, { ID: 0, Name: '隐藏' }];
+        $scope.Recommend = [{ ID: 1, Name: '是' }, { ID: 0, Name: '否' }];
+        $scope.Roles = [{ ID: 1, Name: "自动", Desc: "自动同步。" }, { ID: 2, Name: "手动", Desc: "手动确认发布。" }, { ID: 3, Name: "人工", Desc: "人工编辑发布" }];
+        $scope.Platforms = APP.Platforms;
+        $scope.OnSubmit = false;
+        $scope.SubmitForm = function (isValid)
+        {
+            if (!isValid) { toastr.error('验证失败'); return; }
+            if ($scope.Entity.SourceUrl.length < 1) { toastr.error('请填写视频地址。'); return; }
+
+            $scope.OnSubmit = true;
+            var pmsIDs = new Array();
+            var ckdNodes = ZTreeObject.getCheckedNodes(true);
+            for (var i = 0; i < ckdNodes.length; i++) {
+                pmsIDs.push(ckdNodes[i].id);
+            }
+            if (pmsIDs.length > 0) { $scope.Entity.TypeIDs = pmsIDs.join(","); }
+            else { $scope.Entity.TypeIDs = ""; }
+
+            var plts = new Array();
+            for (var i = 0; i < $scope.TargetPlatforms.length; i++)
+            {
+                var pltID = parseInt($scope.TargetPlatforms[i]);
+                if (isNaN(pltID)) { continue; }
+                plts.push(pltID);
+            }
+            if (plts.length > 0) {
+                $scope.Entity.TargetPlatforms = "," + plts.join(",") + ",";
+            }
+            else {
+                $scope.Entity.TargetPlatforms = "";
+            }
+            API_Video.Put($scope.Entity).then(function (r)
+            {
+                $scope.OnSubmit = false;
+                if(r.code==0)
+                {
+                    toastr.success('更新成功！');
+                    window.document.location.href="../Index";
+                }
+                else
+                {
+                    toastr.error(r.Msg);
+                }
+            });
+        };
+
+        var InitUpload = function () {
+            var uploader = new plupload.Uploader({
+                runtimes: 'html5,flash,silverlight,html4',
+                browse_button: 'UploadButton',
+                multi_selection: true,
+                container: document.getElementById('ImportDataForm'),
+                url: '/api/Common/Upload',
+                flash_swf_url: '/scripts/plupload/Moxie.swf',
+                silverlight_xap_url: '/scripts/plupload/Moxie.xap',
+                filters: {
+                    max_file_size: '20mb',
+                    mime_types: [
+                         { title: "Image files", extensions: "avi,wma,rmvb,rm,flash,mp4,mid,3gp" },
+                    ]
+                },
+                init: {
+                    PostInit: function () {
+                        $('#filelist').html('');
+                    },
+                    FilesAdded: function (up, files) {
+                        plupload.each(files, function (file) {
+                            $('#filelist').append('<div id="' + file.id + '" class="alert alert-info"><button data-val="' + file.id + '" type="button" class="close">×</button>' + file.name + ' (' + plupload.formatSize(file.size) + ')<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" style="width:0%;"></div></div></div>');
+                        });
+                        uploader.start();
+                    },
+                    UploadProgress: function (up, file) {
+                        $("#" + file.id + " .progress-bar").css("width", file.percent + "%").html(file.percent + "%");
+                        if (file.percent >= 100) {
+                            $("#" + file.id + " .progress-bar").html('正在上传文件，请稍等...');
+                        }
+                    },
+                    Error: function (up, err) {
+                        $('#console').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>错误代码：' + err.code + '，错误信息：' + err.message + '</div');
+                    },
+                    UploadComplete: function (up, files) {
+                        toastr.info('上传文件成功！');
+                        uploader.files.splice(0, uploader.files.length);
+                        $("#filelist").empty();
+                    },
+                    FileUploaded: function (up, files, res) {
+                        $scope.Entity.SourceUrl = res.response.substr(1, res.response.length - 2);
+                        $scope.$apply();
+                    }
+                }
+            });
+
+            uploader.init();
+        }
+
+        API_Video.Detail(@Html.ViewContext.RouteData.Values["id"]).then(function (r)
+        {
+            $scope.Entity = r;
+            ZTree_Init(@MvcHtmlString.Create(ViewBag.Types));
+            var ckdIds = r.TypeIDs.split(",");
+            if (ckdIds.length > 0) {
+                for (var i = 0; i < ckdIds.length; i++) {
+                    var node = ZTreeObject.getNodeByParam("id", ckdIds[i], null);
+                    if (node == null) { continue; }
+                    ZTreeObject.checkNode(node);
+                }
+            }
+
+            var ckdIds2 = r.TargetPlatforms.split(",");
+            if (ckdIds2.length > 0) {
+                for (var q = 0; q < APP.Platforms.length; q++)
+                {
+                    for (var i = 0; i < ckdIds2.length; i++)
+                    {
+                        var pltid = parseInt(ckdIds2[i]);
+                        if (isNaN(pltid)) { continue; }
+                        if (APP.Platforms[q].ID == pltid)
+                        {
+                            $scope.TargetPlatforms[q] = pltid;
+                        }
+                    }
+                }
+            }
+
+        });
+
+        $(function ()
+        {
+            $(".demoTip").popover({ placement: "top", trigger: "hover" });
+            InitUpload();
+        });
+
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: "<p>1，视频是抓取视频源的定时任务。</p><p>2，视频不会影响网站性能，由后台服务运行。</p><p>3，视频会自动给自己打分，评估好坏。</p>"
+                  },
+                  {
+                      intro: "<p>1，视频抓取后视频源将同步到的平台。</p><p>2，您可是设置抓取后直接自动同步，也可以手动点击同步按钮，或是单个编辑后同步到平台。</p>"
+                  },
+                  {
+                      intro: '<p>最规则时需要查看XPath，用Chrome浏览器打开一个网页，F12，在弹出的小窗口中选中一个标签，右键，看到“copy XPath”了吧！</p>'
+                  }
+                ]
+            });
+            intro.start();
+        };
+    });
+</script>

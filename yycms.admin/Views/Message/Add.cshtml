@@ -1,0 +1,98 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="MessageAddCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li><a href="/Message">消息列表</a></li>
+        <li class="active">新增消息</li>
+    </ol>
+    <br />
+    <form name="myForm" ng-submit="SubmitForm(myForm.$valid)" class="form-horizontal" role="form" novalidate>
+        <div class="col-md-6 animated fadeInRight">
+            
+
+<div class="form-group has-feedback"
+     ng-class="{'has-success':myForm.Title.$valid,'has-error':myForm.Title.$invalid&&myForm.Title.$dirty}">
+    <label class="col-sm-2 control-label">消息标题</label>
+    <div class="col-sm-10">
+        <input type="text"
+               name="Title"
+               id="Title"
+               ng-model="Entity.Title" required  class="form-control" />
+        <span class="help-block">消息标题。</span>
+        <span ng-if="myForm.Title.$valid&&!myForm.Title.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+        <span ng-if="myForm.Title.$invalid&&!myForm.Title.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+    </div>
+</div>
+
+<div class="form-group has-feedback"
+     ng-class="{'has-success':myForm.Mail.$valid,'has-error':myForm.Mail.$invalid&&myForm.Mail.$dirty}">
+    <label class="col-sm-2 control-label">联系邮箱</label>
+    <div class="col-sm-10">
+        <input type="text"
+               name="Mail"
+               id="Mail"
+               ng-model="Entity.Mail" required  class="form-control" />
+        <span class="help-block">联系邮箱。</span>
+        <span ng-if="myForm.Mail.$valid&&!myForm.Mail.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+        <span ng-if="myForm.Mail.$invalid&&!myForm.Mail.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+    </div>
+</div>
+
+<div class="form-group has-feedback"
+     ng-class="{'has-success':myForm.Mobile.$valid,'has-error':myForm.Mobile.$invalid&&myForm.Mobile.$dirty}">
+    <label class="col-sm-2 control-label">手机号码</label>
+    <div class="col-sm-10">
+        <input type="text"
+               name="Mobile"
+               id="Mobile"
+               ng-model="Entity.Mobile" required  class="form-control" />
+        <span class="help-block">手机号码。</span>
+        <span ng-if="myForm.Mobile.$valid&&!myForm.Mobile.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+        <span ng-if="myForm.Mobile.$invalid&&!myForm.Mobile.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+    </div>
+</div>
+
+<div class="form-group has-feedback"
+     ng-class="{'has-success':myForm.Message.$valid,'has-error':myForm.Message.$invalid&&myForm.Message.$dirty}">
+    <label class="col-sm-2 control-label">消息详情</label>
+    <div class="col-sm-10">
+        <textarea name="Message" rows="10" id="Message" ng-model="Entity.Message" required  class="form-control"></textarea>
+        <span ng-if="myForm.Message.$valid&&!myForm.Message.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+        <span ng-if="myForm.Message.$invalid&&!myForm.Message.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+    </div>
+</div>
+        </div>
+        <div class="col-md-6 animated fadeInLeft">
+        </div>
+        <submit-btn></submit-btn>
+    </form>
+</div>
+<script type="text/javascript">
+    angular.module("app").controller("MessageAddCtrl", function ($location, $scope, API_Message)
+    {
+        $scope.Entity = {};
+        $scope.OnSubmit = false;
+        $scope.SubmitForm = function (isValid)
+        {
+            if (!isValid) { toastr.error('验证失败'); return; }
+            $scope.OnSubmit = true;
+            API_Message.Post($scope.Entity).then(function (r)
+            {
+                $scope.Entity.Status = 0;
+                $scope.Entity.Platform = 0;
+                $scope.Entity.UserID = APP.User.ID;
+                $scope.Entity.CreateDate = new Date();
+                $scope.OnSubmit = false;
+                if(r.code==0)
+                {
+                    toastr.success('添加成功！');
+                    window.document.location.href="/Message";
+                }
+                else
+                {
+                    toastr.error(r.Msg);
+                }
+            });
+        };
+    });
+</script>

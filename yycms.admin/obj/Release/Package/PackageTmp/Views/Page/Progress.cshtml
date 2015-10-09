@@ -1,0 +1,234 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="PageTaskIndexCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li><a href="/Page/Types">模板列表</a></li>
+                    <li><a href="/Page/Index/@Html.ViewContext.RouteData.Values["id"]">编辑模板</a></li>
+                    <li class="active">生成记录</li>
+                    <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+                <table class="table ListTable helpStep1">
+                    <tbody>
+                        <tr>
+                            <td width="150px">
+                                <select class="form-control filterSelect" ng-model="Filter.TypeID" ng-change="IData_Get()">
+                                    <option value="">查看全部</option>
+                                    <option value="{{d.ID}}" ng-repeat="d in PageTypes">{{d.Name}}</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <div class="input-group">
+                                    <a ng-if="Filter.Title!=null" ng-click="Filter.Title=null" class="clearBtn animated bounceIn" data-icon="Q"></a>
+                                    <input type="text" ng-keypress="OnEnterPress($event);" class="form-control" placeholder="输入模板页标题..." ng-model="Filter.Title" />
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="input-group" style="display:none;">
+                                    <div class="input-group-addon">时间</div>
+                                    <input type="date" class="form-control" ng-model="Filter.StartTime" />
+                                    <div class="input-group-addon">至</div>
+                                    <input type="date" class="form-control" ng-model="Filter.EndTime" />
+                                </div>
+                            </td>
+                            <td width="130px">
+                                <filter-btn></filter-btn>
+                            </td>
+                            <td width="90px">
+                                <table-pager-top></table-pager-top>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <loading></loading>
+                <table id="MainTable" ng-if="loading==false&&Pager.Data.length>0" ng-class="{fadeIn:loading==false}" class="table table-bordered table-striped table-hover animated helpStep2">
+                    <thead>
+                        <tr>
+                            <th ng-repeat="d in TableHeads" ng-click="Filter.OrderBy=d.Name;Filter.IsDesc=!Filter.IsDesc;IData_Get();">
+                                {{d.Title}}
+                                <i ng-if="Filter.IsDesc==true&&Filter.OrderBy==d.Name" class="arrow_carrot-up"></i>
+                                <i ng-if="Filter.IsDesc!=true||Filter.OrderBy!=d.Name" class="arrow_carrot-down"></i>
+                            </th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in Pager.Data | orderBy:'BuildType':true" ng-class="{warning:d.BuildHistory!=''}">
+                            <td>{{$index+1}}</td>
+                            <td>{{d.FullName}}</td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-success progress-bar-striped"
+                                         style="width:{{(d.BuildCount/d.TotalCount*100)}}%">
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td>
+                                <i ng-if="d.Status==0" class="fa fa-repeat"></i>
+                                <i ng-if="d.Status==1" class="fa fa-refresh fa-spin"></i>
+                                <i ng-if="d.Status==2" class="fa fa-check"></i>
+                                <i ng-if="d.Status==3" class="fa fa-bug"></i>
+                            </td>
+                            <td>{{d.LastUpdateTime.replace("T"," ")}}</td>
+                            <td>{{d.CreateDate.replace("T"," ")}}</td>
+                            <td>
+                                <a ng-if="d.BuildHistory!=''" href="" class="tip"
+                                   title="历史记录" ng-click="ShowHistory(d.BuildHistory,d.ID)">
+                                    <i class="fa fa-hdd-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table-pager class="helpStep3"></table-pager>
+                <dialog-delete></dialog-delete>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">生成任务执行详情</h4>
+                    </div>
+                    <div class="modal-body" style="word-break: normal;word-wrap: break-word;">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+                            <div class="panel panel-default" ng-repeat="h in BuildHistory">
+                                <div class="panel-heading" role="tab" id="heading{{$index}}">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="false" aria-controls="collapse{{$index}}">
+                                            {{h.Time}}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}">
+                                    <div class="panel-body">
+                                        <p>{{h.Msg}}</p>
+                                        <p>关系ID：{{h.DBID}}</p>
+                                        <p>
+                                            <a class="btn btn-success btn-sm" title="重新执行" href="" ng-click="RetryTask(HistoryTaskID)">重新执行</a>&nbsp;
+                                            <a class="btn btn-success btn-sm" title="编辑页面" href="/Page/Edit/{{h.PageId}}">编辑模板页面</a>
+                                        </p>
+                                        <hr />
+                                        <p style="height: 150px;overflow-y: scroll; padding: 0px 10px;">{{h.StackTrace}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    angular.module("app").controller("PageTaskIndexCtrl", function ($location, $scope, API_Page) {
+
+        $scope.PageKindList = [
+            {ID:0,Name:"单页模版"},
+            {ID:1,Name:"组件"},
+            {ID:2,Name:"列表页模版"},
+            {ID:3,Name:"其他"}];
+
+        $scope.TableHeads = [
+            { Title: "编号", Name: "ID" },
+            { Title: "页面名称", Name: "FullName" },
+            { Title: "任务进度", Name: "BuildCount" },
+            { Title: "状态", Name: "Status" },
+            { Title: "最后更新", Name: "LastUpdateTime" },
+            { Title: "创建时间", Name: "CreateDate" }
+        ];
+      
+        $scope.IHelp=function()
+        {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress:false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      element: '.helpStep1',
+                      intro: "<p>1，您可以新增、批量隐藏、显示模板页。</p><p>2，选择模板页分类、输入标题筛选模板页。</p><p>3，查询、打印、导出、翻页模板页列表。</p>"
+                  },
+                  {
+                      element: '.helpStep2',
+                      intro: "<p>1，点击表格头部可以正/反排序。</p><p>2，可以设置每一篇模板页显示、隐藏、修改、删除。</p>",
+                      position: 'left'
+                  },
+                  {
+                      element: '.helpStep3',
+                      intro: '<p>1，点击可以进行分页。</p><p>2，查看数据总条数、总页数。</p>',
+                      position: 'top'
+                  }
+                ]
+            });
+            intro.start();
+        };
+
+        $scope.PageTypes= @MvcHtmlString.Create(ViewBag.Types);
+
+        $scope.Pager = { PageIndex: 0, PageSize: 20 };
+
+        $scope.Filter = {
+            IsDesc: true,
+            OrderBy: "ID",
+            TypeID:@Html.ViewContext.RouteData.Values["id"] };
+
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_Page.Task_Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.Title,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc,
+                $scope.Filter.TypeID,
+                $scope.Filter.PageKind).then(function (r)
+                {
+                    $scope.loading = false;
+                    NProgress.done();
+                    $scope.Pager = r;
+                    $scope.Pager.PageRange = APP.Range(r.PageCount);
+                    setTimeout(function () { $(".tip").tooltip(); }, 500);
+                });
+        }
+
+        $scope.RetryTask=function(_id)
+        {
+            $("#myModal").modal("hide");
+            NProgress.start();
+            $scope.loading = true;
+            API_Page.RetryTask(_id).then(function (r)
+            {
+                toastr.success('重新启动生成任务成功。');
+                $scope.IData_Get();
+            });
+        }
+
+        $scope.ShowHistory = function (d,id) 
+        {
+            $scope.HistoryTaskID = id;
+            $scope.BuildHistory = JSON.parse("["+d.substr(0,d.length-1)+"]");
+            $("#myModal").modal("show");
+        }
+        $scope.OnEnterPress = function (evt) {
+            if (evt.keyCode == 13) {
+                $scope.IData_Get();
+            }
+        }
+    });
+</script>

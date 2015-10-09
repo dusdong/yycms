@@ -1,0 +1,655 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="UserEditCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li><a href="/User">用户列表</a></li>
+        <li class="active">修改用户</li>
+    </ol>
+    <br />
+    <div role="tabpanel">
+        <ul class="nav nav-tabs" ng-init="TabIndex=0">
+            <li role="presentation" ng-class="{active:TabIndex==0}"><a href="javascript:void(0)" ng-click="TabIndex=0">用户</a></li>
+            <li role="presentation" ng-class="{active:TabIndex==1}"><a href="javascript:void(0)" ng-click="TabIndex=1">微信</a></li>
+            <li role="presentation" ng-class="{active:TabIndex==2}"><a href="javascript:void(0)" ng-click="TabIndex=2">其他</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane" ng-class="{active:TabIndex==0}">
+                <form name="myForm" ng-submit="SubmitForm(myForm.$valid)" class="form-horizontal" role="form" novalidate>
+                    <div class="col-md-6 animated fadeInRight">
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.UserName.$valid,'has-error':myForm.UserName.$invalid&&myForm.UserName.$dirty}">
+                            <label class="col-sm-2 control-label">登陆账号</label>
+                            <div class="col-sm-10">
+                                <input type="text"
+                                       name="UserName"
+                                       id="UserName"
+                                       ng-model="User.UserName"
+                                       ng-pattern="/^[A-Za-z0-9_]{5,38}$/"
+                                       required
+                                       class="form-control"
+                                       disabled />
+                                <span class="help-block">登陆账号，由5至12位数字和字母组成。</span>
+                                <span ng-if="myForm.UserName.$valid&&!myForm.UserName.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm.UserName.$invalid&&!myForm.UserName.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.UserPwd.$valid,'has-error':myForm.UserPwd.$invalid&&myForm.UserPwd.$dirty}">
+                            <label class="col-sm-2 control-label">登陆密码</label>
+                            <div class="col-sm-10">
+                                <input type="password"
+                                       name="UserPwd"
+                                       id="UserPwd"
+                                       ng-model="User.UserPwd"
+                                       ng-pattern="/^[A-Za-z0-9_]{6,32}$/"
+                                       required
+                                       class="form-control" />
+                                <span class="help-block">登陆密码，由6至12位数字和字母组成。</span>
+                                <span ng-if="myForm.UserPwd.$valid&&!myForm.UserPwd.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm.UserPwd.$invalid&&!myForm.UserPwd.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.Role.$valid,'has-error':myForm.Role.$invalid&&myForm.Role.$dirty}">
+                            <label class="col-sm-2 control-label">用户角色</label>
+                            <div class="col-sm-10">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a class="btn btn-default"
+                                       ng-repeat="d in Roles"
+                                       ng-class="{active:User.Role==d.ID}"
+                                       ng-click="User.Role=d.ID">
+                                        {{d.Name}}
+                                    </a>
+                                    <input type="hidden"
+                                           name="Role"
+                                           ng-pattern="/^[0-9]{1,12}$/"
+                                           ng-model="User.Role"
+                                           required="" />
+                                </div>
+
+                                <span class="help-block animated fadeIn"
+                                      ng-if="User.Role==d.ID"
+                                      ng-repeat="d in Roles">{{d.Desc}}</span>
+
+                                <span class="help-block" ng-if="User.Role==null">设置当前用户的角色。</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户头像</label>
+                            <div class="col-sm-10" id="ImportDataForm">
+                                <div id="SuperSlideShow">
+                                    <a id="UploadButton" href="" class="btn btn-default"><i class="icon_plus"></i> 点击上传头像</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-offset-2 col-sm-10" ng-show="Photo_List.length>0" style="margin-top:15px;">
+                                <div id="filelist"></div>
+                                <div id="console"></div>
+                                <div id="MechantLogos" class="carousel slide" data-ride="carousel" style="border:solid 1px #ccc; padding:20px;">
+                                    <ol class="carousel-indicators">
+                                        <li data-target="#MechantLogos" ng-repeat="d in Photo_List" data-slide-to="{{$index}}" ng-class="{active:$index==0}"></li>
+                                    </ol>
+                                    <div class="carousel-inner" role="listbox" style="text-align:center;">
+                                        <div class="item" ng-repeat="d in Photo_List" ng-class="{active:$index==0}">
+                                            <img class="img-circle" src="{{d}}" width="140" height="140" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.Gender.$valid,'has-error':myForm.Gender.$invalid&&myForm.Gender.$dirty}">
+                            <label class="col-sm-2 control-label">用户性别</label>
+                            <div class="col-sm-10">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a class="btn btn-default"
+                                       ng-repeat="d in Genders"
+                                       ng-class="{active:User.Gender==d.ID}"
+                                       ng-click="User.Gender=d.ID">
+                                        {{d.Name}}
+                                    </a>
+                                    <input type="hidden"
+                                           name="Gender"
+                                           ng-pattern="/^[0-9]{1,12}$/"
+                                           ng-model="User.Gender"
+                                           required="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.LockFlag.$valid,'has-error':myForm.LockFlag.$invalid&&myForm.LockFlag.$dirty}">
+                            <label class="col-sm-2 control-label">是否冻结</label>
+                            <div class="col-sm-10">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a class="btn btn-default"
+                                       ng-repeat="d in LockFlags"
+                                       ng-class="{active:User.LockFlag==d.ID}"
+                                       ng-click="User.LockFlag=d.ID">
+                                        {{d.Name}}
+                                    </a>
+                                    <input type="hidden"
+                                           name="LockFlag"
+                                           ng-pattern="/^[0-9]{1,12}$/"
+                                           ng-model="User.LockFlag"
+                                           required="" />
+                                </div>
+                                <span class="help-block">冻结账号后将无法使用系统。</span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.Mobile.$valid,'has-error':myForm.Mobile.$invalid&&myForm.Mobile.$dirty}">
+                            <label class="col-sm-2 control-label">联系手机</label>
+                            <div class="col-sm-10">
+                                <input type="tel"
+                                       id="Mobile"
+                                       name="Mobile"
+                                       ng-model="User.Mobile"
+                                       ng-pattern="/^[0-9-]{7,20}$/"
+                                       required
+                                       class="form-control" />
+                                <span class="help-block">联系手机或固定电话，7至20位。</span>
+                                <span ng-if="myForm.Mobile.$valid&&!myForm.Mobile.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm.Mobile.$invalid&&!myForm.Mobile.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.Mail.$valid,'has-error':myForm.Mail.$invalid&&myForm.Mail.$dirty}">
+                            <label class="col-sm-2 control-label">联系邮箱</label>
+                            <div class="col-sm-10">
+                                <input type="email"
+                                       id="Mail"
+                                       name="Mail"
+                                       ng-model="User.Mail"
+                                       required
+                                       class="form-control" />
+                                <span class="help-block">联系邮箱，用于接收系统通知。</span>
+                                <span ng-if="myForm.Mail.$valid&&!myForm.Mail.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm.Mail.$invalid&&!myForm.Mail.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.ProvinceID.$valid&&myForm.CityID.$valid&&myForm.DistrictID.$valid,'has-error':(myForm.ProvinceID.$invalid||myForm.CityID.$invalid||myForm.DistrictID.$invalid)&&myForm.ProvinceID.$dirty}">
+                            <label class="col-sm-2 control-label">所在地址</label>
+                            <div class="col-sm-10">
+                                <select id="ProvinceID"
+                                        name="ProvinceID"
+                                        class="form-control"
+                                        ng-change="InitCity()"
+                                        ng-model="User.ProvinceID"
+                                        required>
+                                    <option value="">-- 请选择 --</option>
+                                    <option ng-repeat="d in Provinces" value="{{d.ID}}" ng-selected="d.ID==User.ProvinceID">{{d.Name}}</option>
+                                </select>
+
+                                <select id="CityID"
+                                        name="CityID"
+                                        ng-model="User.CityID"
+                                        class="form-control"
+                                        required>
+                                    <option ng-repeat="d in Citys"
+                                            ng-if="d.ParentID == User.ProvinceID"
+                                            value="{{d.ID}}">
+                                        {{d.Name}}
+                                    </option>
+                                </select>
+
+                                <select id="DistrictID"
+                                        name="DistrictID"
+                                        ng-model="User.DistrictID"
+                                        class="form-control"
+                                        required>
+                                    <option ng-repeat="d in Districts"
+                                            ng-if="d.ParentID == User.CityID"
+                                            value="{{d.ID}}">
+                                        {{d.Name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.Address.$valid,'has-error':myForm.Address.$invalid&&myForm.Address.$dirty}">
+                            <label class="col-sm-2 control-label">详细地址</label>
+                            <div class="col-sm-10">
+                                <input type="text"
+                                       name="Address"
+                                       id="Address"
+                                       ng-model="User.Address"
+                                       ng-pattern="/^.{1,}$/"
+                                       required
+                                       class="form-control" />
+                                <span ng-if="myForm.Address.$valid&&!myForm.Address.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm.Address.$invalid&&!myForm.Address.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 animated fadeInLeft">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户权限</label>
+                            <div class="col-sm-10">
+                                <span class="help-block">&nbsp;当前账户的平台操作权限。</span>
+                                <ul id="PermissionTree" class="ztree" style="margin-top: 0; width: 180px;"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <submit-btn></submit-btn>
+                </form>
+            </div>
+            <div class="tab-pane" ng-class="{active:TabIndex==1}">
+                <form name="wechatForm" ng-submit="SubmitForm_Wechat(wechatForm.$valid)" class="form-horizontal" role="form" novalidate>
+                    <div class="bs-callout bs-callout-success animated slideInDown" role="alert">
+                        步骤1，必须先登录<a href="https://mp.weixin.qq.com/" target="_blank"><i class="icon_link"></i> 微信公众平台</a>
+                        ，然后将公众平台信息复制到下列表单中完成对接。
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 animated fadeInRight">
+                            <div class="form-group has-feedback"
+                                 ng-class="{'has-success':wechatForm.APPID.$valid,'has-error':wechatForm.APPID.$invalid&&wechatForm.APPID.$dirty}">
+                                <label class="col-sm-2 control-label">微信编号</label>
+                                <div class="col-sm-9">
+                                    <input type="text"
+                                           id="WechatID"
+                                           name="APPID"
+                                           ng-model="wechat.APPID"
+                                           class="form-control"
+                                           ng-pattern="/^[A-Za-z0-9_]{5,38}$/" />
+                                    <span class="help-block">设置—公众号设置—原始ID。<a href="" class="demoTip" data-content="gh_f4eb363dcb60">示例</a></span>
+                                    <span ng-if="wechatForm.APPID.$valid&&!wechatForm.APPID.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                    <span ng-if="wechatForm.APPID.$invalid&&!wechatForm.APPID.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback"
+                                 ng-class="{'has-success':wechatForm.APPName.$valid,'has-error':wechatForm.APPName.$invalid&&wechatForm.APPName.$dirty}">
+                                <label class="col-sm-2 control-label">微信昵称</label>
+                                <div class="col-sm-9">
+                                    <input type="text"
+                                           name="APPName"
+                                           id="APPName"
+                                           ng-model="wechat.APPName"
+                                           ng-pattern="/^.{1,50}$/"
+                                           class="form-control" />
+                                    <span class="help-block">设置—公众号设置—名称。<a href="" class="demoTip" data-content="玥雅科技">示例</a></span>
+                                    <span ng-if="wechatForm.APPName.$valid&&!wechatForm.APPName.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                    <span ng-if="wechatForm.APPName.$invalid&&!wechatForm.APPName.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback"
+                                 ng-class="{'has-success':wechatForm.APPNumber.$valid,'has-error':wechatForm.APPNumber.$invalid&&wechatForm.APPNumber.$dirty}">
+                                <label class="col-sm-2 control-label">微信账号</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="APPNumber" ng-pattern="/^.{1,50}$/" name="APPNumber" ng-model="wechat.APPNumber" class="form-control" />
+                                    <span class="help-block">设置—公众号设置—微信号。<a href="" class="demoTip" data-content="tuanxy">示例</a></span>
+                                    <span ng-if="wechatForm.APPNumber.$valid&&!wechatForm.APPNumber.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                    <span ng-if="wechatForm.APPNumber.$invalid&&!wechatForm.APPNumber.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback"
+                                 ng-class="{'has-success':wechatForm.APPKey.$valid,'has-error':wechatForm.APPKey.$invalid&&wechatForm.APPKey.$dirty}">
+                                <label class="col-sm-2 control-label">应用ID</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="APPKey" name="APPKey" ng-pattern="/^.{1,50}$/" ng-model="wechat.APPKey" class="form-control" />
+                                    <span class="help-block">开发者中心—AppID(应用ID)。</span>
+                                    <span ng-if="wechatForm.APPKey.$valid&&!wechatForm.APPKey.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                    <span ng-if="wechatForm.APPKey.$invalid&&!wechatForm.APPKey.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback"
+                                 ng-class="{'has-success':wechatForm.APPSecret.$valid,'has-error':wechatForm.APPSecret.$invalid&&wechatForm.APPSecret.$dirty}">
+                                <label class="col-sm-2 control-label">应用密钥</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="APPSecret" name="APPSecret" ng-pattern="/^.{1,200}$/" ng-model="wechat.APPSecret" class="form-control" />
+                                    <span class="help-block">开发者中心—AppSecret(应用密钥)。</span>
+                                    <span ng-if="wechatForm.APPSecret.$valid&&!wechatForm.APPSecret.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                    <span ng-if="wechatForm.APPSecret.$invalid&&!wechatForm.APPSecret.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 animated fadeInLeft">
+                            <div class="list-group-item">
+                                微信公众号相关教程
+                            </div>
+                            <div class="list-group">
+                                <a href="http://tieba.baidu.com/p/3898309009?fr=frs"
+                                   target="_blank" class="list-group-item">1，微信对接后能干什么？</a>
+                                <a href="http://jingyan.baidu.com/article/db55b609aaec1e4ba30a2fae.html"
+                                   target="_blank" class="list-group-item">2，微信公众号申请流程</a>
+                                <a href="http://jingyan.baidu.com/article/6d704a1319af7a28da51ca7a.html"
+                                   target="_blank" class="list-group-item">3，订阅号如何升级成服务号</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bs-callout bs-callout-success" role="alert">
+                        步骤2，必须先登录 <a href="https://pay.weixin.qq.com/" target="_blank"><i class="icon_link"></i> 微支付</a>
+                        ，然后将微支付平台信息复制到下列表单中完成对接。
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 animated fadeInRight">
+                            <div class="form-group has-feedback"
+                                 ng-class="{'has-success':wechatForm.APPPayID.$valid,'has-error':wechatForm.APPPayID.$invalid&&wechatForm.APPPayID.$dirty}">
+                                <label class="col-sm-2 control-label">商户账号</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="APPPayID" name="APPPayID" ng-pattern="/^.{1,200}$/" ng-model="wechat.APPPayID" class="form-control" />
+                                    <span class="help-block">账号概览—微信支付商户号。<a href="" class="demoTip" data-content="1260214701">示例</a></span>
+                                    <span ng-if="wechatForm.APPPayID.$valid&&!wechatForm.APPPayID.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                    <span ng-if="wechatForm.APPPayID.$invalid&&!wechatForm.APPPayID.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback"
+                                 ng-class="{'has-success':wechatForm.APPPayKey.$valid,'has-error':wechatForm.APPPayKey.$invalid&&wechatForm.APPPayKey.$dirty}">
+                                <label class="col-sm-2 control-label">支付密钥</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="APPPayKey" name="APPPayKey" ng-pattern="/^.{1,200}$/" ng-model="wechat.APPPayKey" class="form-control" />
+                                    <span class="help-block">账户设置—API安全—设置密钥（先在微支付官方设置并保存密钥后，再将密钥复制到这里）。</span>
+                                    <span ng-if="wechatForm.APPPayKey.$valid&&!wechatForm.APPPayKey.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                    <span ng-if="wechatForm.APPPayKey.$invalid&&!wechatForm.APPPayKey.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-init="wechat_Photo_List=[]">
+                                <label class="col-sm-2 control-label">支付证书</label>
+                                <div class="col-sm-9" id="wechat_ImportDataForm">
+                                    <p ng-show="wechat.APPPayCert!=null"><span class="label label-danger">恭喜您，已经成功上传支付证书！</span></p>
+                                    <div>
+                                        <a id="wechat_UploadButton" href="" class="btn btn-default"><i class="icon_ribbon_alt"></i> 点击上传证书</a>
+                                    </div>
+                                    <span class="help-block">账户设置—API安全—下载证书（请上传后缀名为.p12的证书）。</span>
+                                </div>
+                                <div class="col-sm-offset-3 col-sm-9" style="margin-top:15px;">
+                                    <div id="wechat_filelist"></div>
+                                    <div id="wechat_console"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 animated fadeInLeft">
+                            <div class="list-group-item">
+                                微支付相关教程
+                            </div>
+                            <div class="list-group">
+                                <a href="http://tieba.baidu.com/p/3898309009?fr=frs"
+                                   target="_blank" class="list-group-item">1，微支付对接后能干什么？</a>
+                                <a href="http://tieba.baidu.com/p/3895573364?fr=frs"
+                                   target="_blank" class="list-group-item">2，微支付申请流程</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bs-callout bs-callout-success" role="alert">
+                        相关配置
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 animated fadeInRight">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">自动同步</label>
+                                <div class="col-sm-10">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a class="btn btn-default"
+                                           ng-repeat="d in [{ID:0,Name:'开启'},{ID:1,Name:'禁用'}]"
+                                           ng-class="{active:wechatConfig.AutoSync==d.ID}"
+                                           ng-click="wechatConfig.AutoSync=d.ID">
+                                            {{d.Name}}
+                                        </a>
+                                        <input type="hidden" ng-model="wechatConfig.AutoSync" />
+                                    </div>
+                                    <span class="help-block animated fadeIn" ng-if="wechatConfig.AutoSync==0">自动从微信拉取数据同步。</span>
+                                    <span class="help-block animated fadeIn" ng-if="wechatConfig.AutoSync==1">手动从微信拉取数据同步。</span>
+                                </div>
+                            </div>
+                         </div>
+
+                        <p ng-init="ShowMoreSetting=false" style="text-align:center;width:94%; margin:20px 0px 20px 30px; clear:both;">
+                            <a href="javascript:void(0)" class="btn btn-link" ng-click="ShowMoreSetting=!ShowMoreSetting"> 设置更多信息 <i class="arrow_carrot-2down"></i></a>
+                        </p>
+                        <div ng-show="ShowMoreSetting==true" class="col-md-6 animated fadeInDown">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">二维码</label>
+                                <div class="col-sm-9">
+                                    <a href="">
+                                        <img ng-src="{{wechat.QRCode}}" width="100px" height="100px" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">会话令牌</label>
+                                <div class="col-sm-9">
+                                    <textarea readonly rows="4" id="Access_token" ng-model="wechat.Access_token" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">会话令牌</label>
+                                <div class="col-sm-9">
+                                    <textarea readonly rows="4" id="jsapi_ticket" ng-model="wechat.jsapi_ticket" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <submit-btn></submit-btn>
+                </form>
+            </div>
+        </div>
+    </div>
+            <script src="/Scripts/plupload/plupload.full.min.js"></script>
+            <link href="/Scripts/ZTree/zTreeStyle.css" rel="stylesheet" />
+            <script src="/Scripts/ZTree/jquery.ztree.all-3.5.min.js"></script>
+            <script type="text/javascript">
+    var ZTreeObject = null;
+    function ZTree_Init(nodes)
+    {
+        var nodeArr = new Array();
+        for (var i = 0; i < nodes.length; i++)
+        {
+            nodeArr.push({ id: nodes[i].ID, pId: nodes[i].PID, name: nodes[i].Name, open: false, nocheck: false });
+        }
+        ZTreeObject = $.fn.zTree.init($("#PermissionTree"),
+            {
+                view: {selectedMulti: true },
+                edit: { enable: false, editNameSelectAll: true },
+                data: { simpleData: { enable: true } },
+                check: { enable: true, chkboxType: { "Y": "ps", "N": "ps" } }
+            }, nodeArr);
+
+        ZTreeObject.expandAll(true);
+    }
+    angular.module("app").controller("UserEditCtrl", function ($location, $scope, API_User,API_Platform)
+    {
+        $scope.Provinces = Provinces;
+        $scope.Citys = Citys;
+        $scope.Districts = Districts;
+
+        $scope.Genders = [{ID:0,Name:'女士'},{ID:1,Name:'男士'}];
+        $scope.LockFlags = [{ID:1,Name:'正常'},{ID:0,Name:'冻结'}];
+        $scope.Roles =  @MvcHtmlString.Create(ViewBag.Roles);
+        $scope.OnSubmit = false;
+
+        API_User.Detail(@Html.ViewContext.RouteData.Values["id"]).then(function(r)
+                    {
+                        $scope.wechatConfig={};
+                        $scope.wechat=r.wechat;
+                        if(r.wechat==null)
+                        {   
+                            $scope.wechat={};
+                            $scope.wechat.UserID = APP.User.ID;
+                            $scope.wechat.Name = "微信";
+                            $scope.wechat.Link = "";
+                            $scope.wechat.Code = 11; /*11代表微信*/
+                            $scope.wechat.Image = "/Images/platform/11.png";
+                            $scope.wechat.Access_token_Expires_in = new Date();
+                            $scope.wechat.jsapi_ticket_Expires_in = new Date();
+                            $scope.wechat.api_ticket_Expires_in = new Date();
+                            $scope.wechat.CreateDate = new Date();
+                        }
+
+                        else
+                        {
+                            $scope.wechatConfig = JSON.parse(r.wechat.PlatformConfig);
+                        }
+
+                        var ckdIds = r.User.Permission.split(",");
+                        if (ckdIds.length > 0)
+                        {
+                            for (var i = 0; i < ckdIds.length; i++) {
+                                var node = ZTreeObject.getNodeByParam("id", ckdIds[i], null);
+                                if (node == null) { continue; }
+                                ZTreeObject.checkNode(node);
+                            }
+                        }
+                        $scope.User =r.User;
+                        $scope.Photo_List=new Array();
+                        $scope.Photo_List.push(r.User.HeadImgUrl);
+                        setTimeout(function(){
+                            $("#CityID option[value='"+r.User.CityID+"']").attr("selected","selected");
+                            $("#DistrictID option[value='"+r.User.DistrictID+"']").attr("selected","selected");
+                        },500);
+                    });
+
+                    $scope.SubmitForm = function (isValid)
+                    {
+                        if (!isValid) { toastr.error('验证失败'); return; }
+                        $scope.OnSubmit = true;
+                        var pmsIDs = new Array();
+                        var ckdNodes = ZTreeObject.getCheckedNodes(true);
+                        for (var i = 0; i < ckdNodes.length; i++) {
+                            pmsIDs.push(ckdNodes[i].id);
+                        }
+                        if (pmsIDs.length > 0) { $scope.User.Permission=pmsIDs.join(","); }
+                        else{ $scope.User.Permission=""; }
+
+                        API_User.Put($scope.User).then(function (r)
+                        {
+                            $scope.OnSubmit = false;
+                            if(r.code==0)
+                            {
+                                toastr.success('更新成功！');
+                            }
+                            else
+                            {
+                                toastr.error(r.Msg);
+                            }
+                        });
+                    };
+
+                    $scope.SubmitForm_Wechat = function (isValid)
+                    {
+                        $scope.wechat.PlatformConfig = JSON.stringify($scope.wechatConfig );
+                        if (!isValid) { toastr.error('验证失败'); return; }
+                        $scope.OnSubmit = true;
+                        API_Platform.Put($scope.wechat).then(function (r)
+                        {
+                            $scope.OnSubmit = false;
+                            if(r.code==0)
+                            {
+                                toastr.success('设置成功！');
+                            }
+                            else
+                            {
+                                toastr.error(r.Msg);
+                            }
+                        });
+                    };
+
+                    var InitUpload = function () {
+                        var uploader = new plupload.Uploader({
+                            runtimes: 'html5,flash,silverlight,html4',
+                            browse_button: 'UploadButton',
+                            multi_selection: true,
+                            container: document.getElementById('ImportDataForm'),
+                            url: '/api/Common/Upload',
+                            flash_swf_url: '/scripts/plupload/Moxie.swf',
+                            silverlight_xap_url: '/scripts/plupload/Moxie.xap',
+                            filters: {
+                                max_file_size: '10mb',
+                                mime_types: [
+                                     { title: "Image files", extensions: "jpg,gif,png" },
+                                ]
+                            },
+                            init: {
+                                PostInit: function () {
+                                    $('#filelist').html('');
+                                },
+                                FilesAdded: function (up, files) {
+                                    plupload.each(files, function (file) {
+                                        $('#filelist').append('<div id="' + file.id + '" class="alert alert-info"><button data-val="' + file.id + '" type="button" class="close">×</button>' + file.name + ' (' + plupload.formatSize(file.size) + ')<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" style="width:0%;"></div></div></div>');
+                                    });
+                                    uploader.start();
+                                },
+                                UploadProgress: function (up, file) {
+                                    $("#" + file.id + " .progress-bar").css("width", file.percent + "%").html(file.percent + "%");
+                                    if (file.percent >= 100) {
+                                        $("#" + file.id + " .progress-bar").html('正在上传图片，请稍等...');
+                                    }
+                                },
+                                Error: function (up, err) {
+                                    $('#console').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>错误代码：' + err.code + '，错误信息：' + err.message + '</div');
+                                },
+                                UploadComplete: function (up, files) {
+                                    toastr.info('上传图片成功！');
+                                    uploader.files.splice(0, uploader.files.length);
+                                    $("#filelist").empty();
+                                },
+                                FileUploaded: function (up, files, res) {
+                                    $scope.Photo_List = new Array();
+                                    $scope.Photo_List.push(res.response.substr(1, res.response.length - 2));
+                                    $scope.User.HeadImgUrl = $scope.Photo_List[0];
+                                    $scope.$apply();
+                                }
+                            }
+                        });
+
+                        uploader.init();
+                    }
+
+                    var wechat_InitUpload = function () {
+                        var wechat_uploader = new plupload.Uploader({
+                            runtimes: 'html5,flash,silverlight,html4',
+                            browse_button: 'wechat_UploadButton',
+                            multi_selection: true,
+                            container: document.getElementById('wechat_ImportDataForm'),
+                            url: '/api/Common/UploadCertificate',
+                            flash_swf_url: '/scripts/plupload/Moxie.swf',
+                            silverlight_xap_url: '/scripts/plupload/Moxie.xap',
+                            filters: {
+                                max_file_size: '10mb',
+                                mime_types: [
+                                     { title: "wechat pay certificate file", extensions: "p12" },
+                                ]
+                            },
+                            init: {
+                                PostInit: function () {
+                                    $('#wechat_filelist').html('');
+                                },
+                                FilesAdded: function (up, files) {
+                                    plupload.each(files, function (file) {
+                                        $('#wechat_filelist').append('<div id="' + file.id + '" class="alert alert-info"><button data-val="' + file.id + '" type="button" class="close">×</button>' + file.name + ' (' + plupload.formatSize(file.size) + ')<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" style="width:0%;"></div></div></div>');
+                                    });
+                                    wechat_uploader.start();
+                                },
+                                UploadProgress: function (up, file) {
+                                    $("#" + file.id + " .progress-bar").css("width", file.percent + "%").html(file.percent + "%");
+                                    if (file.percent >= 100) {
+                                        $("#" + file.id + " .progress-bar").html('正在上传图片，请稍等...');
+                                    }
+                                },
+                                Error: function (up, err) {
+                                    $('#wechat_console').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>错误代码：' + err.code + '，错误信息：' + err.message + '</div');
+                                },
+                                UploadComplete: function (up, files) {
+                                    toastr.info('上传图片成功！');
+                                    wechat_uploader.files.splice(0, wechat_uploader.files.length);
+                                    $("#wechat_filelist").empty();
+                                },
+                                FileUploaded: function (up, files, res) {
+                                    $scope.wechat_Photo_List = new Array();
+                                    $scope.wechat_Photo_List.push(res.response.substr(1, res.response.length - 2));
+                                    $scope.wechat.APPPayCert = $scope.wechat_Photo_List[0]; 
+                                    $scope.$apply();
+                                }
+                            }
+                        });
+
+                        wechat_uploader.init();
+                    }
+
+                    $(function(){
+                        ZTree_Init(@MvcHtmlString.Create(ViewBag.Permissions));
+            $(".demoTip").popover({ placement: "top", trigger: "hover" });
+            InitUpload();
+            wechat_InitUpload();
+        });
+    });
+ </script>

@@ -1,0 +1,35 @@
+@using System.Web.Http.Controllers
+@using System.Web.Http.Description
+@using System.Collections.ObjectModel
+@model Collection<ApiDescription>
+
+@{
+    ViewBag.Title = "API接口文档";
+    ILookup<HttpControllerDescriptor, ApiDescription> apiGroups = Model.ToLookup(api => api.ActionDescriptor.ControllerDescriptor);
+}
+@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li class="active">接口列表</li>
+                    <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    接口用于调用系统后台功能。
+                </div>
+
+                @foreach (var group in apiGroups.OrderBy(x=>x.Key.ControllerName).ToList())
+                {
+                    @Html.DisplayFor(m => group, "ApiGroup")
+                }
+            </div>
+        </div>
+    </div>
+</div>

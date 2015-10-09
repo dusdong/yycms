@@ -1,0 +1,31 @@
+﻿<div class="row helpStep3">
+    <div ng-if="loading==false&&Pager.Data.length>0">
+        <div class="col-md-6">
+            <ul class="pagination">
+                <li ng-if="Pager.PageIndex <= 0" class="disabled"><a href="javascript:(0)">«</a></li>
+                <li ng-if="Pager.PageIndex > 0"><a href="javascript:(0)" ng-click="Pager.PageIndex = 0">«</a></li>
+                <li ng-repeat="d in Pager.PageRange" ng-if="$index < Pager.PageIndex+3 && $index > Pager.PageIndex-3" ng-class="{active:$index == Pager.PageIndex}">
+                    <a ng-if="$index == Pager.PageIndex" href="javascript:void(0)"><span>{{$index+1}}</span></a>
+                    <a ng-if="$index != Pager.PageIndex" href="javascript:void(0)" ng-click="Pager.PageIndex = $index">{{$index+1}}</a>
+                </li>
+                <li ng-if="Pager.PageCount==null||Pager.PageIndex+1 >= Pager.PageCount" class="disabled"><a href="javascript:(0)">»</a></li>
+                <li ng-if="Pager.PageIndex+1 < Pager.PageCount"><a href="javascript:(0)" ng-click="Pager.PageIndex = Pager.PageCount-1">»</a></li>
+            </ul>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
+            <div style="text-align:right;">
+                共{{Pager.DataCount}}条数据，当前第{{Pager.PageIndex+1}} / {{Pager.PageCount==null?0:Pager.PageCount}}页。
+            </div>
+        </div>
+    </div>
+    <div ng-if="loading==false&&Pager.Data.length<=0">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div style="margin-top:180px;" class="animated fadeIn">
+                <h3 style="color:#686868; text-align:center;font-size: 16px;"><i class="icon_info_alt" style="color: #999;position: relative;top: 1px;margin-right: 1px;"></i> 没有数据...<a href="/admin">点击返回首页</a></h3>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div> 

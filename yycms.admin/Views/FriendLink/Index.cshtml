@@ -1,0 +1,232 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="FriendLinkCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li class="active">友链列表</li>
+                    <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+                <table class="table ListTable helpStep1">
+                    <tbody>
+                        <tr>
+                            <td width="140px">
+                                <div class="btn-group">
+                                    <a href="/FriendLink/Add" class="btn btn-success">新增友链</a>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="" ng-click="ICKAll()"><i class="fa fa-hand-paper-o"></i> 全选 / 反选</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="javascript:void(0)" ng-click="IDeleteByIDs()"><i class="icon_trash_alt"></i> 删除选中</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="IShowByIDs()"><i class="fa fa-eye"></i> 显示选中</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="IHideByIDs()"><i class="fa fa-eye-slash"></i> 隐藏选中</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td width="150px">
+                                <select class="form-control filterSelect" ng-model="Filter.TypeID" ng-change="IData_Get()">
+                                    <option value="0">查看全部</option>
+                                    <optgroup ng-repeat="d in Types" ng-if="d.PID==0" label="{{d.Name}}">
+                                        <option value="{{d.ID}}">全部</option>
+                                        <option value="{{dd.ID}}" ng-repeat="dd in Types" ng-if="dd.PID==d.ID">{{dd.Name}}</option>
+                                    </optgroup>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <span ng-if="Filter.UserName!=null" ng-click="Filter.UserName=null" class="clearBtn animated bounceIn" data-icon="Q"></span>
+                                    <input type="text" ng-keypress="OnEnterPress($event);" class="form-control" placeholder="输入友链名..." ng-model="Filter.UserName" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group" style="display:none;">
+                                    <div class="input-group-addon">时间</div>
+                                    <input type="date" class="form-control" ng-model="Filter.StartTime" />
+                                    <div class="input-group-addon">至</div>
+                                    <input type="date" class="form-control" ng-model="Filter.EndTime" />
+                                </div>
+                            </td>
+                            <td width="130px">
+                                <filter-btn></filter-btn>
+                            </td>
+                            <td width="90px">
+                                <table-pager-top></table-pager-top>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <loading></loading>
+                <table id="MainTable" ng-if="loading==false&&Pager.Data.length>0" ng-class="{fadeIn:loading==false}" class="table table-bordered table-striped table-hover animated helpStep2">
+                    <thead>
+                        <tr>
+                            <th width="40px"><input type="checkbox" ng-click="ICKAll()" ng-checked="ckAll==true" /></th>
+                            <th ng-repeat="d in TableHeads" ng-click="Filter.OrderBy=d.Name;Filter.IsDesc=!Filter.IsDesc;IData_Get();">
+                                {{d.Title}}
+                                <i ng-if="Filter.IsDesc==true&&Filter.OrderBy==d.Name" class="arrow_carrot-up"></i>
+                                <i ng-if="Filter.IsDesc!=true||Filter.OrderBy!=d.Name" class="arrow_carrot-down"></i>
+                            </th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in Pager.Data" ng-class="{warning:d.IsShow!=1}">
+                            <td><input type="checkbox" value="{{d.ID}}" class="EntityItem" ng-checked="ckAll==true" /></td>
+                            <td>{{$index+1}}</td>
+                            <td title="关键字：{{d.KeyWords}}">{{d.Title}}{{d.Recommend==1?"推荐":""}}</td>
+                            <td>{{d.SiteUrl}}</td>
+                            <td>{{d.LookCount}}</td>
+                            <td>{{d.CreateDate.replace("T"," ").substr(0,10)}}</td>
+                            <td>
+                                <a ng-if="d.IsShow==1" href="javascript:void(0)" ng-click="IHide(d)" class="tip" title="锁定"><i class="fa fa-eye-slash"></i></a>
+                                <a ng-if="d.IsShow==0" href="javascript:void(0)" ng-click="IShow(d)" class="tip" title="解锁"><i class="fa fa-eye"></i></a>
+                                <a href="/FriendLink/Edit/{{d.ID}}" class="tip" title="编辑"><i class="icon_pencil"></i></a>
+                                <a href="javascript:void(0)" ng-click="ConfirmDelete(d.ID)" class="tip" title="删除"><i class="icon_trash_alt"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table-pager></table-pager>
+                <dialog-delete></dialog-delete>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    angular.module("app").controller("FriendLinkCtrl", function ($location, $scope, API_FriendLink) 
+    {
+        $scope.ckAll = false;
+        $scope.ICKAll = function () {
+            $scope.ckAll = !$scope.ckAll;
+        };
+
+        $scope.ckAll = false;
+        $scope.ICKAll = function () {
+            $scope.ckAll = !$scope.ckAll;
+        };
+
+        $scope.TableHeads = [
+            { "Title": "编号", "Name": "ID" },
+            { "Title": "站点名称", "Name": "Title" },
+            { "Title": "网址", "Name": "SiteUrl" },
+            { "Title": "浏览次数", "Name": "LookCount" },
+            { "Title": "创建时间", "Name": "CreateDate" }];
+
+        $scope.Pager = { PageIndex: 0, PageSize: 20 };
+        $scope.Filter = { IsDesc: true, OrderBy: "ID" };
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_FriendLink.Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.UserName,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc,
+                $scope.Filter.Role).then(function (r) {
+                    $scope.loading = false;
+                    NProgress.done();
+                    $scope.Pager = r;
+                    $scope.Pager.PageRange = APP.Range(r.PageCount);
+                    setTimeout(function () { $(".tip").tooltip(); }, 500);
+
+                });
+        }
+        $scope.IData_Get();
+        $scope.ConfirmDelete = function (id) {
+            $scope.DeleteID = id;
+            $("#DeleteConfirmModal").modal("show");
+        }
+        $scope.IDelete = function () {
+            $("#DeleteConfirmModal").modal("hide");
+            API_FriendLink.Delete($scope.DeleteID).then(function () { $scope.IData_Get(); toastr.info('删除成功！'); });
+        }
+        $scope.IHide = function (_eneity) {
+            _eneity.IsShow = 0;
+            API_FriendLink.ShowHide(_eneity).then(function () {
+                toastr.info('更新成功！');
+            });
+        }
+        $scope.IShow = function (_eneity) {
+            _eneity.IsShow = 1;
+            API_FriendLink.ShowHide(_eneity).then(function () { toastr.info('更新成功！'); });
+        }
+        $scope.IDeleteByIDs = function () {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何友链。'); return; }
+
+            $scope.loading = true;
+            API_FriendLink.DeleteByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('删除成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.IShowByIDs = function () {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何友链。'); return; }
+            $scope.loading = true;
+            API_FriendLink.ShowByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('设置成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.IHideByIDs = function () {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何友链。'); return; }
+            $scope.loading = true;
+            API_FriendLink.HideByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('设置成功！');
+                $scope.IData_Get();
+            });
+        }
+
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: '<h4>友情链接</h3><p>友情链接，也称为网站交换链接、互惠链接、互换链接、联盟链接等，是具有一定资源互补优势的网站之间的简单合作形式，即分别在自己的网站上放置对方网站的LOGO图片或文字的网站名称，并设置对方网站的超链接（点击后，切换或弹出另一个新的页面），使得用户可以从合作网站中发现自己的网站，达到互相推广的目的，因此常作为一种网站推广基本手段。</p><p>友情链接是指互相在自己的网站上放对方网站的链接。必须要能在网页代码中找到网址和网站名称，而且浏览网页的时候能显示网站名称，这样才叫友情链接。</p><p>友情链接是网站流量来源的根本，比如一种可以自动交换链接的友情链接网站（每来访一个IP，就会自动排到第一），这是一种创新的自助式友情链接互连网模式。</p><p style="margin-bottom:0px;"><a href="http://baike.baidu.com/link?url=z9mss9h5fgwK9XhtIDlX0Be5Pf3KQnCpIUs6f9_gJQf_-ZCJaEcJXX4IODh3Ig27PHLZnnk2Ung-xVSCU5o2Qa"  target="_blank" style="width: 99%;margin: 0px 0.5%;" class="btn btn-warning hvr-shadow-radial">查看详细说明</a></p>',
+                  },
+                  {
+                      position: "bottom",
+                      element: '.helpStep1',
+                      intro: "<p>批量删除/显示/隐藏友情链接，根据分类筛选、查询、翻页操作栏。</p>"
+                  },
+                  {
+                      position: "top",
+                      element: '.helpStep2',
+                      intro: "<p>友情链接列表，您显示/隐藏，修改、删除单个友情链接。</p>"
+                  },
+                  {
+                      position: "top",
+                      element: '.helpStep3',
+                      intro: '<p>友情链接数量统计，翻页操作。</p>'
+                  }
+                ]
+            });
+            intro.start();
+        };
+    });
+</script>

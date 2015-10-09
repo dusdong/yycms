@@ -1,0 +1,18 @@
+﻿<div class="col-md-12">
+    <div class="form-group">
+        <div class="col-md-12 BtmLayer" id="BtmLayer">
+            <button ng-if="OnSubmit==false" type="submit" class="btn btn-success btn-lg hvr-shadow-radial">
+                <i class="icon_cloud-upload_alt"></i> 确认提交
+            </button>
+            <a href="" class="btn btn-success btn-lg disabled" ng-if="OnSubmit">正在提交，请您稍等...</a>
+            &nbsp;
+            <a ng-if="Flag_IsAddPage" href="index" class="btn btn-default btn-lg hvr-shadow-radial">
+                <i class="arrow_carrot-left"></i> 返回列表
+            </a>
+            &nbsp;
+            <a ng-if="!Flag_IsAddPage" href="../index" class="btn btn-default btn-lg hvr-shadow-radial">
+                <i class="arrow_carrot-left"></i> 返回列表
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+﻿@using Newtonsoft.Json
+@using yycms.entity;
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/js")
+    <script type="text/javascript">
+        angular.module("app").controller("GlobalCtrl", function ($location, $scope, API_User) {
+            $scope.LoginIn = function () {
+                API_User.LoginOut().then(function () {
+                    document.location.href = "/Admin/Index";
+                });
+            };
+        });
+    </script>
+    <style type="text/css">
+        body {
+            background:#1A2243 url(/images/bg.jpg) center top;
+            background-size: cover;
+        }
+        .help-block{color:#ECECEC;}
+        .form-horizontal .control-label{font-size:16px; font-weight:normal; padding-right:10px; text-align:center;}
+        .btn{border-radius:0px;}
+        .login{    background-color: rgba(0,0,0,0.5);
+    padding: 20px 15px 30px;
+    color: #ECECEC;
+    font-family: 微软雅黑;
+    font-weight: normal;
+    margin-top: 11%;
+    border: solid 1px rgba(0,0,0,0.9);
+    box-shadow: -1px 5px 11px #0F1629;}
+
+        .navbar {
+           background-color: rgba(0,0,0,0.3);
+    text-align: center;
+    min-height: 40px;
+        }
+        .downloadChrome
+        {
+            line-height:3;
+        }
+    </style>
+</head>
+
+<body ng-cloak>@RenderBody()</body>
+</html>
+

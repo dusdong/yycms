@@ -1,0 +1,12 @@
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Debug\yycms.entity.dll.config
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Debug\yycms.entity.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Debug\yycms.entity.pdb
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Debug\EntityFramework.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Debug\EntityFramework.SqlServer.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Debug\EntityFramework.xml
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Debug\EntityFramework.SqlServer.xml
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Debug\zh-Hans\EntityFramework.resources.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\obj\Debug\yycms.entity.csprojResolveAssemblyReference.cache
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\obj\Debug\yycms.entity.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\obj\Debug\yycms.entity.pdb

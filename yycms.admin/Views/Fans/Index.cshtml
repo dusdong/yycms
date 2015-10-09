@@ -1,0 +1,952 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<style type="text/css">
+    .lh2{ line-height:2;}
+    .lh1_6{ line-height:1.6;}
+    .tab-content {padding-top: 10px;}
+    .panel-default{margin-bottom: 0px;border-bottom: none;border-radius: 0px;}
+    .list-group-item:first-child{border-radius: 0px;}
+    #FirstImage{width: 95%;height: 130px;margin: 2.5%;}
+    #FirstImageSummary{    position: absolute;color: #FFF;z-index: 99;top: 120px;background-color: rgba(0,0,0,0.4);width:100%;padding: 2px 5px;font-size: 14px;    height: 25px;overflow: hidden;}
+    .modal-lg{width:1100px;}
+    .list-group {margin-bottom: 0px;}
+    .list-group-item{margin-bottom: 0px;padding-right: 55px;border: none;position: relative;border-bottom: 1px solid #ddd;min-height:60px;}
+    .list-group-item:last-child{border-bottom:none;}
+    .list-group-item img{right: 5px;top: 5px;position: absolute;}
+</style>
+<div id="content-wrapper" ng-controller="FansCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li class="active">粉丝列表</li>
+                    <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+                <table class="table ListTable helpStep1">
+                    <tbody>
+                        <tr>
+                            <td width="160px">
+                                <div class="btn-group">
+                                    <a href="" ng-click="ICKAll()" class="btn btn-success"><i class="fa fa-hand-paper-o"></i> 全选 / 反选</a>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="" ng-click="ShowModal()"><i class="fa fa-comments-o"></i> 发消息</a></li>
+                                        <li><a href="" ng-click="RefreshFans()"><i class="fa fa-cloud-download"></i> 重新同步粉丝</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td width="150px">
+                                <select class="form-control filterSelect" ng-model="Filter.TypeID" ng-change="IData_Get()">
+                                    <option value="11">微信</option>
+                                    <option value="10">系统</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <span ng-if="Filter.UserName!=null" ng-click="Filter.UserName=null" class="clearBtn animated bounceIn" data-icon="Q"></span>
+                                    <input type="text" ng-keypress="OnEnterPress($event);" class="form-control" placeholder="输入用户名..." ng-model="Filter.UserName" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group" style="display:none;">
+                                    <div class="input-group-addon">时间</div>
+                                    <input type="date" class="form-control" ng-model="Filter.StartTime" />
+                                    <div class="input-group-addon">至</div>
+                                    <input type="date" class="form-control" ng-model="Filter.EndTime" />
+                                </div>
+                            </td>
+                            <td width="130px">
+                                <filter-btn></filter-btn>
+                            </td>
+                            <td width="90px">
+                                <table-pager-top></table-pager-top>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <loading></loading>
+                <table id="MainTable" ng-if="loading==false&&Pager.Data.length>0" ng-class="{fadeIn:loading==false}" class="table table-bordered table-striped table-hover animated helpStep2">
+                    <thead>
+                        <tr>
+                            <th width="40px"><input type="checkbox" ng-click="ICKAll()" ng-checked="ckAll==true" /></th>
+                            <th ng-repeat="d in TableHeads" ng-click="Filter.OrderBy=d.Name;Filter.IsDesc=!Filter.IsDesc;IData_Get();">
+                                {{d.Title}}
+                                <i ng-if="Filter.IsDesc==true&&Filter.OrderBy==d.Name" class="arrow_carrot-up"></i>
+                                <i ng-if="Filter.IsDesc!=true||Filter.OrderBy!=d.Name" class="arrow_carrot-down"></i>
+                            </th>
+                            <th width="50px">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in Pager.Data">
+                            <td>
+                                <input type="checkbox" 
+                                       name="EntityItem"
+                                       class="EntityItem" 
+                                       value="{{d.openid}}" 
+                                       headimg="{{d.headimgurl}}" 
+                                       ng-checked="ckAll==true" />
+                            </td>
+                            <td>
+                            <img ng-src="{{d.headimgurl}}" width="48px" height="48px" style="float:left; margin-right:10px;" />
+                                <span class="lh2 label label-default" ng-if="d.sex==0">保密</span>
+                                <span class="lh2 label label-info" ng-if="d.sex==1">男</span>
+                                <span class="lh2 label label-danger" ng-if="d.sex==2">女</span>
+                                <br />
+                                <span class="lh1_6">{{d.nickname}}</span>
+                            </td>
+                            <td>{{d.country}}{{d.province}}{{d.city}}</td>
+                            <td>{{d.CreateDate.replace("T"," ").substr(0,10)}}</td>
+                            <td><a href="javascript:void(0)" ng-click="MessageToSingle(d.openid,d.headimgurl)" class="tip" title="发送消息"><i class="fa fa-commenting-o"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table-pager></table-pager>
+            </div>
+        </div>
+
+        <div class="modal fade bs-example-modal-lg" id="MessageLayer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">发送消息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-info" style="padding:0px;">
+                            <img class="circleItem" ng-repeat="d in SelectedImgs" ng-src="{{d}}" />
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="phone animated fadeInRight" id="phoneModel" style="top:155px;">
+                                        <div id="RenderView">
+                                           
+                                            <div ng-if="MessageEntity.News.length>0" style="width: 90%;margin: auto;position: relative;background-color: #fff;margin-top: 10%;border: solid 1px #BFBFBF;">
+                                                    <img class="animated fadeInRight" ng-src="{{MessageEntity.News[0].DefaultImg}}" id="FirstImage" ng-click="RemoveFromNews(MessageEntity.News[0])" />
+                                                    <div id="FirstImageSummary">
+                                                        {{MessageEntity.News[0].Title}}
+                                                    </div>
+
+                                                <div class="list-group" ng-if="MessageEntity.News.length>1">
+                                                    <a href="#" ng-click="RemoveFromNews(d)" class="list-group-item animated fadeInRight" ng-repeat="d in MessageEntity.News" ng-if="$index>0">
+                                                        {{d.Title}}
+                                                        <img ng-src="{{d.DefaultImg}}" width="48px" height="48px" />
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <p ng-if="MessageEntity.News.length>0" style="margin-top:10px;padding:0px 20px;">
+                                                <button type="button" class="btn btn-success" ng-click="MessageByIDs()">发送消息</button>
+                                            </p>
+                                         
+                                        </div>
+                                        <div class="statusbar"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <ul class="nav nav-tabs" ng-init="TabIndex=0">
+                                        <li role="presentation" ng-class="{active:TabIndex==0}"><a href="javascript:void(0)" ng-click="TabIndex=0">新闻</a></li>
+                                        <li role="presentation" ng-class="{active:TabIndex==1}"><a href="javascript:void(0)" ng-click="TabIndex=1">文字</a></li>
+                                    </ul>
+                                    <div class="tab-content sendMessagePane">
+                                        <div class="tab-pane" ng-class="{active:TabIndex==0}">
+                                            <table class="table ListTable">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="150px">
+                                                            <select class="form-control filterSelect" ng-model="Filter2.TypeID" ng-change="IData_Get2()">
+                                                                <option value="0">查看全部</option>
+                                                                <optgroup ng-repeat="d in Types" ng-if="d.PID==0" label="{{d.Name}}">
+                                                                    <option value="{{d.ID}}">全部</option>
+                                                                    <option value="{{dd.ID}}" ng-repeat="dd in Types" ng-if="dd.PID==d.ID">{{dd.Name}}</option>
+                                                                </optgroup>
+                                                            </select>
+                                                        </td>
+
+                                                        <td width="150px">
+                                                            <div class="input-group">
+                                                                <a ng-if="Filter2.Title!=null" ng-click="Filter2.Title=null" class="clearBtn animated bounceIn" data-icon="Q"></a>
+                                                                <input type="text" class="form-control" placeholder="输入新闻标题..." ng-model="Filter2.Title" />
+                                                            </div>
+                                                        </td>
+
+                                                        <td width="130px">
+                                                            <a href="" class="btn btn-success" ng-click="IData_Get2()">查询</a>
+                                                        </td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <ul class="bs-glyphicons-list">
+                                                <li ng-repeat="d in Pager2.Data">
+                                                    <h4>{{d.Title}}</h4>
+                                                    <img ng-src="{{d.DefaultImg}}" />
+                                                    <p>{{d.Summary}}</p>
+                                                    <a href="" class="send" ng-click="SendMediaItem(d)">
+                                                        发送
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="tab-pane" ng-class="{active:TabIndex==1}">
+                                            <div>
+                                                <ul class="emotions" onselectstart="return false;">
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="微笑" style="background-position:0px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="撇嘴" style="background-position:-24px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="色" style="background-position:-48px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="发呆" style="background-position:-72px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="得意" style="background-position:-96px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="流泪" style="background-position:-120px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="害羞" style="background-position:-144px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="闭嘴" style="background-position:-168px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="睡" style="background-position:-192px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="大哭" style="background-position:-216px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="尴尬" style="background-position:-240px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="发怒" style="background-position:-264px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="调皮" style="background-position:-288px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="呲牙" style="background-position:-312px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="惊讶" style="background-position:-336px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="难过" style="background-position:-360px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="酷" style="background-position:-384px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="冷汗" style="background-position:-408px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="抓狂" style="background-position:-432px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="吐" style="background-position:-456px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="偷笑" style="background-position:-480px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="可爱" style="background-position:-504px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="白眼" style="background-position:-528px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="傲慢" style="background-position:-552px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="饥饿" style="background-position:-576px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="困" style="background-position:-600px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="惊恐" style="background-position:-624px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="流汗" style="background-position:-648px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="憨笑" style="background-position:-672px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="大兵" style="background-position:-696px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="奋斗" style="background-position:-720px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="咒骂" style="background-position:-744px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="疑问" style="background-position:-768px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="嘘" style="background-position:-792px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="晕" style="background-position:-816px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="折磨" style="background-position:-840px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="衰" style="background-position:-864px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="骷髅" style="background-position:-888px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="敲打" style="background-position:-912px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="再见" style="background-position:-936px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="擦汗" style="background-position:-960px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="抠鼻" style="background-position:-984px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="鼓掌" style="background-position:-1008px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="糗大了" style="background-position:-1032px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="坏笑" style="background-position:-1056px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="左哼哼" style="background-position:-1080px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="右哼哼" style="background-position:-1104px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="哈欠" style="background-position:-1128px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="鄙视" style="background-position:-1152px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="委屈" style="background-position:-1176px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="快哭了" style="background-position:-1200px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="阴险" style="background-position:-1224px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="亲亲" style="background-position:-1248px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="吓" style="background-position:-1272px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="可怜" style="background-position:-1296px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="菜刀" style="background-position:-1320px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="西瓜" style="background-position:-1344px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="啤酒" style="background-position:-1368px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="篮球" style="background-position:-1392px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="乒乓" style="background-position:-1416px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="咖啡" style="background-position:-1440px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="饭" style="background-position:-1464px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="猪头" style="background-position:-1488px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="玫瑰" style="background-position:-1512px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="凋谢" style="background-position:-1536px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="示爱" style="background-position:-1560px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="爱心" style="background-position:-1584px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="心碎" style="background-position:-1608px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="蛋糕" style="background-position:-1632px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="闪电" style="background-position:-1656px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="炸弹" style="background-position:-1680px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="刀" style="background-position:-1704px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="足球" style="background-position:-1728px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="瓢虫" style="background-position:-1752px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="便便" style="background-position:-1776px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="月亮" style="background-position:-1800px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="太阳" style="background-position:-1824px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="礼物" style="background-position:-1848px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="拥抱" style="background-position:-1872px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="强" style="background-position:-1896px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="弱" style="background-position:-1920px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="握手" style="background-position:-1944px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="胜利" style="background-position:-1968px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="抱拳" style="background-position:-1992px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="勾引" style="background-position:-2016px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="拳头" style="background-position:-2040px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="差劲" style="background-position:-2064px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="爱你" style="background-position:-2088px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="NO" style="background-position:-2112px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="OK" style="background-position:-2136px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="爱情" style="background-position:-2160px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="飞吻" style="background-position:-2184px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="跳跳" style="background-position:-2208px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="发抖" style="background-position:-2232px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="怄火" style="background-position:-2256px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="转圈" style="background-position:-2280px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="磕头" style="background-position:-2304px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="回头" style="background-position:-2328px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="跳绳" style="background-position:-2352px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="挥手" style="background-position:-2376px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="激动" style="background-position:-2400px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="街舞" style="background-position:-2424px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="献吻" style="background-position:-2448px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="左太极" style="background-position:-2472px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                    <li class="emotions_item">
+                                                        <i class="js_emotion_i" title="右太极" style="background-position:-2496px 0;">
+                                                        </i>
+                                                    </li>
+
+                                                </ul>
+                                                <textarea class="form-control" ng-model="MessageEntity.Message" rows="5" placeholder="输入文字内容。"></textarea>
+                                                <p style="margin-top:10px;padding:0px 20px;">
+                                                    <button type="button" class="btn btn-success" ng-click="MessageEntity.Type='text';MessageByIDs()">发送消息</button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+            </div>
+    </div>
+</div>
+    </div>
+<script type="text/javascript">
+    angular.module("app").controller("FansCtrl", function ($location, $scope, $timeout,API_Wechat)
+    {
+        $scope.Types = @MvcHtmlString.Create(ViewBag.Types);
+
+        $scope.ckAll = false;
+        $scope.ICKAll=function()
+        {
+            $scope.ckAll=!$scope.ckAll;
+        };
+
+        $scope.TableHeads = [
+            { Title: "粉丝", Name: "nickname" },
+            { Title: "地址", Name: "province" },
+            { Title: "创建时间", Name: "CreateDate" }
+        ];
+        
+        $scope.Pager = { PageIndex: 0, PageSize: 20 };
+        $scope.Filter = { IsDesc: true, OrderBy: "ID", TypeID: "11" };       
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_Wechat.Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.UserName,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc,
+                $scope.Filter.Role).then(function (r) {
+                    $scope.loading = false;
+                    NProgress.done();
+                    $scope.Pager = r;
+                    $scope.Pager.PageRange = APP.Range(r.PageCount);
+                    setTimeout(function () { $(".tip").tooltip(); }, 500);
+
+                });
+        }
+        $scope.IData_Get();
+
+        $scope.MessageEntity = { IDs: [], Message: "", Type: "", MaterialID: "" };
+        $scope.ShowModal = function ()
+        {
+            $scope.MessageEntity.IDs = [];
+            $scope.MessageEntity.News = [];
+            $scope.MessageEntity.Type = "";
+            $(".EntityItem:checked").map(function (a, b) { $scope.MessageEntity.IDs.push($(b).val()); });
+            if ($scope.MessageEntity.IDs.length < 1)
+            {
+                toastr.error('未选择任何用户。');
+                return;
+            }
+
+            var imgList = $(".EntityItem:checked").map(function (a, b) { return $(b).attr("headimg"); });
+
+            $scope.SelectedImgs = imgList;
+
+            $("#MessageLayer").modal("show");
+        }
+        $scope.MessageToSingle = function (_openID,_headImg)
+        {
+            $scope.MessageEntity.IDs = [_openID];
+            $scope.SelectedImgs = [_headImg];
+            $scope.MessageEntity.News = [];
+            $scope.MessageEntity.Type="";
+            $scope.MessageEntity.MaterialID="";
+            $("#MessageLayer").modal("show");
+        }
+        $scope.SendMediaItem = function (d) {
+            $scope.MessageEntity.Type = "news";
+
+            if ($scope.MessageEntity.News == null) {
+                $scope.MessageEntity.News = [];
+            }
+
+            if ($scope.MessageEntity.News.length > 4) {
+                toastr.error('每次发送不能超过5条。');
+                return;
+            }
+            else {
+                var ExistsD = false;
+
+                for (var i = 0; i < $scope.MessageEntity.News.length; i++) {
+                    if ($scope.MessageEntity.News[i].$$hashKey == d.$$hashKey) {
+                        ExistsD = true;
+                        break;
+                    }
+                }
+
+                if (ExistsD) {
+                    toastr.error('已存在的信息。');
+                    return;
+                }
+
+                $scope.MessageEntity.News.push(d);
+            }
+        };
+        $scope.RemoveFromNews = function (d) {
+            var newArr = new Array();
+
+            for (var i = 0; i < $scope.MessageEntity.News.length; i++) {
+                if ($scope.MessageEntity.News[i].$$hashKey == d.$$hashKey) {
+                    continue;
+                }
+                newArr.push($scope.MessageEntity.News[i]);
+            }
+
+            $scope.MessageEntity.News = newArr;
+        }
+        $scope.RefreshFans = function ()
+        {
+            $scope.loading = true;
+            API_Wechat.RefreshFans().then(function ()
+            {
+                $scope.loading = false;
+                toastr.info('刷新成功！'); 
+            });
+        }
+        $scope.Pager2 = { PageIndex: 0, PageSize: 20 };
+        $scope.Filter2 = { IsDesc: true, OrderBy: "ID", TypeID: 0 };       
+        $scope.IData_Get2 = function () 
+        {
+            NProgress.start();
+            $scope.loading = true;
+            API_Wechat.News({
+                PageIndex:$scope.Pager2.PageIndex,
+                PageSize:$scope.Pager2.PageSize,
+                Title:$scope.Filter2.Title,
+                TypeID:$scope.Filter2.TypeID}).then(function (r)
+                {
+                    $scope.loading = false;
+                    NProgress.done();
+                    $scope.Pager2 = r;
+                    $scope.Pager2.PageRange = APP.Range(r.PageCount);
+                });
+        }
+        $scope.IData_Get2();
+        $scope.MessageByIDs = function ()
+        {
+            if ($scope.MessageEntity.IDs.length < 1) {
+                toastr.error('未选择任何用户。');
+                return;
+            }
+            $("#MessageLayer").modal("hide");
+
+            $scope.loading = true;
+
+            if ($scope.MessageEntity.News.length > 0)
+            {
+                var items = new Array();
+                for (var i = 0; i < $scope.MessageEntity.News.length; i++)
+                {
+                    var t = $scope.MessageEntity.News[i];
+                    items.push({ title: t.Title, picurl: t.DefaultImg, description: t.Summary, url: t.WechatNewsUrl });
+                }
+                $scope.MessageEntity.News = items;
+            }
+
+            API_Wechat.MessageByIDs($scope.MessageEntity).then(function (r) {
+                $scope.loading = false;
+                if (r.code == 0) {
+                    toastr.info('发送成功！');
+                }
+                else {
+                    toastr.error(r.msg);
+                }
+            });
+        }
+
+        $(function()
+        {
+            $(".emotions_item").click(function()
+            {
+                var emotionItem = $(this).find("i").attr("title");
+                $timeout(function() {
+                    $scope.MessageEntity.Message+="/"+emotionItem+" ";
+                },100);
+            });
+        });
+
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: '<h4>粉丝</h3><p>聚合粉丝，包括微信、系统会员及其他对接平台。</p>',
+                  },
+                  {
+                      position: "bottom",
+                      element: '.helpStep1',
+                      intro: "<p>批量发消息，同步粉丝数据，根据分类筛选、查询、翻页操作栏。</p>"
+                  },
+                  {
+                      position: "top",
+                      element: '.helpStep2',
+                      intro: "<p>粉丝列表，可以给单个粉丝发消息。</p>"
+                  },
+                  {
+                      position: "top",
+                      element: '.helpStep3',
+                      intro: '<p>粉丝数量统计，翻页操作。</p>'
+                  }
+                ]
+            });
+            intro.start();
+        };
+    });
+</script>

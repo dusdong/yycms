@@ -1,0 +1,141 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<style type="text/css">
+    .tab-content {
+    padding-top: 10px;
+}
+</style>
+<div id="content-wrapper" ng-controller="IndexCtrl">
+    <ol class="breadcrumb">
+        <li class="active">首页</li>
+        <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+    </ol>
+
+    <ul class="nav nav-tabs" ng-init="TabIndex=0">
+        <li role="presentation" ng-class="{active:TabIndex==0}"><a href="javascript:void(0)" ng-click="TabIndex=0">总览</a></li>
+        <li role="presentation" ng-class="{active:TabIndex==1}"><a href="javascript:void(0)" ng-click="TabIndex=1">流量统计</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" ng-class="{active:TabIndex==0}">
+            <div class="alert alert-warning alert-dismissible" role="alert" style="margin:0px;">
+               粉丝全国分布图总览。
+            </div>
+            <div class="col-md-12" style="height:490px;padding:0px;margin-top:10px; display:none;" id="container"></div>
+        </div>
+        <div class="tab-pane" ng-class="{active:TabIndex==1}">
+        </div>
+    </div>
+</div>    
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WKblfiNhM4TaaA7UVYomevIe"></script>
+<script type="text/javascript">
+    var data = { "data": [[74.438, 39.006, 1], [74.932, 38.382, 1]] };
+
+    angular.module("app").controller("IndexCtrl", function ($location, $scope, $timeout,API_Common)
+    {
+        var init = function ()
+        {
+            // 创建Map实例
+            var map = new BMap.Map("container", {});
+            map.setMapStyle({ style: "light" });
+            map.centerAndZoom("上海", 5);
+          
+            //启用滚轮放大缩小
+            map.enableScrollWheelZoom();
+            //禁用双指操作缩放。
+            map.disablePinchToZoom();
+            
+            map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+
+            map.addControl(new BMap.ScaleControl({ anchor: BMAP_ANCHOR_TOP_LEFT }));
+
+            // 添加带有定位的导航控件
+            var navigationControl = new BMap.NavigationControl({
+                // 靠左上角位置
+                anchor: BMAP_ANCHOR_TOP_LEFT,
+                // LARGE类型
+                type: BMAP_NAVIGATION_CONTROL_LARGE,
+                // 启用显示定位
+                enableGeolocation: true
+            });
+            map.addControl(navigationControl);
+            // 添加定位控件
+
+            var geolocationControl = new BMap.GeolocationControl();
+            geolocationControl.addEventListener("locationSuccess", function (e) {
+                // 定位成功事件
+                var address = '';
+                address += e.addressComponent.province;
+                address += e.addressComponent.city;
+                address += e.addressComponent.district;
+                address += e.addressComponent.street;
+                address += e.addressComponent.streetNumber;
+                alert("当前定位地址为：" + address);
+            });
+            geolocationControl.addEventListener("locationError", function (e) {
+                // 定位失败事件
+                alert(e.message);
+            });
+
+            map.addControl(geolocationControl);
+
+            // 判断当前浏览器是否支持绘制海量点
+            if (document.createElement('canvas').getContext)
+            {
+                //添加海量点数据
+                var points = [];  
+                for (var i = 0; i < data.data.length; i++) {
+                    points.push(new BMap.Point(data.data[i][0], data.data[i][1]));
+                }
+                var options = {
+                    size: BMAP_POINT_SIZE_SMALL,
+                    /*常量	描述
+                      BMAP_POINT_SHAPE_CIRCLE	圆形，为默认形状。
+                      BMAP_POINT_SHAPE_STAR	    星形。
+                      BMAP_POINT_SHAPE_SQUARE	方形。
+                      BMAP_POINT_SHAPE_RHOMBUS	菱形。
+                      BMAP_POINT_SHAPE_WATERDROP	水滴状，该类型无size和color属性。
+                    */
+                    shape: BMAP_POINT_SHAPE_WATERDROP,
+                    color: '#3EC340'
+                }
+                // 初始化PointCollection
+                var pointCollection = new BMap.PointCollection(points, options);  
+                pointCollection.addEventListener('click', function (e)
+                {
+                    // 监听点击事件
+                    alert('单击点的坐标为：' + e.point.lng + ',' + e.point.lat);  
+                });
+                // 添加Overlay
+                map.addOverlay(pointCollection);  
+            }
+            else
+            {
+                alert('请在chrome、safari、IE8+以上浏览器查看本示例');
+            }
+            setTimeout(function () { 
+                $("#container").show();
+                map.centerAndZoom("上海", 5);
+            }, 300);
+        }
+
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: "<p>欢迎使用玥雅CMS。</p>"
+                  }
+                ]
+            });
+            intro.start();
+        };
+
+        init();
+    });
+</script>

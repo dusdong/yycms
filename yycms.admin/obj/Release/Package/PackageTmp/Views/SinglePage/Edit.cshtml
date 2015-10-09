@@ -1,0 +1,149 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="SinglePageAddCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li><a href="/singlepage">单页列表</a></li>
+        <li class="active">发布单页</li>
+        <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+    </ol>
+    <br />
+    <form name="myForm" ng-submit="SubmitForm(myForm.$valid)" class="form-horizontal" role="form" novalidate>
+        <div class="col-md-6 animated fadeInRight">
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.Title.$valid,'has-error':myForm.Title.$invalid&&myForm.Title.$dirty}">
+                <label class="col-sm-2 control-label">单页名称</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="Title"
+                           id="Title"
+                           ng-model="Entity.Title"
+                           ng-pattern="/^.{4,200}$/"
+                           required class="form-control" />
+                    <span class="help-block">单页名称，由4至200字组成。</span>
+                    <span ng-if="myForm.Title.$valid&&!myForm.Title.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.Title.$invalid&&!myForm.Title.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.KeyWords.$valid,'has-error':myForm.KeyWords.$invalid&&myForm.KeyWords.$dirty}">
+                <label class="col-sm-2 control-label">关键字</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="KeyWords"
+                           id="KeyWords"
+                           ng-model="Entity.KeyWords"
+                           ng-pattern="/^.{2,200}$/"
+                           required class="form-control" />
+                    <span class="help-block">关键字，多个关键字用逗号分隔，2至200个字。</span>
+                    <span ng-if="myForm.KeyWords.$valid&&!myForm.KeyWords.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.KeyWords.$invalid&&!myForm.KeyWords.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.Summary.$valid,'has-error':myForm.Summary.$invalid&&myForm.Summary.$dirty}">
+                <label class="col-sm-2 control-label">单页摘要</label>
+                <div class="col-sm-10">
+                    <textarea id="Summary"
+                              rows="3"
+                              name="Summary"
+                              ng-model="Entity.Summary"
+                              ng-pattern="/^.{10,500}$/"
+                              required
+                              class="form-control"></textarea>
+                    <span class="help-block">单页中摘取最主要的信息，10至500个字。</span>
+                    <span ng-if="myForm.Summary.$valid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.Summary.$invalid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.IsShow.$valid,'has-error':myForm.IsShow.$invalid&&myForm.IsShow.$dirty}">
+                <label class="col-sm-2 control-label">是否显示</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a class="btn btn-default"
+                           ng-repeat="d in IsShow"
+                           ng-class="{active:Entity.IsShow==d.ID}"
+                           ng-click="Entity.IsShow=d.ID">
+                            {{d.Name}}
+                        </a>
+                        <input type="hidden"
+                               name="IsShow"
+                               ng-pattern="/^[0-9]{1,12}$/"
+                               ng-model="Entity.IsShow"
+                               required="" />
+                    </div>
+                    <span class="help-block">隐藏后的单页将不会在网站显示。</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 animated fadeInRight">
+            <script type="text/plain" id="editor" class="animated fadeInRight">
+            </script>
+        </div>
+        <submit-btn></submit-btn>
+    </form>
+</div>
+<script src="/ueditor/ueditor.config.js"></script>
+<script src="/ueditor/ueditor.all.min.js"></script>
+<script src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+    angular.module("app").controller("SinglePageAddCtrl", function ($location, $scope, API_SinglePage)
+    {
+        $scope.Entity = {};
+        $scope.IsShow = [{ ID: 1, Name: '正常' }, { ID: 0, Name: '隐藏' }];
+        $scope.OnSubmit = false;
+        $scope.SubmitForm = function (isValid) {
+            if (!isValid) { toastr.error('验证失败'); return; }
+            var newsInfo = UE.getEditor("editor").getContent();
+            if (newsInfo == "" || newsInfo == undefined) { toastr.error('请填写单页详情。'); return; }
+            $scope.OnSubmit = true;
+            $scope.Entity.UserID = APP.User.ID;
+            $scope.Entity.Info = newsInfo;
+            $scope.Entity.CreateDate = new Date();
+            API_SinglePage.Put($scope.Entity).then(function (r) {
+                $scope.OnSubmit = false;
+                if (r.Code == 0) {
+                    toastr.success('添加成功！');
+                    window.document.location.href = "../Index";
+                }
+                else {
+                    toastr.error(r.Msg);
+                }
+            });
+        };
+        $(function () {
+            $(".demoTip").popover({ placement: "top", trigger: "hover" });
+        });
+        API_SinglePage.Detail(@Html.ViewContext.RouteData.Values["id"]).then(function (r)
+        {
+            $scope.Entity = r;
+            var ue = UE.getEditor("editor");
+            ue.ready(function () {
+                ue.setContent(r.Info);
+            });
+        });
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: "<p>1，单页是抓取单页源的定时任务。</p><p>2，单页不会影响网站性能，由后台服务运行。</p><p>3，单页会自动给自己打分，评估好坏。</p>"
+                  },
+                  {
+                      intro: "<p>1，单页抓取后单页源将同步到的平台。</p><p>2，您可是设置抓取后直接自动同步，也可以手动点击同步按钮，或是单个编辑后同步到平台。</p>"
+                  },
+                  {
+                      intro: '<p>最规则时需要查看XPath，用Chrome浏览器打开一个网页，F12，在弹出的小窗口中选中一个标签，右键，看到“copy XPath”了吧！</p>'
+                  }
+                ]
+            });
+            intro.start();
+        };
+    });
+</script>

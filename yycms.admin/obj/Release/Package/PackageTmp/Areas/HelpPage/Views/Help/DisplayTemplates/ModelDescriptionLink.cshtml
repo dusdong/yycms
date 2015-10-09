@@ -1,0 +1,26 @@
+@using yycms.admin.Areas.HelpPage.ModelDescriptions
+@model Type
+@{
+    ModelDescription modelDescription = ViewBag.modelDescription;
+    if (modelDescription is ComplexTypeModelDescription || modelDescription is EnumTypeModelDescription)
+    {
+        if (Model == typeof(Object))
+        {
+            @:Object
+        }
+        else
+        {
+            <a href="/Help/ResourceModel?modelName=@modelDescription.Name" style="margin-left:2px;"><i class="icon_link"></i></a>
+        }
+    }
+    else if (modelDescription is CollectionModelDescription)
+    {
+        var collectionDescription = modelDescription as CollectionModelDescription;
+    var elementDescription = collectionDescription.ElementDescription;
+        @:Êý¾Ý¼¯ @Html.DisplayFor(m => elementDescription.ModelType, "ModelDescriptionLink", new { modelDescription = elementDescription })
+    }
+    else
+    {
+        @Html.DisplayFor(m => modelDescription)
+    }
+}

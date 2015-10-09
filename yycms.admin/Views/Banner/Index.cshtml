@@ -1,0 +1,218 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="BannerCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li class="active">广告列表</li>
+                    <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+                <table class="table ListTable helpStep1">
+                    <tbody>
+                        <tr>
+                            <td width="140px">
+                                <div class="btn-group">
+                                    <a href="/Banner/Add" class="btn btn-success">发布广告</a>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="" ng-click="ICKAll()"><i class="fa fa-hand-paper-o"></i> 全选 / 反选</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="" ng-click="IDeleteByIDs()"><i class="icon_trash_alt"></i> 删除选中</a></li>
+                                        <li><a href="" ng-click="IShowByIDs()"><i class="fa fa-eye"></i> 显示选中</a></li>
+                                        <li><a href="" ng-click="IHideByIDs()"><i class="fa fa-eye-slash"></i> 隐藏选中</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="/Banner/Types"><i class="fa fa-list-ol"></i> 分类管理</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td width="150px">
+                                <select class="form-control filterSelect" ng-model="Filter.TypeID" ng-change="IData_Get()">
+                                    <option value="0">查看全部</option>
+                                    <optgroup ng-repeat="d in Types" ng-if="d.PID==0" label="{{d.Name}}">
+                                        <option value="{{d.ID}}">全部</option>
+                                        <option value="{{dd.ID}}" ng-repeat="dd in Types" ng-if="dd.PID==d.ID">{{dd.Name}}</option>
+                                    </optgroup>
+                                </select>
+                            </td>
+
+                            <td>
+                                <div class="input-group">
+                                    <a ng-if="Filter.Title!=null" ng-click="Filter.Title=null" class="clearBtn animated bounceIn" data-icon="Q"></a>
+                                    <input type="text" ng-keypress="OnEnterPress($event);" class="form-control" placeholder="输入广告标题..." ng-model="Filter.Title" />
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="input-group" style="display:none;">
+                                    <div class="input-group-addon">时间</div>
+                                    <input type="date" class="form-control" ng-model="Filter.StartTime" />
+                                    <div class="input-group-addon">至</div>
+                                    <input type="date" class="form-control" ng-model="Filter.EndTime" />
+                                </div>
+                            </td>
+                            <td width="130px">
+                                <filter-btn></filter-btn>
+                            </td>
+                            <td width="90px">
+                                <table-pager-top></table-pager-top>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <loading></loading>
+                <div class="row helpStep2" ng-repeat="r in RowRange" ng-if="loading==false&&Pager.Data.length>0">
+                    <div class="col-md-3 animated fadeInRight bd" ng-repeat="d in [0,1,2,3]" ng-if="Pager.Data[(r*4)+d]!=null">
+                        <div class="thumbnail">
+                            <img src="{{Pager.Data[(r*4)+d].ImageUrl}}" />
+                            <div class="caption">
+                                <h6><input type="checkbox" value="{{Pager.Data[(r*4)+d].ID}}" class="EntityItem" ng-checked="ckAll==true" /> {{Pager.Data[(r*4)+d].Title}}</h6>
+                                <p>
+                                    <a ng-if="Pager.Data[(r*4)+d].IsShow==1" href="" ng-click="IHide(Pager.Data[(r*4)+d])" class="btn btn-success tip" title="锁定">锁定</a>
+                                    <a ng-if="Pager.Data[(r*4)+d].IsShow==0" href="" ng-click="IShow(Pager.Data[(r*4)+d])" class="btn btn-success tip" title="解锁">解锁</a>
+                                    <a href="/Banner/Edit/{{Pager.Data[(r*4)+d].ID}}" class="tip btn btn-primary" role="button" title="编辑">编辑</a>&nbsp;
+                                    <a href="" ng-click="ConfirmDelete(Pager.Data[(r*4)+d].ID)" class="tip btn btn-default" title="删除">删除</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table-pager class="helpStep3"></table-pager>
+                <dialog-delete></dialog-delete>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    angular.module("app").controller("BannerCtrl", function ($location, $scope, API_Banner)
+    {
+        $scope.ckAll=false;
+        $scope.ICKAll=function()
+        {
+            $scope.ckAll=!$scope.ckAll;
+        };
+        $scope.Types = @MvcHtmlString.Create(ViewBag.Types);
+        $scope.TableHeads = [
+            { "Name": "ID", "Title": "编号" },
+            { "Name": "Title", "Title": "广告名称" },
+            { "Name": "ImageUrl", "Title": "广告图片" },
+            { "Name": "LinkUrl", "Title": "链接地址" },
+            { "Name": "ShowIndex", "Title": "展示位置" },
+            { "Name": "CreateDate", "Title": "创建日期" }];
+        $scope.Pager = { PageIndex: 0, PageSize: 20 };
+        $scope.Filter = { IsDesc: true, OrderBy: "ID" };
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_Banner.Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.UserName,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc,
+                $scope.Filter.Role).then(function (r) {
+                    $scope.loading = false;
+                    NProgress.done();
+                    $scope.Pager = r;
+                    $scope.RowRange = APP.Range($scope.Pager.Data.length / 4);
+                    $scope.Pager.PageRange = APP.Range(r.PageCount);
+                    setTimeout(function () { $(".tip").tooltip(); }, 500);
+                });
+        }
+        $scope.IData_Get();
+        $scope.ConfirmDelete = function (id) {
+            $scope.DeleteID = id;
+            $("#DeleteConfirmModal").modal("show");
+        }
+        $scope.IDelete = function () {
+            $("#DeleteConfirmModal").modal("hide");
+            API_Banner.Delete($scope.DeleteID).then(function () { $scope.IData_Get(); toastr.info('删除成功！'); });
+        }
+        $scope.IHide = function (_eneity) {
+            _eneity.IsShow = 0;
+            API_Banner.ShowHide(_eneity).then(function () {
+                toastr.info('更新成功！');
+            });
+        }
+        $scope.IShow = function (_eneity) {
+            _eneity.IsShow = 1;
+            API_Banner.ShowHide(_eneity).then(function () { toastr.info('更新成功！'); });
+        }
+        $scope.IDeleteByIDs = function () {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何新闻。'); return; }
+
+            $scope.loading = true;
+            API_Banner.DeleteByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('删除成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.IShowByIDs = function () {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何新闻。'); return; }
+            $scope.loading = true;
+            API_Banner.ShowByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('设置成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.IHideByIDs = function () {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何新闻。'); return; }
+            $scope.loading = true;
+            API_Banner.HideByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('设置成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: '<h4>广告 Banner</h3><p>可以作为网站页面的横幅广告，也可以作为游行活动时用的旗帜，还可以是报纸杂志上的大标题。Banner[1]  主要体现中心意旨，形象鲜明表达最主要的情感思想或宣传中心。</p><p style="margin-bottom:0px;"><a href="http://baike.baidu.com/view/53292.htm"  target="_blank" style="width: 99%;margin: 0px 0.5%;" class="btn btn-warning hvr-shadow-radial">查看详细说明</a></p>',
+                  },
+                  {
+                      position: "bottom",
+                      element: '.helpStep1',
+                      intro: "<p>批量删除/显示/隐藏广告，分类管理，根据分类筛选、查询、翻页操作栏。</p>"
+                  },
+                  {
+                      position: "top",
+                      element: '.helpStep2',
+                      intro: "<p>广告列表，您显示/隐藏，修改、删除单个广告。</p>"
+                  },
+                  {
+                      position: "top",
+                      element: '.helpStep3',
+                      intro: '<p>广告数量统计，翻页操作。</p>'
+                  }
+                ]
+            });
+            intro.start();
+        };
+    });
+</script>

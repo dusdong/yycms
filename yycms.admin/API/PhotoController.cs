@@ -1,0 +1,321 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web.Http;
+using yycms.admin.Models;
+using yycms.entity;
+
+namespace yycms.admin.API
+{
+    /// <summary>
+    /// 相册
+    /// </summary>
+    [BasicAuthen]
+    public class PhotoController : BasicAPI
+    {
+        #region  相册列表
+        /// <summary>
+        /// 获取相册列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ResponseData<NewsListItem>> Get(RequestEntity value)
+        {
+            //查询的表名称
+            Type Table = typeof(yy_Photo);
+
+            var FormData = await Request.Content.ReadAsAsync<Dictionary<String, String>>();
+
+            #region where condition
+
+            //筛选条件
+            var Where = String.Empty;
+
+            var WhereBuild = new List<string>();
+
+            #region 相册标题
+            if (!String.IsNullOrEmpty(value.Title))
+            {
+                WhereBuild.Add("Title like '%" + value.Title + "%'");
+            }
+            #endregion
+
+            #region 相册分类
+            if (value.TypeID > 0)
+            {
+                WhereBuild.Add("TypeIDs like '%," + value.TypeID + ",%'");
+            }
+            #endregion
+
+            #region 根据时间过滤
+            #region 大于等于 开始时间 && 小于等于 结束时间
+            if (!String.IsNullOrEmpty(value.StartTime) && !String.IsNullOrEmpty(value.EndTime))
+            {
+                DateTime st, et;
+
+                if (DateTime.TryParse(value.StartTime, out st) && DateTime.TryParse(value.EndTime, out et))
+                {
+                    WhereBuild.Add(" CreateDate >= '" + st.ToString("yyyy-MM-dd") + " 00:00:00' AND CreateDate <= '" + et.ToString("yyyy-MM-dd") + " 23:59:59'");
+                }
+            }
+            #endregion
+            #region 大于等于开始时间
+            else if (!String.IsNullOrEmpty(value.StartTime))
+            {
+                DateTime st;
+                if (DateTime.TryParse(value.StartTime, out st))
+                {
+                    WhereBuild.Add(" CreateDate >= '" + st.ToString("yyyy-MM-dd") + " 00:00:00'");
+                }
+            }
+            #endregion
+            #region 小于等于结束时间
+            else if (!String.IsNullOrEmpty(value.EndTime))
+            {
+                DateTime et;
+                if (DateTime.TryParse(value.EndTime, out et))
+                {
+                    WhereBuild.Add(" CreateDate <= '" + et.ToString("yyyy-MM-dd") + " 23:59:59'");
+                }
+            }
+            #endregion
+            #endregion
+
+            if (WhereBuild.Count > 0)
+            {
+                Where = " WHERE " + String.Join(" AND ", WhereBuild);
+            }
+            #endregion
+
+            #region OrderBy
+            //排序规则
+            String OrderBy = " ID DESC ";
+            if (!String.IsNullOrEmpty(value.OrderBy))
+            {
+                OrderBy = " " + value.OrderBy + " " + (value.IsDesc ? "DESC" : "ASC");
+            }
+            #endregion
+
+            #region 拼接sql语句
+            String colsStr = " ID,Title,KeyWords,LookCount,IsShow,CreateDate ";
+            #region  查询数据
+            String QuertCMD = String.Format(@"SELECT TOP {0} * FROM (
+                                SELECT ROW_NUMBER() OVER (ORDER BY {4}) AS RowNumber," + colsStr + @" FROM {2} WITH(NOLOCK) {3} 
+                                ) A WHERE RowNumber > {0} * ({1}-1)", value.PageSize, value.PageIndex + 1, "[" + Table.Name + "]", Where, OrderBy);
+            #endregion
+            #region 查询总数
+            String DataCountCMD = @"SELECT COUNT(1) FROM [" + Table.Name + "] WITH(NOLOCK) " + Where;
+            #endregion
+            #endregion
+
+            #region 执行查询并返回数据
+            var DataCount = DB.Database.SqlQuery<int>(DataCountCMD).FirstOrDefault();
+            return new ResponseData<NewsListItem>(value.PageSize,
+                value.PageIndex,
+                DataCount,
+                (DataCount % value.PageSize == 0 ? DataCount / value.PageSize : DataCount / value.PageSize + 1),
+                DB.Database.SqlQuery<NewsListItem>(QuertCMD).ToList());
+            #endregion
+        }
+        #endregion
+
+        #region 相册详情
+        /// <summary>
+        /// 获取相册详情
+        /// </summary>
+        /// <param name="id">相册ID</param>
+        /// <returns></returns>
+        [HttpGet]
+
+        public PhotoModel Get(int id)
+        {
+            //相册详情
+            return new PhotoModel()
+            {
+                Photo = DB.yy_Photo.Find(id),
+                Items = DB.yy_Photo_Item.Where(x => x.PhotoID == id).ToList()
+            };
+        }
+        #endregion
+
+        #region 添加相册
+        /// <summary>
+        /// 添加相册
+        /// </summary>
+        /// <param name="value">相册实体。</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ResponseItem Post(PhotoModel value)
+        {
+            try
+            {
+                DB.yy_Photo.Add(value.Photo);
+                DB.SaveChanges();
+                foreach (var v in value.Items) 
+                {
+                    v.PhotoID = value.Photo.ID;
+                }
+                DB.yy_Photo_Item.AddRange(value.Items);
+                DB.SaveChanges();
+                return new ResponseItem(0, "添加相册成功");
+            }
+            catch (Exception ex)
+            {
+                return new ResponseItem(2, ex.Message);
+            }
+        }
+        #endregion
+
+        #region 修改相册
+        /// <summary>
+        /// 修改相册
+        /// </summary>
+        /// <param name="value">相册实体。</param>
+        /// <returns></returns>
+        [HttpPut]
+        public ResponseItem Put(PhotoModel value)
+        {
+            var _Entity = DB.yy_Photo.Find(value.Photo.ID);
+            if (_Entity != null)
+            {
+                _Entity.IsShow = value.Photo.IsShow;
+                _Entity.ShowIndex = value.Photo.ShowIndex;
+                _Entity.Title = value.Photo.Title;
+                _Entity.KeyWords = value.Photo.KeyWords;
+                _Entity.Summary = value.Photo.Summary;
+                _Entity.TypeIDs = value.Photo.TypeIDs;
+                _Entity.Recommend = value.Photo.Recommend;
+                _Entity.TargetPlatforms = value.Photo.TargetPlatforms;
+                _Entity.CanReply = value.Photo.CanReply;
+                _Entity.CreateDate = value.Photo.CreateDate;
+                DB.SaveChanges();
+
+                DB.Database.ExecuteSqlCommand("DELETE FROM yy_Photo_Item WHERE PhotoID = " + value.Photo.ID);
+
+                foreach (var v in value.Items)
+                {
+                    v.PhotoID = value.Photo.ID;
+                }
+                DB.yy_Photo_Item.AddRange(value.Items);
+                DB.SaveChanges();
+                return new ResponseItem(0, "");
+            }
+            return new ResponseItem(1, "不存在的相册。");
+        }
+        #endregion
+
+        #region 删除相册
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id">相册ID。</param>
+        [HttpDelete]
+        public ResponseItem Delete(int id)
+        {
+            DB.Database.ExecuteSqlCommand("DELETE yy_Photo WHERE ID = " + id);
+            DB.Database.ExecuteSqlCommand("DELETE FROM yy_Photo_Item WHERE PhotoID = " + id);
+            return new ResponseItem(0, "");
+        }
+        #endregion
+
+        #region 显示或隐藏相册
+        /// <summary>
+        /// 显示或隐藏相册
+        /// </summary>
+        /// <param name="value">相册对象。</param>
+        /// <returns></returns>
+        [HttpPut]
+        public ResponseItem ShowHide(yy_Photo value)
+        {
+            var _News = DB.yy_Photo.Find(value.ID);
+            if (_News != null)
+            {
+                _News.IsShow = value.IsShow;
+                DB.SaveChanges();
+
+                return new ResponseItem(0, "");
+            }
+
+            return new ResponseItem(2, "不存在的相册。");
+        }
+        #endregion
+
+        #region 根据ID批量删除相册
+        /// <summary>
+        /// 根据ID批量删除相册
+        /// </summary>
+        /// <param name="ids">相册ID集合，用英文逗号链接</param>
+        [HttpDelete]
+        public ResponseItem DeleteByIDs(String ids)
+        {
+            var IDs = ids.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var v in IDs)
+            {
+                long id = 0;
+
+                if(long.TryParse(v,out id))
+                { 
+                    DB.Database.ExecuteSqlCommand("DELETE yy_Photo WHERE ID = " + id);
+                    DB.Database.ExecuteSqlCommand("DELETE FROM yy_Photo_Item WHERE PhotoID = " + id); 
+                }
+            }
+
+            return new ResponseItem(0, "");
+        }
+        #endregion
+
+        #region 根据ID批量显示相册
+        /// <summary>
+        /// 根据ID批量显示相册
+        /// </summary>
+        /// <param name="ids">相册ID集合，用英文逗号链接</param>
+        [HttpPut]
+        public ResponseItem ShowByIDs(String ids)
+        {
+            var IDs = ids.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var v in IDs)
+            {
+                long id = 0;
+
+                if (long.TryParse(v, out id))
+                {
+                    DB.Database.ExecuteSqlCommand("UPDATE yy_Photo SET IsShow = 1 WHERE ID = " + id);
+                }
+            }
+
+            return new ResponseItem(0, "");
+        }
+        #endregion
+
+        #region 根据ID批量隐藏相册
+        /// <summary>
+        /// 根据ID批量隐藏相册
+        /// </summary>
+        /// <param name="ids">相册ID集合，用英文逗号链接。</param>
+        [HttpPut]
+        public ResponseItem HideByIDs(String ids)
+        {
+            var IDs = ids.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var v in IDs)
+            {
+                long id = 0;
+
+                if (long.TryParse(v, out id))
+                {
+                    DB.Database.ExecuteSqlCommand("UPDATE yy_Photo SET IsShow = 0 WHERE ID = " + id);
+                }
+            }
+
+            return new ResponseItem(0, "");
+        }
+        #endregion
+    }
+}

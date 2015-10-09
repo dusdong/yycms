@@ -1,0 +1,401 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="SpiderCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li class="active">蜘蛛列表</li>
+                    <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+                <table class="table ListTable helpStep1">
+                    <tbody>
+                        <tr>
+                            <td width="140px">
+                                <div class="btn-group">
+                                    <a href="Add" class="btn btn-success">新增蜘蛛</a>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="" data-toggle="modal" data-target="#myModal"><i class="fa fa-shirtsinbulk"></i> 导入蜘蛛脚本</a></li>
+                                        <li><a href="" ng-click="ICKAll()"><i class="fa fa-hand-paper-o"></i> 全选 / 反选</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="" ng-click="IDeleteByIDs()"><i class="icon_trash_alt"></i> 删除选中</a></li>
+                                        <li><a href="" ng-click="IShowByIDs()"><i class="fa fa-eye"></i> 显示选中</a></li>
+                                        <li><a href="" ng-click="IHideByIDs()"><i class="fa fa-eye-slash"></i> 隐藏选中</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td width="150px">
+                                <select class="form-control filterSelect" ng-model="Filter.TypeID" ng-change="IData_Get()">
+                                    <option value="0">查看全部</option>
+                                    <optgroup ng-repeat="d in Types" ng-if="d.PID==0" label="{{d.Name}}">
+                                        <option value="{{d.ID}}">全部</option>
+                                        <option value="{{dd.ID}}" ng-repeat="dd in Types" ng-if="dd.PID==d.ID">{{dd.Name}}</option>
+                                    </optgroup>
+                                </select>
+                            </td>
+
+                            <td>
+                                <div class="input-group">
+                                    <span ng-if="Filter.Title!=null" ng-click="Filter.Title=null" class="clearBtn animated bounceIn" data-icon="Q"></span>
+                                    <input type="text" ng-keypress="OnEnterPress($event);" class="form-control" placeholder="输入蜘蛛标题..." ng-model="Filter.Title" />
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="input-group" style="display:none;">
+                                    <div class="input-group-addon">时间</div>
+                                    <input type="date" class="form-control" ng-model="Filter.StartTime" />
+                                    <div class="input-group-addon">至</div>
+                                    <input type="date" class="form-control" ng-model="Filter.EndTime" />
+                                </div>
+                            </td>
+                            <td width="130px">
+                                <filter-btn></filter-btn>
+                            </td>
+                            <td width="90px">
+                                <table-pager-top></table-pager-top>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <loading></loading>
+                <table id="MainTable" ng-if="loading==false&&Pager.Data.length>0" ng-class="{fadeIn:loading==false}" class="table table-bordered table-striped table-hover animated helpStep2">
+                    <thead>
+                        <tr>
+                            <th width="40px"><input type="checkbox" ng-click="ICKAll()" ng-checked="ckAll==true" /></th>
+                            <th ng-repeat="d in TableHeads" ng-click="Filter.OrderBy=d.Name;Filter.IsDesc=!Filter.IsDesc;IData_Get();">
+                                {{d.Title}}
+                                <i ng-if="Filter.IsDesc==true&&Filter.OrderBy==d.Name" class="arrow_carrot-up"></i>
+                                <i ng-if="Filter.IsDesc!=true||Filter.OrderBy!=d.Name" class="arrow_carrot-down"></i>
+                            </th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in Pager.Data" ng-class="{warning:d.IsShow!=1}">
+                            <td><input type="checkbox" value="{{d.ID}}" class="EntityItem" ng-checked="ckAll==true" /></td>
+                            <td>{{$index+1}}</td>
+                            <td title="关键词：{{d.KeyWords}}">
+                            {{d.Title}}
+                            </td>
+                            <td>{{d.Quality}}</td>
+                            <td>{{d.LookCount}}</td>
+                            <td>{{d.LastStartTime.replace("T"," ").substr(0,10)}}</td>
+                            <td>
+                                <span ng-if="d.Status==1"><i class="tip fa fa-circle-o-notch fa-spin" title="执行中"></i> 执行中..</span>
+                                <a ng-if="d.IsShow==1" href="" ng-click="IHide(d)" class="tip" title="禁用"><i class="fa fa-eye-slash"></i></a>
+                                <a ng-if="d.IsShow==0" href="" ng-click="IShow(d)" class="tip" title="启用"><i class="fa fa-eye"></i></a>
+                                <a ng-if="d.Status!=1" href="edit/{{d.ID}}" class="tip" title="编辑"><i class="icon_pencil"></i></a>
+                                <a ng-if="d.Status!=1" href="" ng-click="ConfirmDelete(d.ID)" class="tip" title="删除"><i class="icon_trash_alt"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table-pager class="helpStep3"></table-pager>
+                <dialog-delete></dialog-delete>
+            </div>
+        </div>
+
+        <div class="modal fade bs-example-modal-sm" id="myModal">
+            <div class="modal-dialog" style="width:400px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">导入蜘蛛</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="ImportDataForm" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">蜘蛛文件</label>
+                                <div class="col-sm-9">
+                                    <a id="pickfiles" href="" class="btn btn-default"><i class="icon_folder-add_alt"></i> 点击选择</a>
+                                    <span class="help-block">选择你要上传的蜘蛛脚本。</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <div id="filelist"></div>
+                                    <div id="console"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Permission" class="col-sm-3 control-label">所属分类</label>
+                                <div class="col-sm-9">
+                                    <span class="help-block">&nbsp;当前蜘蛛的对应的新闻分类。</span>
+                                    <ul id="NewsTypeTree" class="ztree" style="margin-top: 0; width: 180px;"></ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-success" id="SubmitImportFormBtn">确认上传</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<link href="/Scripts/ZTree/zTreeStyle.css" rel="stylesheet" />
+<script src="/Scripts/ZTree/jquery.ztree.all-3.5.min.js"></script>
+<script src="/Scripts/plupload/plupload.full.min.js"></script>
+<script type="text/javascript">
+    var ZTreeObject = null;
+    function ZTree_Init(nodes)
+    {
+        var nodeArr = new Array();
+        for (var i = 0; i < nodes.length; i++)
+        {
+            nodeArr.push({ id: nodes[i].ID, pId: nodes[i].PID, name: nodes[i].Name, open: false, nocheck: false });
+        }
+        ZTreeObject = $.fn.zTree.init($("#NewsTypeTree"),
+            {
+                view: {selectedMulti: true },
+                edit: { enable: false, editNameSelectAll: true },
+                data: { simpleData: { enable: true } },
+                check: { enable: true, chkboxType: { "Y": "ps", "N": "ps" } }
+            }, nodeArr);
+        //ZTreeObject.expandAll(true);
+    }
+
+    angular.module("app").controller("SpiderCtrl", function ($location, $scope, API_Spider) {
+
+        $scope.ckAll=false;
+        $scope.ICKAll=function()
+        {
+            $scope.ckAll=!$scope.ckAll;
+        };
+
+        $scope.TableHeads = [
+            { Title: "编号", Name: "ID" },
+            { Title: "蜘蛛名称", Name: "Title" },
+            { Title: "质量", Name: "Quality" },
+            { Title: "流量", Name: "TargetPlatforms" },
+            { Title: "最后执行时间", Name: "LastStartTime" }
+        ];
+
+        $scope.IHelp=function()
+        {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress:false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      element: '.helpStep1',
+                      intro: "<p>1，您可以新增、批量隐藏、显示蜘蛛。</p><p>2，选择蜘蛛分类、输入标题筛选蜘蛛。</p><p>3，查询、打印、导出、翻页蜘蛛列表。</p>"
+                  },
+                  {
+                      element: '.helpStep2',
+                      intro: "<p>1，点击表格头部可以正/反排序。</p><p>2，可以设置每一篇蜘蛛显示、隐藏、修改、删除。</p>",
+                      position: 'left'
+                  },
+                  {
+                      element: '.helpStep3',
+                      intro: '<p>1，点击可以进行分页。</p><p>2，查看数据总条数、总页数。</p>',
+                      position: 'top'
+                  }
+                ]
+            });
+            intro.start();
+        };
+        $scope.Pager = { PageIndex: 0, PageSize: 20 };
+        $scope.Filter = { IsDesc: true, OrderBy: "ID" };
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_Spider.Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.Title,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc,
+                $scope.Filter.TypeID).then(function (r) {
+                    $scope.loading = false;
+                    NProgress.done();
+                    $scope.Pager = r;
+                    $scope.Pager.PageRange = APP.Range(r.PageCount);
+                    setTimeout(function () { $(".tip").tooltip(); }, 500);
+
+                });
+        }
+        $scope.Types = @MvcHtmlString.Create(ViewBag.Types);
+        $scope.ConfirmDelete = function (id) {
+            $scope.DeleteID = id;
+            $("#DeleteConfirmModal").modal("show");
+        }
+        $scope.IDelete = function () {
+            $("#DeleteConfirmModal").modal("hide");
+            API_Spider.Delete($scope.DeleteID).then(function () {  toastr.info('删除成功！'); $scope.IData_Get();});
+        }
+        $scope.OnEnterPress = function (evt) {
+            if (evt.keyCode == 13) {
+                $scope.IData_Get();
+            }
+        }
+        $scope.IHide = function (_news) {
+            _news.IsShow = 0;
+            API_Spider.ShowHide(_news).then(function () {
+                toastr.info('更新成功！');
+            });
+        }
+        $scope.IShow = function (_news) {
+            _news.IsShow = 1;
+            API_Spider.ShowHide(_news).then(function () { toastr.info('更新成功！');});
+        }
+        $scope.IDeleteByIDs=function()
+        {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+
+            if(cksIDs.length<1)
+            {  toastr.error('未选择任何蜘蛛。'); return;}
+
+            $scope.loading = true;
+            API_Spider.DeleteByIDs(cksIDs.join(",")).then(function ()
+            {
+                $scope.loading = false;
+                toastr.info('删除成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.IShowByIDs=function()
+        {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+            if(cksIDs.length<1)
+            {  toastr.error('未选择任何蜘蛛。'); return;}
+            $scope.loading = true;
+            API_Spider.ShowByIDs(cksIDs.join(",")).then(function ()
+            {
+                $scope.loading = false;
+                toastr.info('设置成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.IHideByIDs=function()
+        {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+            if(cksIDs.length<1)
+            {  toastr.error('未选择任何蜘蛛。'); return;}
+            $scope.loading = true;
+            API_Spider.HideByIDs(cksIDs.join(",")).then(function ()
+            {
+                $scope.loading = false;
+                toastr.info('设置成功！');
+                $scope.IData_Get();
+            });
+        }
+
+        $(function () {
+            var uploader = new plupload.Uploader({
+                runtimes: 'html5,flash,silverlight,html4',
+                browse_button: 'pickfiles',
+                multi_selection: false,
+                container: document.getElementById('ImportDataForm'),
+                url: '/api/Common/UploadCrawler',
+                flash_swf_url: '/lib/plupload/Moxie.swf',
+                silverlight_xap_url: '/lib/plupload/Moxie.xap',
+                filters: {
+                    max_file_size: '100mb',
+                    mime_types: [
+                        { title: "选择蜘蛛脚本", extensions : "json" }
+                    ]
+                },
+
+                init: {
+                    PostInit: function () {
+                        $('#filelist').html('');
+                        $('#SubmitImportFormBtn').click(function () {
+                            uploader.start();
+                        });
+                    },
+                    BeforeUpload: function (up, file) 
+                    {
+                        var pmsIDs = new Array();
+                        var ckdNodes = ZTreeObject.getCheckedNodes(true);
+                        for (var i = 0; i < ckdNodes.length; i++)
+                        {
+                            pmsIDs.push(ckdNodes[i].id);
+                        }
+                        var _typeids = pmsIDs.join(",");
+
+                        up.settings.multipart_params = 
+                            {
+                                typeids : _typeids
+                            };
+
+                        return true;
+                    },
+                    FilesAdded: function (up, files) {
+                        if (uploader.files.length > 1) {
+                            uploader.files.splice(0, 1);
+                            $("#filelist").empty();
+                        }
+
+                        plupload.each(files, function (file) {
+                            $('#filelist').append('<div id="' + file.id + '" class="alert alert-info"><button data-val="' + file.id + '" type="button" class="close">×</button>' + file.name + ' (' + plupload.formatSize(file.size) + ')<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" style="width:0%;"></div></div></div>');
+                        });
+                    },
+                    UploadProgress: function (up, file) {
+                        $("#" + file.id + " .progress-bar").css("width", file.percent + "%").html(file.percent + "%");
+
+                        if (file.percent >= 100) {
+                            $("#" + file.id + " .progress-bar").html('<i class="fa fa-refresh fa-spin"></i> 正在分析数据，请稍等...');
+                        }
+                    },
+                    Error: function (up, err)
+                    {
+                        $('#console').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>错误代码：' + err.code + '，错误信息：' + err.message + '</div');
+                    },
+                    UploadComplete: function (){},
+                    FileUploaded: function (uploader, file, responseObject)
+                    {
+                        var resobj = JSON.parse(responseObject.response);
+                        if (resobj.code == 0)
+                        {
+                            $("#myModal").modal("hide");
+                            toastr.info('导入蜘蛛成功！');
+                            $scope.IData_Get();
+                        }
+                        else
+                        {
+                            toastr.error(resobj.msg);
+                        }
+                        $("#filelist").empty();
+                        $("#myModal").modal("hide");
+                    }
+                }
+            });
+            uploader.init();
+            /*删除上传的文件*/
+            $(document).on('click', '#filelist button.close', function () {
+                $(this).parent().remove();
+                var id = $(this).attr("data-val");
+                for (var i in uploader.files) {
+                    if (uploader.files[i].id === id) {
+                        toremove = i;
+                    }
+                }
+                uploader.files.splice(toremove, 1);
+            });
+
+            ZTree_Init(@MvcHtmlString.Create(ViewBag.Types));
+        });
+    });
+</script>

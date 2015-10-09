@@ -1,0 +1,78 @@
+﻿@{
+    Layout = "~/Views/Shared/_loginlayout.cshtml";
+}
+<nav class="navbar navbar-fixed-top">
+    <a class="downloadChrome" href="http://dlsw.baidu.com/sw-search-sp/soft/9d/14744/ChromeStandalone_V43.0.2357.124_Setup.1433905898.exe" target="_blank" style="color: #F3D04D;">
+        友情提示：您必须使用谷歌浏览器访问本系统，如果未安装，请点击这里下载安装。
+    </a>
+</nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 login animated fadeInDown">
+                <div ng-controller="LoginCtrl">
+                    <blockquote ng-show="HasError<=0">
+                        您好，欢迎使用玥雅CMS v3.0！
+                    </blockquote>
+                    <blockquote ng-show="HasError>0">
+                        {{ErrorMsg}}
+                    </blockquote>
+                    <form ng-submit="SubmitForm()" class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">登陆账号</label>
+                            <div class="col-sm-8" style="padding-left:0px">
+                                <input type="text" id="LoginName" ng-model="User.LoginName" required class="form-control" />
+                                <span class="help-block">默认账号admin。</span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label">登陆密码</label>
+                            <div class="col-sm-8" style="padding-left:0px">
+                                <input type="password" id="Password" ng-model="User.Password" required class="form-control" />
+                                <span class="help-block">默认密码123456。</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-sm-6">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="Remember" ng-model="User.Remember" />下次自动登陆
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-sm-6">
+                                <input type="submit" value="登陆系统" class="btn btn-success btn-lg" ng-class="{disabled:Loading==true}" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+        <script type="text/javascript">
+    angular.module("app").controller("LoginCtrl", function ($location, $scope, API_User) {
+        $scope.Loading = false;
+        $scope.HasError = 0;
+        $scope.User = { LoginName: "admin", Password: "123456" };
+        $scope.SubmitForm = function () {
+            $scope.Loading = true;
+            if ($scope.User.Remember == undefined) {
+                $scope.User.Remember = false;
+            }
+            API_User.Login($scope.User).then(function (r) {
+                $scope.Loading = false;
+                $scope.HasError = r.Code;
+                $scope.ErrorMsg = r.Error;
+                if (r.Code == 0) {
+                    document.location.href = "/Admin/Index";
+                }
+            });
+        }
+    });
+        </script>

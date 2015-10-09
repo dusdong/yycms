@@ -1,0 +1,225 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="SinglePageIndexCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li class="active">单页列表</li>
+                   <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+                <table class="table ListTable helpStep1">
+                    <tbody>
+                        <tr>
+                            <td width="140px">
+                                <div class="btn-group">
+                                    <a href="Add" class="btn btn-success">新增单页</a>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="" ng-click="ICKAll()"><i class="fa fa-hand-paper-o"></i> 全选 / 反选</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="javascript:void(0)" ng-click="IDeleteByIDs()"><i class="icon_trash_alt"></i> 删除选中</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="IShowByIDs()"><i class="fa fa-eye"></i> 显示选中</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="IHideByIDs()"><i class="fa fa-eye-slash"></i> 隐藏选中</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="input-group">
+                                    <a ng-if="Filter.Title!=null" ng-click="Filter.Title=null" class="clearBtn animated bounceIn" data-icon="Q"></a>
+                                    <input type="text" ng-keypress="OnEnterPress($event);" class="form-control" placeholder="输入单页标题..." ng-model="Filter.Title" />
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="input-group" style="display:none;">
+                                    <div class="input-group-addon">时间</div>
+                                    <input type="date" class="form-control" ng-model="Filter.StartTime" />
+                                    <div class="input-group-addon">至</div>
+                                    <input type="date" class="form-control" ng-model="Filter.EndTime" />
+                                </div>
+                            </td>
+                            <td width="130px">
+                                <filter-btn></filter-btn>
+                            </td>
+                            <td width="90px">
+                                <table-pager-top></table-pager-top>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <loading></loading>
+                <table id="MainTable" ng-if="loading==false&&Pager.Data.length>0" ng-class="{fadeIn:loading==false}" class="table table-bordered table-striped table-hover animated helpStep2">
+                    <thead>
+                        <tr>
+                            <th width="40px"><input type="checkbox" ng-click="ICKAll()" ng-checked="ckAll==true" /></th>
+                            <th ng-repeat="d in TableHeads" ng-click="Filter.OrderBy=d.Name;Filter.IsDesc=!Filter.IsDesc;IData_Get();">
+                                {{d.Title}}
+                                <i ng-if="Filter.IsDesc==true&&Filter.OrderBy==d.Name" class="arrow_carrot-up"></i>
+                                <i ng-if="Filter.IsDesc!=true||Filter.OrderBy!=d.Name" class="arrow_carrot-down"></i>
+                            </th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in Pager.Data" ng-class="{warning:d.IsShow!=1}">
+                            <td><input type="checkbox" value="{{d.ID}}" class="EntityItem" ng-checked="ckAll==true" /></td>
+                            <td>{{$index+1}}</td>
+                            <td title="关键词：{{d.KeyWords}}">{{d.Title}}</td>
+                            <td>{{d.LookCount}}</td>
+                            <td>{{d.CreateDate.replace("T"," ").substr(0,10)}}</td>
+                            <td>
+                                <a ng-if="d.IsShow==1" href="javascript:void(0)" ng-click="IHide(d)" class="tip" title="隐藏"><i class="fa fa-eye-slash"></i></a>
+                                <a ng-if="d.IsShow==0" href="javascript:void(0)" ng-click="IShow(d)" class="tip" title="显示"><i class="fa fa-eye"></i></a>
+                                <a href="edit/{{d.ID}}" class="tip" title="编辑"><i class="icon_pencil"></i></a>
+                                <a href="javascript:void(0)" ng-click="ConfirmDelete(d.ID)" class="tip" title="删除"><i class="icon_trash_alt"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table-pager class="helpStep3"></table-pager>
+                <dialog-delete></dialog-delete>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    angular.module("app").controller("SinglePageIndexCtrl", function ($location, $scope, API_SinglePage) {
+        $scope.ckAll = false;
+        $scope.ICKAll = function () {
+            $scope.ckAll = !$scope.ckAll;
+        };
+
+        $scope.TableHeads = [
+            { Title: "编号", Name: "ID" },
+            { Title: "标题", Name: "Title" },
+            { Title: "浏览次数", Name: "LookCount" },
+            { Title: "创建时间", Name: "CreateDate" }
+        ];
+
+        $scope.IHelp=function()
+        {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress:false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      element: '.helpStep1',
+                      intro: "<p>单页用于存储数据，供模板页面调用。</p><p>1，您可以新增、批量隐藏、显示单页。</p><p>2，选择单页分类、输入标题筛选单页。</p><p>3，查询、打印、导出、翻页单页列表。</p>"
+                  },
+                  {
+                      element: '.helpStep2',
+                      intro: "<p>1，点击表格头部可以正/反排序。</p><p>2，可以设置每一篇单页显示、隐藏、修改、删除。</p>",
+                      position: 'left'
+                  },
+                  {
+                      element: '.helpStep3',
+                      intro: '<p>1，点击可以进行分页。</p><p>2，查看数据总条数、总页数。</p>',
+                      position: 'top'
+                  }
+                ]
+            });
+            intro.start();
+        };
+        $scope.Pager = { PageIndex: 0, PageSize: 20 };
+        $scope.Filter = { IsDesc: true, OrderBy: "ID" };
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_SinglePage.Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.Title,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc,
+                $scope.Filter.TypeID).then(function (r) {
+                    $scope.loading = false;
+                    NProgress.done();
+                    $scope.Pager = r;
+                    $scope.Pager.PageRange = APP.Range(r.PageCount);
+                    setTimeout(function () { $(".tip").tooltip(); }, 500);
+
+                });
+        }
+        $scope.ConfirmDelete = function (id) {
+            $scope.DeleteID = id;
+            $("#DeleteConfirmModal").modal("show");
+        }
+        $scope.IDelete = function () {
+            $("#DeleteConfirmModal").modal("hide");
+            API_SinglePage.Delete($scope.DeleteID).then(function () {  toastr.info('删除成功！'); $scope.IData_Get();});
+        }
+        $scope.OnEnterPress = function (evt) {
+            if (evt.keyCode == 13) {
+                $scope.IData_Get();
+            }
+        }
+        $scope.IHide = function (_news) {
+            _news.IsShow = 0;
+            API_SinglePage.ShowHide(_news).then(function () {
+                toastr.info('更新成功！');
+            });
+        }
+        $scope.IShow = function (_news) {
+            _news.IsShow = 1;
+            API_SinglePage.ShowHide(_news).then(function () { toastr.info('更新成功！');});
+        }
+        $scope.IDeleteByIDs=function()
+        {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+
+            if(cksIDs.length<1)
+            {  toastr.error('未选择任何单页。'); return;}
+
+            $scope.loading = true;
+            API_SinglePage.DeleteByIDs(cksIDs.join(",")).then(function () 
+            {
+                $scope.loading = false;
+                toastr.info('删除成功！'); 
+                $scope.IData_Get();
+            });
+        }
+        $scope.IShowByIDs=function()
+        {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+            if(cksIDs.length<1)
+            {  toastr.error('未选择任何单页。'); return;}
+            $scope.loading = true;
+            API_SinglePage.ShowByIDs(cksIDs.join(",")).then(function () 
+            {
+                $scope.loading = false;
+                toastr.info('设置成功！'); 
+                $scope.IData_Get();
+            });
+        }
+        $scope.IHideByIDs=function()
+        {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+            if(cksIDs.length<1)
+            {  toastr.error('未选择任何单页。'); return;}
+            $scope.loading = true;
+            API_SinglePage.HideByIDs(cksIDs.join(",")).then(function () 
+            {
+                $scope.loading = false;
+                toastr.info('设置成功！'); 
+                $scope.IData_Get();
+            });
+        }
+    });
+</script>

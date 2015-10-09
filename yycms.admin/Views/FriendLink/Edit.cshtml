@@ -1,0 +1,274 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="FriendLinkEditCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li><a href="/FriendLink">友链列表</a></li>
+        <li class="active">修改友链</li>
+    </ol>
+    <br />
+    <form name="myForm" ng-submit="SubmitForm(myForm.$valid)" class="form-horizontal" role="form" novalidate>
+        <ul class="nav nav-tabs" ng-init="TabIndex=0">
+            <li role="presentation" ng-class="{active:TabIndex==0}"><a href="javascript:void(0)" ng-click="TabIndex=0"><i class="fa fa-user"></i> 基础信息</a></li>
+            <li role="presentation" ng-class="{active:TabIndex==1}"><a href="javascript:void(0)" ng-click="TabIndex=1"><i class="fa fa-weixin"></i> 内容详情</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane" ng-class="{active:TabIndex==0}">
+                <div class="col-md-6 animated fadeInRight">
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.Title.$valid,'has-error':myForm.Title.$invalid&&myForm.Title.$dirty}">
+                        <label class="col-sm-2 control-label">站点名称</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="Title"
+                                   id="Title"
+                                   ng-model="Entity.Title" required class="form-control" />
+                            <span class="help-block">站点名称。</span>
+                            <span ng-if="myForm.Title.$valid&&!myForm.Title.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.Title.$invalid&&!myForm.Title.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.KeyWords.$valid,'has-error':myForm.KeyWords.$invalid&&myForm.KeyWords.$dirty}">
+                        <label class="col-sm-2 control-label">关键字</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="KeyWords"
+                                   id="KeyWords"
+                                   ng-model="Entity.KeyWords" required class="form-control" />
+                            <span class="help-block">关键字。</span>
+                            <span ng-if="myForm.KeyWords.$valid&&!myForm.KeyWords.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.KeyWords.$invalid&&!myForm.KeyWords.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.Summary.$valid,'has-error':myForm.Summary.$invalid&&myForm.Summary.$dirty}">
+                        <label class="col-sm-2 control-label">站点描述</label>
+                        <div class="col-sm-10">
+                            <textarea name="Summary"
+                                      id="Summary"
+                                      ng-model="Entity.Summary" required class="form-control"></textarea>
+                            <span class="help-block">站点描述。</span>
+                            <span ng-if="myForm.Summary.$valid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.Summary.$invalid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.SiteUrl.$valid,'has-error':myForm.SiteUrl.$invalid&&myForm.SiteUrl.$dirty}">
+                        <label class="col-sm-2 control-label">站点网址</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="SiteUrl"
+                                   id="SiteUrl"
+                                   ng-model="Entity.SiteUrl" required class="form-control" />
+                            <span class="help-block">站点网址。</span>
+                            <span ng-if="myForm.SiteUrl.$valid&&!myForm.SiteUrl.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.SiteUrl.$invalid&&!myForm.SiteUrl.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-init="Photo_List=[]">
+                        <label for="HeadImgUrl" class="col-sm-2 control-label">站点图标</label>
+                        <div class="col-sm-10" id="ImportDataForm">
+                            <div id="SuperSlideShow">
+                                <a id="UploadButton" href="" class="btn btn-default"><i class="icon_plus"></i> 选择图片</a>
+                            </div>
+                            <span class="help-block">站点图标将在首页显示。</span>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10" ng-show="Photo_List.length>0" style="margin-top:15px;">
+                            <div id="filelist"></div>
+                            <div id="console"></div>
+                            <div id="MechantLogos" class="carousel slide" data-ride="carousel" style="border:solid 1px #ccc; padding:20px;">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#MechantLogos" ng-repeat="d in Photo_List" data-slide-to="{{$index}}" ng-class="{active:$index==0}"></li>
+                                </ol>
+                                <div class="carousel-inner" role="listbox" style="text-align:center;">
+                                    <div class="item" ng-repeat="d in Photo_List" ng-class="{active:$index==0}">
+                                        <img class="img-circle" src="{{d}}" width="140" height="140" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.ShowIndex.$valid,'has-error':myForm.ShowIndex.$invalid&&myForm.ShowIndex.$dirty}">
+                        <label class="col-sm-2 control-label">展示位置</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="ShowIndex"
+                                   id="ShowIndex"
+                                   ng-model="Entity.ShowIndex" required class="form-control" />
+                            <span class="help-block">前台显示的位置</span>
+                            <span ng-if="myForm.ShowIndex.$valid&&!myForm.ShowIndex.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.ShowIndex.$invalid&&!myForm.ShowIndex.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.Score.$valid,'has-error':myForm.Score.$invalid&&myForm.Score.$dirty}">
+                        <label class="col-sm-2 control-label">站点评分</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="Score"
+                                   id="Score"
+                                   ng-model="Entity.Score" required class="form-control" />
+                            <span class="help-block">站点评分。</span>
+                            <span ng-if="myForm.Score.$valid&&!myForm.Score.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.Score.$invalid&&!myForm.Score.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.IsShow.$valid,'has-error':myForm.IsShow.$invalid&&myForm.IsShow.$dirty}">
+                        <label class="col-sm-2 control-label">是否显示</label>
+                        <div class="col-sm-10" ng-init='IsShow_Prop=[{ID:1,Name:"显示",Desc:""},{ID:0,Name:"隐藏",Desc:""}]'>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a class="btn btn-default"
+                                   ng-repeat="d in IsShow_Prop"
+                                   ng-class="{active:Entity.IsShow==d.ID}"
+                                   ng-click="Entity.IsShow=d.ID">
+                                    {{d.Name}}
+                                </a>
+                                <input type="hidden" name="IsShow" ng-model="Entity.IsShow" required />
+                            </div>
+                            <span class="help-block">该友链是否投放到前台</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.CanReply.$valid,'has-error':myForm.CanReply.$invalid&&myForm.CanReply.$dirty}">
+                        <label class="col-sm-2 control-label">开启评论</label>
+                        <div class="col-sm-10" ng-init='CanReply_Prop=[{ID:1,Name:"开启",Desc:""},{ID:0,Name:"关闭",Desc:""}]'>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a class="btn btn-default"
+                                   ng-repeat="d in CanReply_Prop"
+                                   ng-class="{active:Entity.CanReply==d.ID}"
+                                   ng-click="Entity.CanReply=d.ID">
+                                    {{d.Name}}
+                                </a>
+                                <input type="hidden" name="CanReply" ng-model="Entity.CanReply" required />
+                            </div>
+                            <span class="help-block">该友链是否接受评论</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6 animated fadeInLeft">
+                </div>
+            </div>
+            <div class="tab-pane" ng-class="{active:TabIndex==1}">
+                <script type="text/plain" id="editor" class="animated fadeInRight">
+                </script>
+            </div>
+        </div>
+        <submit-btn></submit-btn>
+    </form>
+</div>
+<script src="/Scripts/plupload/plupload.full.min.js"></script>
+<script src="/ueditor/ueditor.config.js"></script>
+<script src="/ueditor/ueditor.all.min.js"></script>
+<script src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+    angular.module("app").controller("FriendLinkEditCtrl", function ($location, $scope, API_FriendLink)
+    {
+        $scope.Entity = {};
+        $scope.OnSubmit = false;
+        $scope.SubmitForm = function (isValid)
+        {
+            if (!isValid) { toastr.error('验证失败'); return; }
+            var newsInfo = UE.getEditor("editor").getContent();
+            if ($scope.Photo_List.length < 1) { toastr.error('请上传友链图片。'); return; }
+            if (newsInfo == "" || newsInfo == undefined) { toastr.error('请填写新闻详情。'); return; }
+
+            $scope.Entity.DefaultImg = $scope.Photo_List[0];
+            $scope.Entity.UserID = APP.User.ID;
+            $scope.Entity.Info = newsInfo;
+            $scope.Entity.CreateDate = new Date();
+
+            $scope.OnSubmit = true;
+            API_FriendLink.Post($scope.Entity).then(function (r)
+            {
+                $scope.OnSubmit = false;
+                if(r.code==0)
+                {
+                    toastr.success('添加成功！');
+                    window.document.location.href="/FriendLink";
+                }
+                else
+                {
+                    toastr.error(r.Msg);
+                }
+            });
+        };
+
+        var InitUpload = function () {
+            var uploader = new plupload.Uploader({
+                runtimes: 'html5,flash,silverlight,html4',
+                browse_button: 'UploadButton',
+                multi_selection: true,
+                container: document.getElementById('ImportDataForm'),
+                url: '/api/Common/Upload',
+                flash_swf_url: '/scripts/plupload/Moxie.swf',
+                silverlight_xap_url: '/scripts/plupload/Moxie.xap',
+                filters: {
+                    max_file_size: '10mb',
+                    mime_types: [
+                         { title: "Image files", extensions: "jpg,gif,png" },
+                    ]
+                },
+                init: {
+                    PostInit: function () {
+                        $('#filelist').html('');
+                    },
+                    FilesAdded: function (up, files) {
+                        plupload.each(files, function (file) {
+                            $('#filelist').append('<div id="' + file.id + '" class="alert alert-info"><button data-val="' + file.id + '" type="button" class="close">×</button>' + file.name + ' (' + plupload.formatSize(file.size) + ')<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" style="width:0%;"></div></div></div>');
+                        });
+                        uploader.start();
+                    },
+                    UploadProgress: function (up, file) {
+                        $("#" + file.id + " .progress-bar").css("width", file.percent + "%").html(file.percent + "%");
+                        if (file.percent >= 100) {
+                            $("#" + file.id + " .progress-bar").html('正在上传图片，请稍等...');
+                        }
+                    },
+                    Error: function (up, err) {
+                        $('#console').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>错误代码：' + err.code + '，错误信息：' + err.message + '</div');
+                    },
+                    UploadComplete: function (up, files) {
+                        toastr.info('上传图片成功！');
+                        uploader.files.splice(0, uploader.files.length);
+                        $("#filelist").empty();
+                    },
+                    FileUploaded: function (up, files, res) {
+                        $scope.Photo_List = new Array();
+                        $scope.Photo_List.push(res.response.substr(1, res.response.length - 2));
+                        $scope.$apply();
+                    }
+                }
+            });
+
+            uploader.init();
+        }
+
+        API_FriendLink.Detail(@Html.ViewContext.RouteData.Values["id"]).then(function (r)
+        {
+            $scope.Entity = r;
+            $scope.Photo_List = new Array();
+            $scope.Photo_List.push(r.DefaultImg);
+            var ue = UE.getEditor("editor");
+            ue.ready(function () {
+                ue.setContent(r.Info);
+            });
+        });
+
+        $(function(){
+            $(".demoTip").popover({ placement: "top", trigger: "hover" });
+            InitUpload();
+            UE.getEditor("editor");
+        });
+    });
+</script>

@@ -1,0 +1,355 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="UserAddCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li><a href="/User">用户列表</a></li>
+        <li class="active">新增用户</li>
+    </ol>
+    <br />
+    <form name="myForm" ng-submit="SubmitForm(myForm.$valid)" class="form-horizontal" role="form" novalidate>
+       
+         <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            新增用户成功后，再次编辑该用户即可对接微信、支付宝、微博等其他平台。
+        </div>
+
+
+        <div class="col-md-6 animated fadeInRight">
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.UserName.$valid,'has-error':myForm.UserName.$invalid&&myForm.UserName.$dirty}">
+                <label for="UserName" class="col-sm-2 control-label">登陆账号</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="UserName"
+                           id="UserName"
+                           ng-model="User.UserName"
+                           ng-pattern="/^[A-Za-z0-9_]{5,12}$/"
+                           required class="form-control" />
+                    <span class="help-block">登陆账号，由5至12位数字和字母组成。</span>
+                    <span ng-if="myForm.UserName.$valid&&!myForm.UserName.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.UserName.$invalid&&!myForm.UserName.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.UserPwd.$valid,'has-error':myForm.UserPwd.$invalid&&myForm.UserPwd.$dirty}">
+                <label for="UserPwd" class="col-sm-2 control-label">登陆密码</label>
+                <div class="col-sm-10">
+                    <input type="password"
+                           name="UserPwd"
+                           id="UserPwd"
+                           ng-model="User.UserPwd"
+                           ng-pattern="/^[A-Za-z0-9_]{6,12}$/"
+                           required
+                           class="form-control" />
+                    <span class="help-block">登陆密码，由6至12位数字和字母组成。</span>
+                    <span ng-if="myForm.UserPwd.$valid&&!myForm.UserPwd.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.UserPwd.$invalid&&!myForm.UserPwd.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.Role.$valid,'has-error':myForm.Role.$invalid&&myForm.Role.$dirty}">
+                <label for="Role" class="col-sm-2 control-label">用户角色</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a class="btn btn-default"
+                           ng-repeat="d in Roles"
+                           ng-class="{active:User.Role==d.ID}"
+                           ng-click="User.Role=d.ID">
+                            {{d.Name}}
+                        </a>
+                        <input type="hidden"
+                               name="Role"
+                               ng-pattern="/^[0-9]{1,12}$/"
+                               ng-model="User.Role"
+                               required="" />
+                    </div>
+
+                    <span class="help-block animated fadeIn"
+                          ng-if="User.Role==d.ID"
+                          ng-repeat="d in Roles">{{d.Desc}}</span>
+
+                    <span class="help-block" ng-if="User.Role==null">设置当前用户的角色。</span>
+                </div>
+            </div>
+
+            <div class="form-group" ng-init="Photo_List=[]">
+                <label for="HeadImgUrl" class="col-sm-2 control-label">用户头像</label>
+                <div class="col-sm-10" id="ImportDataForm">
+                    <div id="SuperSlideShow">
+                        <a id="UploadButton" href="" class="btn btn-default"><i class="icon_plus"></i> 选择图片</a>
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10" ng-show="Photo_List.length>0" style="margin-top:15px;">
+                    <div id="filelist"></div>
+                    <div id="console"></div>
+                    <div id="MechantLogos" class="carousel slide" data-ride="carousel" style="border:solid 1px #ccc; padding:20px;">
+                        <ol class="carousel-indicators">
+                            <li data-target="#MechantLogos" ng-repeat="d in Photo_List" data-slide-to="{{$index}}" ng-class="{active:$index==0}"></li>
+                        </ol>
+                        <div class="carousel-inner" role="listbox" style="text-align:center;">
+                            <div class="item" ng-repeat="d in Photo_List" ng-class="{active:$index==0}">
+                                <img class="img-circle" src="{{d}}" width="140" height="140" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.Gender.$valid,'has-error':myForm.Gender.$invalid&&myForm.Gender.$dirty}">
+                <label for="Gender" class="col-sm-2 control-label">用户性别</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a class="btn btn-default"
+                           ng-repeat="d in Genders"
+                           ng-class="{active:User.Gender==d.ID}"
+                           ng-click="User.Gender=d.ID">
+                            {{d.Name}}
+                        </a>
+                        <input type="hidden"
+                               name="Gender"
+                               ng-pattern="/^[0-9]{1,12}$/"
+                               ng-model="User.Gender"
+                               required="" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.LockFlag.$valid,'has-error':myForm.LockFlag.$invalid&&myForm.LockFlag.$dirty}">
+                <label for="LockFlag" class="col-sm-2 control-label">是否冻结</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a class="btn btn-default"
+                           ng-repeat="d in LockFlags"
+                           ng-class="{active:User.LockFlag==d.ID}"
+                           ng-click="User.LockFlag=d.ID">
+                            {{d.Name}}
+                        </a>
+                        <input type="hidden"
+                               name="LockFlag"
+                               ng-pattern="/^[0-9]{1,12}$/"
+                               ng-model="User.LockFlag"
+                               required="" />
+                    </div>
+                    <span class="help-block">冻结账号后将无法使用系统。</span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.Mobile.$valid,'has-error':myForm.Mobile.$invalid&&myForm.Mobile.$dirty}">
+                <label for="Mobile" class="col-sm-2 control-label">联系手机</label>
+                <div class="col-sm-10">
+                    <input type="tel"
+                           id="Mobile"
+                           name="Mobile"
+                           ng-model="User.Mobile"
+                           ng-pattern="/^[0-9-]{7,20}$/"
+                           required
+                           class="form-control" />
+                    <span class="help-block">联系手机或固定电话，7至20位。</span>
+                    <span ng-if="myForm.Mobile.$valid&&!myForm.Mobile.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.Mobile.$invalid&&!myForm.Mobile.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.Mail.$valid,'has-error':myForm.Mail.$invalid&&myForm.Mail.$dirty}">
+                <label for="Mail" class="col-sm-2 control-label">联系邮箱</label>
+                <div class="col-sm-10">
+                    <input type="email"
+                           id="Mail"
+                           name="Mail"
+                           ng-model="User.Mail"
+                           required
+                           class="form-control" />
+                    <span class="help-block">联系邮箱，用于接收系统通知。</span>
+                    <span ng-if="myForm.Mail.$valid&&!myForm.Mail.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.Mail.$invalid&&!myForm.Mail.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.ProvinceID.$valid&&myForm.CityID.$valid&&myForm.DistrictID.$valid,'has-error':(myForm.ProvinceID.$invalid||myForm.CityID.$invalid||myForm.DistrictID.$invalid)&&myForm.ProvinceID.$dirty}">
+                <label for="ProvinceID" class="col-sm-2 control-label">所在地址</label>
+                <div class="col-sm-10">
+                    <select id="ProvinceID"
+                            name="ProvinceID"
+                            class="form-control"
+                            ng-change="InitCity()"
+                            ng-model="User.ProvinceID"
+                            required>
+                        <option value="">-- 请选择 --</option>
+                        <option ng-repeat="d in Provinces" value="{{d.ID}}">{{d.Name}}</option>
+                    </select>
+
+                    <select id="CityID"
+                            name="CityID"
+                            ng-model="User.CityID"
+                            class="form-control"
+                            required>
+                        <option ng-selected="d.ID==User.CityID"
+                                ng-repeat="d in Citys"
+                                ng-if="d.ParentID == User.ProvinceID"
+                                value="{{d.ID}}">
+                            {{d.Name}}
+                        </option>
+                    </select>
+
+                    <select id="DistrictID"
+                            name="DistrictID"
+                            ng-model="User.DistrictID"
+                            class="form-control"
+                            required>
+                        <option ng-selected="d.ID==User.DistrictID"
+                                ng-repeat="d in Districts"
+                                ng-if="d.ParentID == User.CityID"
+                                value="{{d.ID}}">
+                            {{d.Name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.Address.$valid,'has-error':myForm.Address.$invalid&&myForm.Address.$dirty}">
+                <label for="Address" class="col-sm-2 control-label">详细地址</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="Address"
+                           id="Address"
+                           ng-model="User.Address"
+                           ng-pattern="/^.{1,}$/"
+                           required
+                           class="form-control" />
+                    <span ng-if="myForm.Address.$valid&&!myForm.Address.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.Address.$invalid&&!myForm.Address.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 animated fadeInLeft">
+            <div class="form-group">
+                <label for="Permission" class="col-sm-2 control-label">用户权限</label>
+                <div class="col-sm-10">
+                    <span class="help-block">&nbsp;当前账户的平台操作权限。</span>
+                    <ul id="PermissionTree" class="ztree" style="margin-top: 0; width: 180px;"></ul>
+                </div>
+            </div>
+        </div>
+        <submit-btn></submit-btn>
+</form>
+</div>
+<script src="/Scripts/plupload/plupload.full.min.js"></script>
+<link href="/Scripts/ZTree/zTreeStyle.css" rel="stylesheet" />
+<script src="/Scripts/ZTree/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript">
+    var ZTreeObject = null;
+    function ZTree_Init(nodes)
+    {
+        var nodeArr = new Array();
+        for (var i = 0; i < nodes.length; i++)
+        {
+            nodeArr.push({ id: nodes[i].ID, pId: nodes[i].PID, name: nodes[i].Name, open: false, nocheck: false });
+        }
+        ZTreeObject = $.fn.zTree.init($("#PermissionTree"),
+            {
+                view: {selectedMulti: true },
+                edit: { enable: false, editNameSelectAll: true },
+                data: { simpleData: { enable: true } },
+                check: { enable: true, chkboxType: { "Y": "ps", "N": "ps" } }
+            }, nodeArr);
+
+        ZTreeObject.expandAll(true);
+    }
+    angular.module("app").controller("UserAddCtrl", function ($location, $scope, API_User)
+    {
+        $scope.Provinces = Provinces;
+        $scope.Citys = Citys;
+        $scope.Districts = Districts;
+        $scope.Genders = [{ID:0,Name:'女士'},{ID:1,Name:'男士'}];
+        $scope.LockFlags = [{ID:1,Name:'正常'},{ID:0,Name:'冻结'}];
+        $scope.Roles =  @MvcHtmlString.Create(ViewBag.Roles);
+
+        $scope.OnSubmit = false;
+
+        $scope.SubmitForm = function (isValid) 
+        {
+            if (!isValid) { toastr.error('验证失败'); return; }
+            $scope.OnSubmit = true;
+            var pmsIDs = new Array();
+            var ckdNodes = ZTreeObject.getCheckedNodes(true);
+            for (var i = 0; i < ckdNodes.length; i++) {
+                pmsIDs.push(ckdNodes[i].id);
+            }
+            if (pmsIDs.length > 0) { $scope.User.Permission=pmsIDs.join(","); }
+            else{ $scope.User.Permission=""; }
+
+            $scope.User.CreateDate = new Date();
+            $scope.User.HeadImgUrl = "";
+            API_User.Post($scope.User).then(function (r) 
+            {
+                $scope.OnSubmit = false;
+                if(r.code==0)
+                {
+                    toastr.success('添加成功！');
+                    window.document.location.href="/User";
+                }
+                else
+                {
+                    toastr.error(r.Msg);
+                }
+            });
+        }; 
+        
+        var InitUpload = function () {
+            var uploader = new plupload.Uploader({
+                runtimes: 'html5,flash,silverlight,html4',
+                browse_button: 'UploadButton',
+                multi_selection: true,
+                container: document.getElementById('ImportDataForm'),
+                url: '/api/Common/Upload',
+                flash_swf_url: '/scripts/plupload/Moxie.swf',
+                silverlight_xap_url: '/scripts/plupload/Moxie.xap',
+                filters: {
+                    max_file_size: '10mb',
+                    mime_types: [
+                         { title: "Image files", extensions: "jpg,gif,png" },
+                    ]
+                },
+                init: {
+                    PostInit: function () {
+                        $('#filelist').html('');
+                    },
+                    FilesAdded: function (up, files) {
+                        plupload.each(files, function (file) {
+                            $('#filelist').append('<div id="' + file.id + '" class="alert alert-info"><button data-val="' + file.id + '" type="button" class="close">×</button>' + file.name + ' (' + plupload.formatSize(file.size) + ')<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" style="width:0%;"></div></div></div>');
+                        });
+                        uploader.start();
+                    },
+                    UploadProgress: function (up, file) {
+                        $("#" + file.id + " .progress-bar").css("width", file.percent + "%").html(file.percent + "%");
+                        if (file.percent >= 100) {
+                            $("#" + file.id + " .progress-bar").html('正在上传图片，请稍等...');
+                        }
+                    },
+                    Error: function (up, err) {
+                        $('#console').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>错误代码：' + err.code + '，错误信息：' + err.message + '</div');
+                    },
+                    UploadComplete: function (up, files) {
+                        toastr.info('上传图片成功！');
+                        uploader.files.splice(0, uploader.files.length);
+                        $("#filelist").empty();
+                    },
+                    FileUploaded: function (up, files, res) {
+                        $scope.Photo_List = new Array();
+                        $scope.Photo_List.push(res.response.substr(1, res.response.length - 2));
+                        $scope.User.HeadImgUrl = $scope.Photo_List[0];
+                        $scope.$apply();
+                    }
+                }
+            });
+
+            uploader.init();
+        }
+
+        $(function(){
+            ZTree_Init(@MvcHtmlString.Create(ViewBag.Permissions));
+            InitUpload();
+        });
+    });
+</script>

@@ -1,0 +1,249 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="NewsIndexCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li class="active">接口列表</li>
+                   <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+                <table class="table ListTable helpStep1">
+                    <tbody>
+                        <tr>
+                            <td width="140px">
+                                <div class="btn-group">
+                                    <a href="/News/Add" class="btn btn-success">新增新闻</a>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="" ng-click="ICKAll()"><i class="fa fa-hand-paper-o"></i> 全选 / 反选</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="javascript:void(0)" ng-click="IDeleteByIDs()"><i class="icon_trash_alt"></i> 删除选中</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="IShowByIDs()"><i class="fa fa-eye"></i> 显示选中</a></li>
+                                        <li><a href="javascript:void(0)" ng-click="IHideByIDs()"><i class="fa fa-eye-slash"></i> 隐藏选中</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="/News/Types"><i class="fa fa-list-ol"></i> 分类管理</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td width="150px">
+                                <select class="form-control filterSelect" ng-model="Filter.TypeID" ng-change="IData_Get()">
+                                    <option value="0">查看全部</option>
+                                    <optgroup ng-repeat="d in Types" ng-if="d.PID==0" label="{{d.Name}}">
+                                        <option value="{{d.ID}}">全部</option>
+                                        <option value="{{dd.ID}}" ng-repeat="dd in Types" ng-if="dd.PID==d.ID">{{dd.Name}}</option>
+                                    </optgroup>
+                                </select>
+                            </td>
+
+                            <td>
+                                <div class="input-group">
+                                    <a ng-if="Filter.Title!=null" ng-click="Filter.Title=null" class="clearBtn animated bounceIn" data-icon="Q"></a>
+                                    <input type="text" ng-keypress="OnEnterPress($event);" class="form-control" placeholder="输入新闻标题..." ng-model="Filter.Title" />
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="input-group" style="display:none;">
+                                    <div class="input-group-addon">时间</div>
+                                    <input type="date" class="form-control" ng-model="Filter.StartTime" />
+                                    <div class="input-group-addon">至</div>
+                                    <input type="date" class="form-control" ng-model="Filter.EndTime" />
+                                </div>
+                            </td>
+                            <td width="130px">
+                                <filter-btn></filter-btn>
+                            </td>
+                            <td width="90px">
+                                <table-pager-top></table-pager-top>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <loading></loading>
+                <table id="MainTable" ng-if="loading==false&&Pager.Data.length>0" ng-class="{fadeIn:loading==false}" class="table table-bordered table-striped table-hover animated helpStep2">
+                    <thead>
+                        <tr>
+                            <th width="40px"><input type="checkbox" ng-click="ICKAll()" ng-checked="ckAll==true" /></th>
+                            <th ng-repeat="d in TableHeads" ng-click="Filter.OrderBy=d.Name;Filter.IsDesc=!Filter.IsDesc;IData_Get();">
+                                {{d.Title}}
+                                <i ng-if="Filter.IsDesc==true&&Filter.OrderBy==d.Name" class="arrow_carrot-up"></i>
+                                <i ng-if="Filter.IsDesc!=true||Filter.OrderBy!=d.Name" class="arrow_carrot-down"></i>
+                            </th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in Pager.Data" ng-class="{warning:d.IsShow!=1}">
+                            <td><input type="checkbox" value="{{d.ID}}" class="EntityItem" ng-checked="ckAll==true" /></td>
+                            <td>{{$index+1}}</td>
+                            <td title="关键词：{{d.KeyWords}}">{{d.Title}}</td>
+                            <td>{{d.LookCount}}</td>
+                            <td>{{d.CreateDate.replace("T"," ").substr(0,10)}}</td>
+                            <td>
+                                <a ng-if="d.IsShow==1" href="javascript:void(0)" ng-click="IHide(d)" class="tip" title="隐藏"><i class="fa fa-eye-slash"></i></a>
+                                <a ng-if="d.IsShow==0" href="javascript:void(0)" ng-click="IShow(d)" class="tip" title="显示"><i class="fa fa-eye"></i></a>
+                                <a href="edit/{{d.ID}}" class="tip" title="编辑"><i class="icon_pencil"></i></a>
+                                <a href="javascript:void(0)" ng-click="ConfirmDelete(d.ID)" class="tip" title="删除"><i class="icon_trash_alt"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table-pager class="helpStep3"></table-pager>
+                <dialog-delete></dialog-delete>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    angular.module("app").controller("NewsIndexCtrl", function ($location, $scope, API_News) {
+        $scope.ckAll=false;
+        $scope.ICKAll=function()
+        {
+            $scope.ckAll=!$scope.ckAll;
+        };
+
+        $scope.ckAll=false;
+        $scope.ICKAll=function()
+        {
+            $scope.ckAll=!$scope.ckAll;
+        };
+
+
+        $scope.TableHeads = [
+            { Title: "编号", Name: "ID" },
+            { Title: "标题", Name: "Title" },
+            { Title: "浏览次数", Name: "LookCount" },
+            { Title: "创建时间", Name: "CreateDate" }
+        ];
+
+        $scope.IHelp=function()
+        {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress:false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: '<h4>新闻源</h4><p>新闻源是指符合百度、谷歌等搜索引擎种子新闻站的标准，站内信息第一时间被搜索引擎优先收录，且被网络媒体转载成为网络海量新闻的源头媒体。新闻源在网络领域内地位举足轻重，具有公信力与权威性，也是辐射传播至国内媒体网络的原点。</p><p>SEOER熟悉和掌握这些新闻源，也就掌握了第一手的信息资源，这些新闻源往往具有自己的博客，论坛，wiki，分类目录等，显然，与其他站点相比，这些资源也就具有一定的优势了，所以如果你细细观察，很多seoer都有自己的一些博客或者专栏，Donews,新浪，博客中国，和讯等成为seoer写博客的首选，这些站点也会采用一些会员的优秀文章，放在首页，等待搜索引擎robots来爬行。</p><p style="margin-bottom:0px;"><a href="http://baike.baidu.com/view/3976937.htm"  target="_blank" style="width: 99%;margin: 0px 0.5%;" class="btn btn-warning hvr-shadow-radial">查看详细说明</a></p>'
+                  },
+                  {
+                      position: 'bottom',
+                      element: '.helpStep1',
+                      intro: "<p>批量删除/显示/隐藏新闻，分类管理，根据分类筛选、查询、翻页操作栏。</p>"
+                  },
+                  {
+                      element: '.helpStep2',
+                      intro: "<p>新闻列表，您显示/隐藏，修改、删除单个新闻。</p>",
+                      position: 'top'
+                  },
+                  {
+                      element: '.helpStep3',
+                      intro: '<p>新闻数量统计，翻页操作。</p>',
+                      position: 'top'
+                  }
+                ]
+            });
+            intro.start();
+        };
+        $scope.Pager = { PageIndex: 0, PageSize: 20 };
+        $scope.Filter = { IsDesc: true, OrderBy: "ID" };
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_News.Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.Title,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc,
+                $scope.Filter.TypeID).then(function (r) {
+                    $scope.loading = false;
+                    NProgress.done();
+                    $scope.Pager = r;
+                    $scope.Pager.PageRange = APP.Range(r.PageCount);
+                    setTimeout(function () { $(".tip").tooltip(); }, 500);
+
+                });
+        }
+        $scope.Types = @MvcHtmlString.Create(ViewBag.Types);
+        $scope.ConfirmDelete = function (id) {
+            $scope.DeleteID = id;
+            $("#DeleteConfirmModal").modal("show");
+        }
+        $scope.IDelete = function () {
+            $("#DeleteConfirmModal").modal("hide");
+            API_News.Delete($scope.DeleteID).then(function () {  toastr.info('删除成功！'); $scope.IData_Get();});
+        }
+        $scope.OnEnterPress = function (evt) {
+            if (evt.keyCode == 13) {
+                $scope.IData_Get();
+            }
+        }
+        $scope.IHide = function (_news) {
+            _news.IsShow = 0;
+            API_News.ShowHide(_news).then(function () {
+                toastr.info('更新成功！');
+            });
+        }
+        $scope.IShow = function (_news) {
+            _news.IsShow = 1;
+            API_News.ShowHide(_news).then(function () { toastr.info('更新成功！');});
+        }
+        $scope.IDeleteByIDs=function()
+        {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+
+            if(cksIDs.length<1)
+            {  toastr.error('未选择任何新闻。'); return;}
+
+            $scope.loading = true;
+            API_News.DeleteByIDs(cksIDs.join(",")).then(function () 
+            {
+                $scope.loading = false;
+                toastr.info('删除成功！'); 
+                $scope.IData_Get();
+            });
+        }
+        $scope.IShowByIDs=function()
+        {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+            if(cksIDs.length<1)
+            {  toastr.error('未选择任何新闻。'); return;}
+            $scope.loading = true;
+            API_News.ShowByIDs(cksIDs.join(",")).then(function () 
+            {
+                $scope.loading = false;
+                toastr.info('设置成功！'); 
+                $scope.IData_Get();
+            });
+        }
+        $scope.IHideByIDs=function()
+        {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+            if(cksIDs.length<1)
+            {  toastr.error('未选择任何新闻。'); return;}
+            $scope.loading = true;
+            API_News.HideByIDs(cksIDs.join(",")).then(function () 
+            {
+                $scope.loading = false;
+                toastr.info('设置成功！'); 
+                $scope.IData_Get();
+            });
+        }
+    });
+</script>

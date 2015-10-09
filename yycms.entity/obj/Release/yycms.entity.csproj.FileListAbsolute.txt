@@ -1,0 +1,11 @@
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Release\yycms.entity.dll.config
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Release\yycms.entity.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Release\yycms.entity.pdb
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Release\EntityFramework.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Release\EntityFramework.SqlServer.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Release\EntityFramework.xml
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Release\EntityFramework.SqlServer.xml
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Release\zh-Hans\EntityFramework.resources.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\bin\Release\zh-Hans\EntityFramework.SqlServer.resources.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\obj\Release\yycms.entity.dll
+E:\yueyasoft\yycms.v3\WebApplication1\yycms.entity\obj\Release\yycms.entity.pdb

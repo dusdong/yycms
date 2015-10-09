@@ -1,0 +1,560 @@
+﻿@using Newtonsoft.Json
+@using yycms.entity
+@using yycms.admin.Models;
+
+@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="SiteSettingCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li class="active">基本设置</li>
+        <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+    </ol>
+    <br />
+    <form name="myForm" ng-submit="SubmitForm(myForm)" class="form-horizontal" role="form" novalidate>
+        <ul class="nav nav-tabs" ng-init="TabIndex=0">
+            <li role="presentation" ng-class="{active:TabIndex==0}"><a href="javascript:void(0)" ng-click="TabIndex=0">平台信息</a></li>
+            <li role="presentation" ng-class="{active:TabIndex==1}"><a href="javascript:void(0)" ng-click="TabIndex=1">邮件服务器</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane" ng-class="{active:TabIndex==0}">
+                <div class="col-md-6 animated fadeInRight" id="helpStep1">
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.SiteAddress.$valid,'has-error':myForm.SiteAddress.$invalid&&myForm.SiteAddress.$dirty}">
+                        <label class="col-sm-2 control-label">网站域名</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="SiteAddress"
+                                   id="SiteAddress"
+                                   ng-pattern="/^.{1,}$/"
+                                   ng-model="Entity.SiteAddress" class="form-control" />
+                            <span class="help-block">填域名即可。(开头无需加“http://”，结尾无需加“/”)</span>
+                            <span ng-if="myForm.SiteAddress.$valid&&!myForm.SiteAddress.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.SiteAddress.$invalid&&!myForm.SiteAddress.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.Email.$valid,'has-error':myForm.Email.$invalid&&myForm.Email.$dirty}">
+                        <label class="col-sm-2 control-label">联系邮箱</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="Email"
+                                   id="Email"
+                                   ng-pattern="/^.{1,}$/"
+                                   ng-model="Entity.Email" class="form-control" />
+                            <span class="help-block">用于接收系统通知。</span>
+                            <span ng-if="myForm.Email.$valid&&!myForm.Email.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.Email.$invalid&&!myForm.Email.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.EnabelWatermark.$valid,'has-error':myForm.EnabelWatermark.$invalid&&myForm.EnabelWatermark.$dirty}">
+                        <label class="col-sm-2 control-label">启用水印</label>
+                        <div class="col-sm-10" ng-init='IsShow_Prop=[{ID:1,Name:"启用",Desc:""},{ID:0,Name:"禁用",Desc:""}]'>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a class="btn btn-default"
+                                   ng-repeat="d in IsShow_Prop"
+                                   ng-class="{active:Entity.EnabelWatermark==d.ID}"
+                                   ng-click="Entity.EnabelWatermark=d.ID">
+                                    {{d.Name}}
+                                </a>
+                                <input type="hidden" name="EnabelWatermark" ng-model="Entity.EnabelWatermark" required />
+                            </div>
+                            <span class="help-block">系统上传图片时将自动加水印。</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">水印图片</label>
+                        <div class="col-sm-10" id="ImportDataForm">
+                            <div id="SuperSlideShow">
+                                <a id="UploadButton" href="" class="btn btn-default"><i class="icon_plus"></i> 选择图片</a>
+                            </div>
+                            <span class="help-block">水印图片将在首页显示。</span>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10" ng-show="Photo_List.length>0" style="margin-top:15px;">
+                            <div id="filelist"></div>
+                            <div id="console"></div>
+                            <div id="MechantLogos" class="carousel slide" data-ride="carousel" style="border:solid 1px #ccc; padding:20px;">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#MechantLogos" ng-repeat="d in Photo_List" data-slide-to="{{$index}}" ng-class="{active:$index==0}"></li>
+                                </ol>
+                                <div class="carousel-inner" role="listbox" style="text-align:center;">
+                                    <div class="item" ng-repeat="d in Photo_List" ng-class="{active:$index==0}">
+                                        <img class="img-circle" ng-src="{{d}}" width="140" height="140" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+                </div>
+                <div class="col-md-6 animated fadeInLeft" id="helpStep2">
+                    <div class="form-group">
+                        <label for="Permission" class="col-sm-2 control-label">菜单设置</label>
+                        <div class="col-sm-10">
+                            <span class="help-block">&nbsp;系统顶部的菜单。 <a href="" ng-click="ShowModal(0)"> + 菜单</a></span>
+                            <ul id="TypeTree" class="ztree" style="margin-top: 0; width: 180px;"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" ng-class="{active:TabIndex==1}">
+                <div class="col-md-6 animated fadeInRight" id="helpStep3">
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.MailServer.$valid,'has-error':myForm.MailServer.$invalid&&myForm.MailServer.$dirty}">
+                        <label class="col-sm-2 control-label">主机地址</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="MailServer"
+                                   id="MailServer"
+                                   ng-model="Entity.MailServer"
+                                   ng-pattern="/^.{1,}$/"
+                                   class="form-control" />
+                            <span class="help-block">邮件服务器的IP地址。</span>
+                            <span ng-if="myForm.MailServer.$valid&&!myForm.MailServer.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.MailServer.$invalid&&!myForm.MailServer.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.MailPort.$valid,'has-error':myForm.MailPort.$invalid&&myForm.MailPort.$dirty}">
+                        <label class="col-sm-2 control-label">主机端口</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="MailPort"
+                                   id="MailPort"
+                                   ng-model="Entity.MailPort"
+                                   ng-pattern="/^.{1,}$/"
+                                   class="form-control" />
+                            <span class="help-block">邮件服务器开放的端口号。</span>
+                            <span ng-if="myForm.MailPort.$valid&&!myForm.MailPort.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.MailPort.$invalid&&!myForm.MailPort.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.MailAccount.$valid,'has-error':myForm.MailAccount.$invalid&&myForm.MailAccount.$dirty}">
+                        <label class="col-sm-2 control-label">邮箱帐号</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="MailAccount"
+                                   id="MailAccount"
+                                   ng-model="Entity.MailAccount"
+                                   ng-pattern="/^.{1,}$/"
+                                   class="form-control" />
+                            <span class="help-block">发送通知的邮箱帐号。</span>
+                            <span ng-if="myForm.MailAccount.$valid&&!myForm.MailAccount.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.MailAccount.$invalid&&!myForm.MailAccount.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                         ng-class="{'has-success':myForm.MailPassword.$valid,'has-error':myForm.MailPassword.$invalid&&myForm.MailPassword.$dirty}">
+                        <label class="col-sm-2 control-label">邮箱密码</label>
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="MailPassword"
+                                   id="MailPassword"
+                                   ng-model="Entity.MailPassword"
+                                   ng-pattern="/^.{1,}$/"
+                                   class="form-control" />
+                            <span class="help-block">发送通知的邮箱密码。</span>
+                            <span ng-if="myForm.MailPassword.$valid&&!myForm.MailPassword.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                            <span ng-if="myForm.MailPassword.$invalid&&!myForm.MailPassword.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6 animated fadeInLeft" id="helpStep4">
+                    <div class="list-group-item">
+                        邮箱SMTP设置相关教程
+                    </div>
+                    <div class="list-group">
+                        <a href="http://jingyan.baidu.com/article/f71d60376ad4561ab641d1ec.html"
+                           target="_blank" class="list-group-item">1，QQ邮箱如何设置SMTP发邮件？</a>
+                        <a href="http://service.exmail.qq.com/cgi-bin/help?subtype=1&id=28&no=1000585"
+                           target="_blank" class="list-group-item">2，QQ企业邮箱设置SMTP发邮件</a>
+                        <a href="http://help.163.com/09/1223/14/5R7P3QI100753VB8.html"
+                           target="_blank" class="list-group-item">3，163邮箱设置SMTP发邮件</a>
+                        <a href="http://jingyan.baidu.com/article/59a015e3af0f10f7948865eb.html"
+                           target="_blank" class="list-group-item">4，新浪邮箱如何设置pop3和smtp服务</a>
+                        <a href="http://zhidao.baidu.com/link?url=5K-FIydpWfRuuLPAnw5OtVwOLIP-RpbBblwjtlx_1L7owUfK393EKKbVhBZJSBpZJFfj7wozBYMT9_LjxgbxNq"
+                           target="_blank" class="list-group-item">5，Google 邮箱的 POP、SMTP</a>
+                        <a href="http://www.serversmtp.com/en/smtp-yahoo"
+                           target="_blank" class="list-group-item">4，Yahoo 邮箱的SMTP配置</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+                <submit-btn></submit-btn>
+    </form>
+    <div class="modal fade bs-example-modal-sm" id="myModal">
+        <div class="modal-dialog" style="width:400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel"><span ng-if="!IsEdit">添加菜单</span><span ng-if="IsEdit">编辑菜单</span></h4>
+                </div>
+                <div class="modal-body">
+                    <form name="myForm2" class="form-horizontal" role="form" novalidate>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm2.Name.$valid,'has-error':myForm2.Name.$invalid&&myForm2.Name.$dirty}">
+                            <label class="col-sm-3 control-label">菜单名称</label>
+                            <div class="col-sm-8">
+                                <input type="text"
+                                       name="Name"
+                                       id="Name"
+                                       ng-model="Item.Name"
+                                       ng-pattern="/^.{2,12}$/"
+                                       required class="form-control" />
+                                <span class="help-block">菜单名称，由2至12字组成。</span>
+                                <span ng-if="myForm2.Name.$valid&&!myForm2.Name.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm2.Name.$invalid&&!myForm2.Name.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+                        
+
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm2.Url.$valid,'has-error':myForm2.Url.$invalid&&myForm2.Url.$dirty}">
+                            <label class="col-sm-3 control-label">菜单链接</label>
+                            <div class="col-sm-8">
+                                <input type="text"
+                                       name="Url"
+                                       id="Url"
+                                       ng-model="Item.Url" required class="form-control" />
+                                <span class="help-block">菜单链接的位置</span>
+                                <span ng-if="myForm2.Url.$valid&&!myForm2.Url.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm2.Url.$invalid&&!myForm2.Url.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm2.Target.$valid,'has-error':myForm2.Target.$invalid&&myForm2.Target.$dirty}">
+                            <label class="col-sm-3 control-label">跳转方式</label>
+                            <div class="col-sm-9">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a class="btn btn-default"
+                                       ng-repeat="d in [{ID:'_self',Name:'当前页'},{ID:'_blank',Name:'新页面'}]"
+                                       ng-class="{active:Item.Target==d.ID}"
+                                       ng-click="Item.Target=d.ID">
+                                        {{d.Name}}
+                                    </a>
+                                    <input type="hidden"
+                                           name="Target"
+                                           ng-pattern="/^[0-9]{1,12}$/"
+                                           ng-model="Item.Target"
+                                           required="" />
+                                </div>
+                                <span class="help-block">点击后页面的跳转方式。</span>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button ng-if="!IsEdit" type="button" class="btn btn-success" ng-click="Add();">确认提交</button>
+                    <button ng-if="IsEdit" type="button" class="btn btn-success" ng-click="Edit();">提交更新</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="/Scripts/ZTree/zTreeStyle.css" rel="stylesheet" />
+<script src="/Scripts/ZTree/jquery.ztree.all-3.5.min.js"></script>
+<script src="/Scripts/plupload/plupload.full.min.js"></script>
+<script type="text/javascript">
+    angular.module("app").controller("SiteSettingCtrl", function ($location, $scope, $timeout,API_Common)
+    {
+        $scope.Item={};
+        var ZTreeObject = $scope.ZTreeObject = null;
+        $scope.Entity = @MvcHtmlString.Create(JsonConvert.SerializeObject(ViewBag.SiteSetting));
+        $scope.Photo_List = [];
+        $scope.Photo_List.push($scope.Entity.Watermark);
+        var setting = {
+            view: {
+                nameIsHTML: true,
+                fontCss: function (treeId, node) { return node.font ? node.font : {}; },
+                addHoverDom: function (treeId, treeNode) {
+                    var sObj = $("#" + treeNode.tId + "_span");
+                    if (treeNode.editNameFlag || $("#addBtn_" + treeNode.id).length > 0) return;
+
+                    var editStr = "<span class='button edit' id='editBtn_" + treeNode.id + "' onfocus='this.blur();'></span>";
+                    sObj.after(editStr);
+                    var edit_btn = $("#editBtn_" + treeNode.id);
+                    if (edit_btn) {
+                        edit_btn.bind("click", function ()
+                        {
+                            $scope.IsEdit=true;
+                            $scope.ShowModal(treeNode.id,{
+                                ID:treeNode.id,
+                                PID:treeNode.parentTId,
+                                Name:treeNode.name,
+                                Url:treeNode.url,
+                                Target:treeNode.target});
+
+                            return false;
+                        });
+                    }
+
+                    var addStr = "<span class='button add' id='addBtn_" + treeNode.id + "' onfocus='this.blur();'></span>";
+                    sObj.after(addStr);
+
+                    var btn = $("#addBtn_" + treeNode.id);
+                    if (btn) {
+                        btn.bind("click", function () 
+                        {
+                            $scope.IsEdit=false;
+                            $scope.ShowModal(treeNode.id);
+                            return false;
+                        });
+                    }
+                },
+                removeHoverDom: function (treeId, treeNode) {
+                    var k = treeNode.id;
+                    $("#addBtn_" + k + ",#editBtn_" + k + ",#deleteBtn_" + k).unbind().remove();
+                },
+                selectedMulti: false
+            },
+            edit: { enable: true, editNameSelectAll: true, showRenameBtn: false },
+            data: { simpleData: { enable: true } },
+            check: { enable: false, chkboxType: { "Y": "ps", "N": "ps" } }
+        };
+
+        var ZTree_Init = $scope.ZTree_Init = function (nodes) 
+        {
+            if(nodes!=undefined)
+            {
+                var nodeArr = new Array();
+    
+                for (var i = 0; i < nodes.length; i++) 
+                {
+                    nodeArr.push({ id: nodes[i].ID, pId: nodes[i].PID, name: nodes[i].Name,
+                        open: false, nocheck: false,url:nodes[i].Url, 
+                        target:nodes[i].Target});
+                }
+
+                ZTreeObject = $.fn.zTree.init($("#TypeTree"),setting, nodeArr);
+
+                ZTreeObject.expandAll(true);
+            }
+            else
+            {
+                ZTreeObject = $.fn.zTree.init($("#TypeTree"),setting);
+            }
+        }
+
+        $scope.OnSubmit = false;
+
+        $scope.SubmitForm = function (isValid)
+        {
+            if (!isValid) { toastr.error('验证失败'); return; }
+
+            if ($scope.Photo_List.length < 1) { toastr.error('请上传水印图片。'); return; }
+           
+            var pmsIDs = new Array();
+            var ckdNodes = ZTreeObject.transformToArray(ZTreeObject.getNodes());
+            for (var i = 0; i < ckdNodes.length; i++) 
+            {
+                var n = ckdNodes[i];
+                pmsIDs.push({ ID: n.id, PID: (n.pId==null?0:n.pId), Name: n.name, Url:n.url, Target:n.target});
+            }
+            if (pmsIDs.length > 0) { $scope.Entity.SystemTopBar = JSON.stringify(pmsIDs); }
+            else { $scope.Entity.SystemTopBar = ""; }
+
+            $scope.OnSubmit = true;
+            $scope.Entity.Watermark = $scope.Photo_List[0];
+            $scope.Entity.CreateDate = new Date();
+            
+            API_Common.SiteConfig($scope.Entity).then(function (r)
+            {
+                $scope.OnSubmit = false;
+
+                if(r.code==0)
+                {
+                    toastr.success('设置成功！');
+                }
+                else
+                {
+                    toastr.error(r.Msg);
+                }
+            });
+        };
+
+        $scope.ShowModal = function (pid,node)
+        {
+            $timeout(function() {
+                if(node!=null)
+                {
+                    $scope.Item = node;
+                }
+                else
+                {
+                    $scope.Item = {PID:pid, Target:"_self",ID:new Date().getTime() };
+                }
+            },200);
+
+            $("#myModal").modal("show");
+        }
+
+        var InitUpload = function () {
+            var uploader = new plupload.Uploader({
+                runtimes: 'html5,flash,silverlight,html4',
+                browse_button: 'UploadButton',
+                multi_selection: true,
+                container: document.getElementById('ImportDataForm'),
+                url: '/api/Common/Upload',
+                flash_swf_url: '/scripts/plupload/Moxie.swf',
+                silverlight_xap_url: '/scripts/plupload/Moxie.xap',
+                filters: {
+                    max_file_size: '10mb',
+                    mime_types: [
+                         { title: "Image files", extensions: "jpg,gif,png" },
+                    ]
+                },
+                init: {
+                    PostInit: function () {
+                        $('#filelist').html('');
+                    },
+                    FilesAdded: function (up, files) {
+                        plupload.each(files, function (file) {
+                            $('#filelist').append('<div id="' + file.id + '" class="alert alert-info"><button data-val="' + file.id + '" type="button" class="close">×</button>' + file.name + ' (' + plupload.formatSize(file.size) + ')<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" style="width:0%;"></div></div></div>');
+                        });
+                        uploader.start();
+                    },
+                    UploadProgress: function (up, file) {
+                        $("#" + file.id + " .progress-bar").css("width", file.percent + "%").html(file.percent + "%");
+                        if (file.percent >= 100) {
+                            $("#" + file.id + " .progress-bar").html('正在上传图片，请稍等...');
+                        }
+                    },
+                    Error: function (up, err) {
+                        $('#console').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>错误代码：' + err.code + '，错误信息：' + err.message + '</div');
+                    },
+                    UploadComplete: function (up, files) {
+                        toastr.info('上传图片成功！');
+                        uploader.files.splice(0, uploader.files.length);
+                        $("#filelist").empty();
+                    },
+                    FileUploaded: function (up, files, res) {
+                        $scope.Photo_List = new Array();
+                        $scope.Photo_List.push(res.response.substr(1, res.response.length - 2));
+                        $scope.$apply();
+                    }
+                }
+            });
+            uploader.init();
+        }
+
+        $(function()
+        {
+            $(".demoTip").popover({ placement: "top", trigger: "hover" });
+            InitUpload();
+            var nodes = $scope.Entity.SystemTopBar;
+            if(nodes!=null){ nodes = eval(nodes); }
+            ZTree_Init(nodes);
+        });
+
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      position:"right",
+                      element: '#helpStep1',
+                      intro: "<p>平台的基本信息设置。</p>"
+                  },
+                  {
+                      position:"left",
+                      element: '#helpStep2',
+                      intro: "<p>后台顶部菜单设置。支持拖拽操作。</p>"
+                  },
+                  {
+                      position:"right",
+                      element: '#helpStep3',
+                      intro: '<p>邮件服务器设置，用于系统向用户发送邮件。</p>'
+                  },
+                  {
+                      position:"left",
+                      element: '#helpStep4',
+                      intro: '<p>只要有邮箱就能作为发送邮件的账号，具体设置可以参考这里的链接。</p>'
+                  }
+                ]
+            });
+
+            intro.onchange(function(targetElement) 
+            {
+                var atr = $(targetElement).attr("id");
+
+                if(atr=="helpStep3"||atr=="helpStep4")
+                {
+                    $scope.$apply(function(){$scope.TabIndex=1;});
+                }
+                else
+                {
+                    $scope.$apply(function(){$scope.TabIndex=0;});
+                }
+            });
+
+            intro.start();
+        };
+
+        $scope.Add = function()
+        {
+            if ($scope.Item.Name==undefined)
+            {
+                toastr.error('菜单名称不能为空。');
+                return;
+            }
+
+            if ($scope.Item.Url==undefined)
+            {
+                toastr.error('菜单链接不能为空。');
+                return;
+            }
+            
+            var parentZNode = ZTreeObject.getNodeByParam("id", $scope.Item.PID, null); 
+            
+            var n = $scope.Item;
+
+            ZTreeObject.addNodes(parentZNode,{ id: n.ID, pId: n.PID, name: n.Name, open: false, nocheck: false,url:n.Url,target:n.Target});
+
+            $("#myModal").modal("hide");
+        }
+
+        $scope.Edit = function () 
+        {
+            if ($scope.Item.Name==undefined)
+            {
+                toastr.error('菜单名称不能为空。');
+                return;
+            }
+
+            if ($scope.Item.Url==undefined)
+            {
+                toastr.error('菜单链接不能为空。');
+                return;
+            }
+            
+            var n = $scope.Item;
+            var currentNode = ZTreeObject.getNodeByParam("id", $scope.Item.ID, null); 
+            currentNode.name = n.Name;
+            currentNode.url = n.Url;
+            currentNode.target = n.Target;
+            ZTreeObject.updateNode(currentNode);
+            $("#myModal").modal("hide");
+        }
+    });
+</script>

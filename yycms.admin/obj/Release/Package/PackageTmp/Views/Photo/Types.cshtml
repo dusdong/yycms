@@ -1,0 +1,516 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="PhotoTypeCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li><a href="/Photo">相册列表</a></li>
+                    <li class="active">相册分类</li>
+                    <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+
+                <table class="table ListTable">
+                    <tbody>
+                        <tr>
+                            <td width="130px">
+                                <div class="btn-group">
+                                    <a href="" class="btn btn-success" ng-click="ShowModal(0)">添加分类</a>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="" ng-click="IDeleteByIDs()"><i class="icon_trash_alt"></i> 删除选中</a></li>
+                                        <li><a href="" ng-click="IShowByIDs()"><i class="fa fa-eye"></i> 显示选中</a></li>
+                                        <li><a href="" ng-click="IHideByIDs()"><i class="fa fa-eye-slash"></i> 隐藏选中</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td width="100px">
+                                <a href="" class="btn btn-success" ng-click="ICKAll()"><i class="fa fa-hand-paper-o"></i> 全选 / 反选</a>
+                            </td>
+                            <td width="100px">
+                                <a href="" class="btn btn-success" ng-click="OpenHideTree()"><i class="fa fa-code-fork"></i> 展开 / 折叠</a>
+                            </td>
+                            <td width="100px">
+                                <a class="btn btn-success" ng-click="IData_Get()"><i class="icon_search"></i> 查看全部</a>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr />
+                <div class="row">
+                    <div class="col-md-5 animated fadeInLeft">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">操作面板</h3>
+                            </div>
+                            <div class="panel-body">
+                                <ul id="tree" class="ztree" style="margin-top:0; width:180px;"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div ng-if="Entity.ID!=null&&!loading" class="panel panel-default animated fadeInDown">
+                            <div class="panel-body">
+                                <h4 style="margin-top: 0px;">分类详情</h4><hr />
+                                <p>分类编号：{{Entity.ID}}</p>
+                                <p>分类名称：{{Entity.Name}}</p>
+                                <p>分类描述：{{Entity.Summary}}</p>
+                                <p>分类图片：<br /><img style="width:100px; margin:10px;" src="{{Entity.Image}}" /></p>
+                                <p>是否显示：{{Entity.IsShow==1?"显示":"隐藏"}}</p>
+                                <p>展示位置：{{Entity.ShowIndex}}</p>
+                                <p>创建日期：{{Entity.CreateTime.replace("T"," ").substr(0,10)}}</p>
+                                <hr />
+                                <a href="" class="btn btn-default" ng-click="ShowModal(Entity.ID)"><i class=" icon_plus"></i> 添加子类</a>&nbsp;
+                                <a href="" class="btn btn-default" ng-click="EditItem(Entity.ID)"><i class="icon_pencil"></i> 编辑分类</a>&nbsp;
+                                <a href="" class="btn btn-default" ng-click="ConfirmDelete(Entity.ID)"><i class="icon_trash_alt"></i> 删除分类</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <dialog-delete></dialog-delete>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel"><span ng-if="!IsEdit">添加分类</span><span ng-if="IsEdit">编辑分类</span></h4>
+                </div>
+                <div class="modal-body">
+                    <form name="myForm" class="form-horizontal" role="form" novalidate>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.Name.$valid,'has-error':myForm.Name.$invalid&&myForm.Name.$dirty}">
+                            <label class="col-sm-2 control-label">分类名称</label>
+                            <div class="col-sm-9">
+                                <input type="text"
+                                       name="Name"
+                                       id="Name"
+                                       ng-model="Entity.Name"
+                                       ng-pattern="/^.{2,12}$/"
+                                       required class="form-control" />
+                                <span class="help-block">分类名称，由2至12字组成。</span>
+                                <span ng-if="myForm.Name.$valid&&!myForm.Name.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm.Name.$invalid&&!myForm.Name.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.Summary.$valid,'has-error':myForm.Summary.$invalid&&myForm.Summary.$dirty}">
+                            <label class="col-sm-2 control-label">分类描述</label>
+                            <div class="col-sm-9">
+                                <textarea id="Summary"
+                                          rows="3"
+                                          name="Summary"
+                                          ng-model="Entity.Summary"
+                                          ng-pattern="/^.{5,50}$/"
+                                          required
+                                          class="form-control"></textarea>
+                                <span class="help-block">分类描述，5至50个字。</span>
+                                <span ng-if="myForm.Summary.$valid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm.Summary.$invalid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-init="Photo_List=[]">
+                            <label for="HeadImgUrl" class="col-sm-2 control-label">分类图片</label>
+                            <div class="col-sm-9" id="ImportDataForm">
+                                <div id="SuperSlideShow">
+                                    <a id="UploadButton" href="" class="btn btn-default"><i class="icon_plus"></i> 选择图片</a>
+                                </div>
+                                <span class="help-block">分类图片即分类LOGO，在前台显示。</span>
+                            </div>
+                            <div class="col-sm-offset-2 col-sm-10" ng-show="Photo_List.length>0" style="margin-top:15px;">
+                                <div id="filelist"></div>
+                                <div id="console"></div>
+                                <div id="MechantLogos" class="carousel slide" data-ride="carousel" style="border:solid 1px #ccc; padding:20px;">
+                                    <ol class="carousel-indicators">
+                                        <li data-target="#MechantLogos" ng-repeat="d in Photo_List" data-slide-to="{{$index}}" ng-class="{active:$index==0}"></li>
+                                    </ol>
+                                    <div class="carousel-inner" role="listbox" style="text-align:center;">
+                                        <div class="item" ng-repeat="d in Photo_List" ng-class="{active:$index==0}">
+                                            <img class="img-circle" src="{{d}}" width="140" height="140" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.IsShow.$valid,'has-error':myForm.IsShow.$invalid&&myForm.IsShow.$dirty}">
+                            <label class="col-sm-2 control-label">是否显示</label>
+                            <div class="col-sm-9" ng-init='IsShow_Prop=[{ID:1,Name:"显示",Desc:""},{ID:0,Name:"隐藏",Desc:""}]'>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a class="btn btn-default"
+                                       ng-repeat="d in IsShow_Prop"
+                                       ng-class="{active:Entity.IsShow==d.ID}"
+                                       ng-click="Entity.IsShow=d.ID">
+                                        {{d.Name}}
+                                    </a>
+                                    <input type="hidden" name="IsShow" ng-model="Entity.IsShow" required />
+                                </div>
+                                <span class="help-block">该分类是否可用。</span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.ShowIndex.$valid,'has-error':myForm.ShowIndex.$invalid&&myForm.ShowIndex.$dirty}">
+                            <label class="col-sm-2 control-label">展示位置</label>
+                            <div class="col-sm-9">
+                                <input type="text"
+                                       name="ShowIndex"
+                                       id="ShowIndex"
+                                       ng-model="Entity.ShowIndex" required class="form-control" />
+                                <span class="help-block">前台显示的位置</span>
+                                <span ng-if="myForm.ShowIndex.$valid&&!myForm.ShowIndex.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm.ShowIndex.$invalid&&!myForm.ShowIndex.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button ng-if="!IsEdit" type="button" class="btn btn-success" ng-click="Add();">确认提交</button>
+                    <button ng-if="IsEdit" type="button" class="btn btn-success" ng-click="Edit();">提交更新</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<link href="/Scripts/ZTree/zTreeStyle.css" rel="stylesheet" />
+<script src="/Scripts/ZTree/jquery.ztree.all-3.5.min.js"></script>
+<script src="/Scripts/plupload/plupload.full.min.js"></script>
+<script type="text/javascript">
+    var ZTreeObject = null;
+    angular.module("app").controller("PhotoTypeCtrl", function ($location, $scope, API_PhotoType)
+    {
+        $scope.IsEdit = false;
+        $scope.PID = 0;
+        $scope.Entity = { IsShow: 1, CreateTime: new Date() };
+        $scope.IHelp=function()
+        {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress:false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      element: '.helpStep1',
+                      intro: "<p>1，您可以新增、批量隐藏、显示相册。</p><p>2，选择相册分类、输入标题筛选相册。</p><p>3，查询、打印、导出、翻页相册列表。</p>"
+                  },
+                  {
+                      element: '.helpStep2',
+                      intro: "<p>1，点击表格头部可以正/反排序。</p><p>2，可以设置每一篇相册显示、隐藏、修改、删除。</p>",
+                      position: 'left'
+                  },
+                  {
+                      element: '.helpStep3',
+                      intro: '<p>1，点击可以进行分页。</p><p>2，查看数据总条数、总页数。</p>',
+                      position: 'top'
+                  }
+                ]
+            });
+            intro.start();
+        };
+        var setting = {
+            view: {
+                nameIsHTML: true,
+                fontCss: function (treeId, node) { return node.font ? node.font : {}; },
+                addHoverDom: function (treeId, treeNode) {
+                    var sObj = $("#" + treeNode.tId + "_span");
+                    if (treeNode.editNameFlag || $("#addBtn_" + treeNode.id).length > 0) return;
+
+                    var editStr = "<span class='button edit' id='editBtn_" + treeNode.id + "' onfocus='this.blur();'></span>";
+                    sObj.after(editStr);
+                    var edit_btn = $("#editBtn_" + treeNode.id);
+                    if (edit_btn) {
+                        edit_btn.bind("click", function () {
+                            $scope.EditItem(treeNode.id);
+                            return false;
+                        });
+                    }
+
+                    var addStr = "<span class='button add' id='addBtn_" + treeNode.id + "' onfocus='this.blur();'></span>";
+                    sObj.after(addStr);
+
+                    var btn = $("#addBtn_" + treeNode.id);
+                    if (btn) {
+                        btn.bind("click", function () {
+                            $scope.ShowModal(treeNode.id);
+                            return false;
+                        });
+                    }
+                },
+                removeHoverDom: function (treeId, treeNode) {
+                    var k = treeNode.id;
+                    $("#addBtn_" + k + ",#editBtn_" + k + ",#deleteBtn_" + k).unbind().remove();
+                },
+                selectedMulti: false
+            },
+            edit: { enable: true, editNameSelectAll: true, showRenameBtn: false },
+            data: { simpleData: { enable: true } },
+            check: { enable: true, chkboxType: { "Y": "ps", "N": "ps" } },
+            callback:
+                {
+                    onClick: function (event, treeId, treeNode) {
+                        $scope.ShowItem(treeNode.id);
+                    },
+                    beforeRemove: function (treeId, treeNode) {
+                        $scope.ConfirmDelete(treeNode.id);
+                        return false;
+                    },
+                    onDrop: function (event, treeId, treeNodes, targetNode, moveType) {
+                        API_PhotoType.Put({
+                            ID: treeNodes[0].id,
+                            PID: (targetNode == null ? 0 : targetNode.id)
+                        }).then(function (r) {
+                            toastr.success('更新成功。');
+                        });
+                    }
+                }
+        };
+
+        $scope.OpenHckAllideFlag = true;
+        $scope.OpenHideTree = function()
+        {
+            if ($scope.OpenHideFlag)
+            {
+                ZTreeObject.expandAll(true);
+            }
+            else
+            {
+                ZTreeObject.expandAll(false);
+            }
+
+            $scope.OpenHideFlag = !$scope.OpenHideFlag;
+        }
+        $scope.ckAll = true;
+        $scope.ICKAll = function () {
+            if ($scope.ckAll) {
+                ZTreeObject.checkAllNodes(true);
+            }
+            else {
+                ZTreeObject.checkAllNodes(false);
+            }
+            $scope.ckAll = !$scope.ckAll;
+        }
+
+        $scope.ShowModal = function (pid)
+        {
+            $("#myModal").modal("show");
+            $scope.Photo_List = new Array();
+            $scope.IsEdit = false;
+            $scope.Entity = { IsShow: 1, CreateTime: new Date() };
+            $scope.PID = pid;
+            if (pid > 0) {
+                $scope.$apply();
+            }
+        }
+        $scope.Add = function()
+        {
+            if (!/^.{2,40}$/.test($scope.Entity.Name))
+            {
+                toastr.error('分类名称必须在1至40个字之内。');
+                return;
+            }
+
+            if ($scope.Photo_List.length < 1) { $scope.Entity.Image = ""; }
+            else { $scope.Entity.Image = $scope.Photo_List[0]; }
+            $scope.Entity.PID = $scope.PID;
+            $scope.Entity.CreateDate = new Date();
+            API_PhotoType.Post($scope.Entity).then(function (r)
+            {
+                $("#myModal").modal("hide");
+                toastr.success('添加成功。');
+                $scope.IData_Get();
+            });
+        }
+        $scope.Edit = function () {
+            if (!/^.{2,40}$/.test($scope.Entity.Name)) {
+                toastr.error('分类名称必须在1至40个字之内。');
+                return;
+            }
+            if ($scope.Photo_List.length < 1) { $scope.Entity.Image = ""; }
+            else { $scope.Entity.Image = $scope.Photo_List[0]; }
+
+            $scope.Entity.PID = $scope.PID;
+
+            API_PhotoType.Put($scope.Entity).then(function (r) {
+                $("#myModal").modal("hide");
+                toastr.success('更新成功。');
+                $scope.IData_Get();
+            });
+        }
+        $scope.Pager = { PageIndex: 0, PageSize: 9999 };
+        $scope.Filter = { IsDesc: true, OrderBy: "ID" };
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_PhotoType.Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc).then(function (r)
+                {
+                    NProgress.done();
+                    $scope.loading = false;
+                    $scope.Pager = r;
+                    var nodes = r.Data;
+                    var nodeArr = new Array();
+                    for (var i = 0; i < nodes.length; i++)
+                    {
+                        var color = nodes[i].IsShow == 1 ? "" : "red";
+
+                        nodeArr.push({
+                            font: { 'color': color },
+                            id: nodes[i].ID,
+                            pId: nodes[i].PID,
+                            name: nodes[i].Name,
+                            open: false,
+                            nocheck: false
+                        });
+                    }
+                    ZTreeObject = $.fn.zTree.init($("#tree"), setting, nodeArr);
+                });
+        }
+        $scope.IData_Get();
+        $scope.ConfirmDelete = function (id) {
+            $scope.DeleteID = id;
+            $("#DeleteConfirmModal").modal("show");
+        }
+        $scope.IDelete = function () {
+            $("#DeleteConfirmModal").modal("hide");
+            API_PhotoType.Delete($scope.DeleteID).then(function () { $scope.IData_Get(); toastr.info('删除成功！'); });
+        }
+        $scope.GetSelectedIDs = function ()
+        {
+            var pmsIDs = new Array();
+            var ckdNodes = ZTreeObject.getCheckedNodes(true);
+            for (var i = 0; i < ckdNodes.length; i++) {
+                pmsIDs.push(ckdNodes[i].id);
+            }
+            return pmsIDs;
+        }
+        $scope.IDeleteByIDs = function () {
+            var cksIDs = $scope.GetSelectedIDs();
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何分类。'); return; }
+
+            $scope.loading = true;
+            API_PhotoType.DeleteByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('删除成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.IShowByIDs = function () {
+            var cksIDs = $scope.GetSelectedIDs();
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何分类。'); return; }
+            $scope.loading = true;
+            API_PhotoType.ShowByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('设置成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.IHideByIDs = function () {
+            var cksIDs = $scope.GetSelectedIDs();
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何分类。'); return; }
+            $scope.loading = true;
+            API_PhotoType.HideByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('设置成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.EditItem = function (id)
+        {
+            API_PhotoType.Detail(id).then(function (r)
+            {
+                $scope.Entity = r;
+                $scope.PID = r.PID;
+                $scope.IsEdit = true;
+                $scope.Photo_List = new Array();
+                $scope.Photo_List.push(r.Image);
+                $("#myModal").modal("show");
+            });
+        }
+        $scope.ShowItem = function (id)
+        {
+            NProgress.start();
+            $scope.loading = true;
+            API_PhotoType.Detail(id).then(function (r)
+            {
+                NProgress.done();
+                $scope.loading = false;
+                $scope.Entity = r;
+                $scope.Photo_List = new Array();
+                $scope.Photo_List.push(r.Image);
+            });
+        }
+        var InitUpload = function () {
+            var uploader = new plupload.Uploader({
+                runtimes: 'html5,flash,silverlight,html4',
+                browse_button: 'UploadButton',
+                multi_selection: true,
+                container: document.getElementById('ImportDataForm'),
+                url: '/api/Common/Upload',
+                flash_swf_url: '/scripts/plupload/Moxie.swf',
+                silverlight_xap_url: '/scripts/plupload/Moxie.xap',
+                filters: {
+                    max_file_size: '10mb',
+                    mime_types: [
+                         { title: "Image files", extensions: "jpg,gif,png" },
+                    ]
+                },
+                init: {
+                    PostInit: function () {
+                        $('#filelist').html('');
+                    },
+                    FilesAdded: function (up, files) {
+                        plupload.each(files, function (file) {
+                            $('#filelist').append('<div id="' + file.id + '" class="alert alert-info"><button data-val="' + file.id + '" type="button" class="close">×</button>' + file.name + ' (' + plupload.formatSize(file.size) + ')<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" style="width:0%;"></div></div></div>');
+                        });
+                        uploader.start();
+                    },
+                    UploadProgress: function (up, file) {
+                        $("#" + file.id + " .progress-bar").css("width", file.percent + "%").html(file.percent + "%");
+                        if (file.percent >= 100) {
+                            $("#" + file.id + " .progress-bar").html('正在上传图片，请稍等...');
+                        }
+                    },
+                    Error: function (up, err) {
+                        $('#console').html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>错误代码：' + err.code + '，错误信息：' + err.message + '</div');
+                    },
+                    UploadComplete: function (up, files) {
+                        toastr.info('上传图片成功！');
+                        uploader.files.splice(0, uploader.files.length);
+                        $("#filelist").empty();
+                    },
+                    FileUploaded: function (up, files, res) {
+                        $scope.Photo_List = new Array();
+                        $scope.Photo_List.push(res.response.substr(1, res.response.length - 2));
+                        $scope.$apply();
+                    }
+                }
+            });
+
+            uploader.init();
+        }
+        $(function () {
+            InitUpload();
+        });
+    });
+</script>

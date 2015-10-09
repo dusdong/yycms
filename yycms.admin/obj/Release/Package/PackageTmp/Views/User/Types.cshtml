@@ -1,0 +1,513 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="UserTypeCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li><a href="/User">用户列表</a></li>
+                    <li class="active">用户分类</li>
+                    <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+                
+                <table class="table ListTable">
+                    <tbody>
+                        <tr>
+                            <td width="130px">
+                                <div class="btn-group">
+                                    <a href="" class="btn btn-success" ng-click="ShowModal(0)">添加分类</a>
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="" ng-click="IDeleteByIDs()"><i class="icon_trash_alt"></i> 删除选中</a></li>
+                                        <li><a href="" ng-click="IShowByIDs()"><i class="fa fa-eye"></i> 显示选中</a></li>
+                                        <li><a href="" ng-click="IHideByIDs()"><i class="fa fa-eye-slash"></i> 隐藏选中</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td width="100px">
+                                <a href="" class="btn btn-success" ng-click="ICKAll()"><i class="fa fa-hand-paper-o"></i> 全选 / 反选</a>
+                            </td>
+                            <td width="100px">
+                                <a href="" class="btn btn-success" ng-click="OpenHideTree()"><i class="fa fa-code-fork"></i> 展开 / 折叠</a>
+                            </td>
+                            <td width="100px">
+                                <a class="btn btn-success" ng-click="IData_Get()"><i class="icon_search"></i> 查看全部</a>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                        分类可以是公司/部门/角色等。用户权限 = 用户权限 + 分类权限。
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5 animated fadeInLeft">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">操作面板</h3>
+                            </div>
+                            <div class="panel-body">
+                                <ul id="tree" class="ztree" style="margin-top:0; width:180px;"></ul>
+                            </div>
+                        </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div ng-if="Entity.ID!=null&&!loading" class="panel panel-default animated fadeInDown">
+                                    <div class="panel-body">
+                                        <h4 style="margin-top: 0px;">分类详情</h4><hr />
+                                        <p>分类编号：{{Entity.ID}}</p>
+                                        <p>分类名称：{{Entity.Name}}</p>
+                                        <p>分类描述：{{Entity.Summary}}</p>
+                                        <div ng-if="Entity.Permission!=''">
+                                            <p>分类权限：</p>
+                                            <div style="clear: both;float: left;margin-bottom: 10px;">
+                                                <code ng-repeat="d in PermissionName" class="label label-success" style="margin:5px;display:block;float:left;">{{d}}</code>
+                                            </div>
+                                        </div>
+                                        <p style="clear:both;">是否显示：{{Entity.IsShow==1?"显示":"隐藏"}}</p>
+                                        <p>展示位置：{{Entity.ShowIndex}}</p>
+                                        <p>创建日期：{{Entity.CreateTime.replace("T"," ").substr(0,10)}}</p>
+                                        <hr />
+                                        <a href="" class="btn btn-default" ng-click="ShowModal(Entity.ID)"><i class=" icon_plus"></i> 添加子类</a>&nbsp;
+                                        <a href="" class="btn btn-default" ng-click="EditItem(Entity.ID)"><i class="icon_pencil"></i> 编辑分类</a>&nbsp;
+                                        <a href="" class="btn btn-default" ng-click="ConfirmDelete(Entity.ID)"><i class="icon_trash_alt"></i> 删除分类</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+    <dialog-delete></dialog-delete>
+    <div class="modal fade bs-example-modal-sm" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel"><span ng-if="!IsEdit">添加分类</span><span ng-if="IsEdit">编辑分类</span></h4>
+                </div>
+                <div class="modal-body">
+                    <form  name="myForm" class="form-horizontal" role="form" novalidate>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.Name.$valid,'has-error':myForm.Name.$invalid&&myForm.Name.$dirty}">
+                            <label class="col-sm-2 control-label">分类名称</label>
+                            <div class="col-sm-9">
+                                <input type="text"
+                                       name="Name"
+                                       id="Name"
+                                       ng-model="Entity.Name"
+                                       ng-pattern="/^.{2,12}$/"
+                                       required class="form-control" />
+                                <span class="help-block">分类名称，由2至12字组成。</span>
+                                <span ng-if="myForm.Name.$valid&&!myForm.Name.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm.Name.$invalid&&!myForm.Name.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.Summary.$valid,'has-error':myForm.Summary.$invalid&&myForm.Summary.$dirty}">
+                            <label class="col-sm-2 control-label">分类描述</label>
+                            <div class="col-sm-9">
+                                <textarea id="Summary"
+                                          rows="3"
+                                          name="Summary"
+                                          ng-model="Entity.Summary"
+                                          ng-pattern="/^.{5,50}$/"
+                                          required
+                                          class="form-control"></textarea>
+                                <span class="help-block">分类描述，5至50个字。</span>
+                                <span ng-if="myForm.Summary.$valid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm.Summary.$invalid&&!myForm.Summary.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.IsShow.$valid,'has-error':myForm.IsShow.$invalid&&myForm.IsShow.$dirty}">
+                            <label class="col-sm-2 control-label">是否显示</label>
+                            <div class="col-sm-9" ng-init='IsShow_Prop=[{ID:1,Name:"显示",Desc:""},{ID:0,Name:"隐藏",Desc:""}]'>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a class="btn btn-default"
+                                       ng-repeat="d in IsShow_Prop"
+                                       ng-class="{active:Entity.IsShow==d.ID}"
+                                       ng-click="Entity.IsShow=d.ID">
+                                        {{d.Name}}
+                                    </a>
+                                    <input type="hidden" name="IsShow" ng-model="Entity.IsShow" required />
+                                </div>
+                                <span class="help-block animated fadeIn"
+                                      ng-if="Entity.IsShow==d.ID"
+                                      ng-repeat="d in IsShow_Prop">{{d.Desc}}</span>
+                                <span class="help-block" ng-if="Entity.IsShow==null">该广告是否投放到前台</span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback"
+                             ng-class="{'has-success':myForm.ShowIndex.$valid,'has-error':myForm.ShowIndex.$invalid&&myForm.ShowIndex.$dirty}">
+                            <label class="col-sm-2 control-label">展示位置</label>
+                            <div class="col-sm-9">
+                                <input type="text"
+                                       name="ShowIndex"
+                                       id="ShowIndex"
+                                       ng-model="Entity.ShowIndex" required class="form-control" />
+                                <span class="help-block">前台显示的位置</span>
+                                <span ng-if="myForm.ShowIndex.$valid&&!myForm.ShowIndex.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span ng-if="myForm.ShowIndex.$invalid&&!myForm.ShowIndex.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Permission" class="col-sm-2 control-label">分配权限</label>
+                            <div class="col-sm-9">
+                                <span class="help-block">&nbsp;当前分类对应的权限。</span>
+                                <ul id="PermissionTree" class="ztree" style="margin-top: 0; width: 180px;"></ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button ng-if="!IsEdit" type="button" class="btn btn-success" ng-click="Add();">确认提交</button>
+                    <button ng-if="IsEdit" type="button" class="btn btn-success" ng-click="Edit();">提交更新</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<link href="/Scripts/ZTree/zTreeStyle.css" rel="stylesheet" />
+<script src="/Scripts/ZTree/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript">
+
+    var ZTreeObject = null;
+    var UserTypeTree = null;
+    function ZTree_Init(nodes) {
+        var nodeArr = new Array();
+        for (var i = 0; i < nodes.length; i++) {
+            nodeArr.push({ id: nodes[i].ID, pId: nodes[i].PID, name: nodes[i].Name, open: false, nocheck: false });
+        }
+        ZTreeObject = $.fn.zTree.init($("#PermissionTree"),
+            {
+                view: { selectedMulti: true },
+                edit: { enable: false, editNameSelectAll: true },
+                data: { simpleData: { enable: true } },
+                check: { enable: true, chkboxType: { "Y": "ps", "N": "ps" } }
+            }, nodeArr);
+
+        //ZTreeObject.expandAll(true);
+    }
+
+    angular.module("app").controller("UserTypeCtrl", function ($location, $scope, API_UserType)
+    {
+        $scope.PermissionName = new Array();
+        $scope.IsEdit = false;
+        $scope.PID = 0;
+        $scope.Entity = { IsShow: 1, CreateTime: new Date() };
+
+        $scope.OpenHckAllideFlag = true;
+        $scope.OpenHideTree = function()
+        {
+            if ($scope.OpenHideFlag)
+            {
+                UserTypeTree.expandAll(true);
+            }
+            else
+            {
+                UserTypeTree.expandAll(false);
+            }
+
+            $scope.OpenHideFlag = !$scope.OpenHideFlag;
+        }
+
+        $scope.ckAll = true;
+        $scope.ICKAll = function () {
+            if ($scope.ckAll) {
+                UserTypeTree.checkAllNodes(true);
+            }
+            else {
+                UserTypeTree.checkAllNodes(false);
+            }
+            $scope.ckAll = !$scope.ckAll;
+        }
+
+        var setting = {
+            view: {
+                nameIsHTML: true,
+                fontCss: function (treeId, node) { return node.font ? node.font : {}; },
+                addHoverDom: function (treeId, treeNode)
+                {
+                    var sObj = $("#" + treeNode.tId + "_span");
+                    if (treeNode.editNameFlag || $("#addBtn_" + treeNode.id).length > 0) return;
+
+                    var editStr = "<span class='button edit' id='editBtn_" + treeNode.id + "' onfocus='this.blur();'></span>";
+                    sObj.after(editStr);
+                    var edit_btn = $("#editBtn_" + treeNode.id);
+                    if (edit_btn)
+                    {
+                        edit_btn.bind("click", function ()
+                        {
+                            $scope.EditItem(treeNode.id);
+                            return false;
+                        });
+                    }
+
+                    var addStr = "<span class='button add' id='addBtn_" + treeNode.id + "' onfocus='this.blur();'></span>";
+                    sObj.after(addStr);
+
+                    var btn = $("#addBtn_" + treeNode.id);
+                    if (btn) {
+                        btn.bind("click", function ()
+                        {
+                            $scope.ShowModal(treeNode.id);
+                            return false;
+                        });
+                    }
+                },
+                removeHoverDom: function (treeId, treeNode)
+                {
+                    var k = treeNode.id;
+                    $("#addBtn_" + k + ",#editBtn_" + k + ",#deleteBtn_" + k).unbind().remove();
+                },
+                selectedMulti: false
+            },
+            edit: { enable: true, editNameSelectAll: true,showRenameBtn: false },
+            data: { simpleData: { enable: true } },
+            check: { enable: true, chkboxType: { "Y": "ps", "N": "ps" } },
+            callback:
+                {
+                    onClick: function (event, treeId, treeNode)
+                    {
+                        $scope.ShowItem(treeNode.id);
+                    },
+                    beforeRemove: function (treeId, treeNode)
+                    {
+                        $scope.ConfirmDelete(treeNode.id);
+                        return false;
+                    },
+                    onDrop: function (event, treeId, treeNodes, targetNode, moveType)
+                    {
+                        API_UserType.Put({
+                            ID: treeNodes[0].id,
+                            PID: (targetNode == null ? 0 : targetNode.id)
+                        }).then(function (r)
+                        {
+                            toastr.success('更新成功。');
+                        });
+                    }
+                }
+        };
+
+        $scope.ShowModal = function (pid)
+        {
+            $("#myModal").modal("show");
+            $scope.IsEdit = false;
+            $scope.Entity = { IsShow: 1, CreateTime: new Date() };
+            $scope.PID = pid;
+            if (pid > 0) {
+                $scope.$apply();
+            }
+        }
+
+        /*添加分类*/
+        $scope.Add = function()
+        {
+            if (!/^.{2,40}$/.test($scope.Entity.Name))
+            {
+                toastr.error('分类名称必须在1至40个字之内。');
+                return;
+            }
+
+            var pmsIDs = new Array();
+            var ckdNodes = ZTreeObject.getCheckedNodes(true);
+            for (var i = 0; i < ckdNodes.length; i++) {
+                pmsIDs.push(ckdNodes[i].id);
+            }
+            $scope.Entity.Permission = "," + pmsIDs.join(",") + ",";
+            if ($scope.Entity.Permission == ",,") { $scope.Entity.Permission = ""; }
+
+            $scope.Entity.PID = $scope.PID;
+
+            API_UserType.Post($scope.Entity).then(function (r)
+            {
+                $("#myModal").modal("hide");
+                toastr.success('添加成功。');
+                $scope.IData_Get();
+            });
+        }
+
+        /*修改分类*/
+        $scope.Edit = function () {
+            if (!/^.{2,40}$/.test($scope.Entity.Name)) {
+                toastr.error('分类名称必须在1至40个字之内。');
+                return;
+            }
+            var pmsIDs = new Array();
+            var ckdNodes = ZTreeObject.getCheckedNodes(true);
+            for (var i = 0; i < ckdNodes.length; i++) {
+                pmsIDs.push(ckdNodes[i].id);
+            }
+            $scope.Entity.Permission = "," + pmsIDs.join(",") + ",";
+            if ($scope.Entity.Permission == ",,") { $scope.Entity.Permission = ""; }
+
+            $scope.Entity.PID = $scope.PID;
+
+            API_UserType.Put($scope.Entity).then(function (r) {
+                $("#myModal").modal("hide");
+                toastr.success('更新成功。');
+                $scope.IData_Get();
+            });
+        }
+
+        /*查询*/
+        $scope.Pager = { PageIndex: 0, PageSize: 9999 };
+        $scope.Filter = { IsDesc: true, OrderBy: "ID" };
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_UserType.Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc).then(function (r)
+                {
+                    NProgress.done();
+                    $scope.loading = false;
+                    $scope.Pager = r;
+                    var nodes = r.Data;
+                    var nodeArr = new Array();
+                    for (var i = 0; i < nodes.length; i++)
+                    {
+                        var color = nodes[i].IsShow == 1 ? "" : "red";
+
+                        nodeArr.push({
+                            font: { 'color': color },
+                            id: nodes[i].ID,
+                            pId: nodes[i].PID,
+                            name: nodes[i].Name,
+                            open: false,
+                            nocheck: false
+                        });
+                    }
+                    UserTypeTree = $.fn.zTree.init($("#tree"), setting, nodeArr);
+                });
+        }
+        $scope.IData_Get();
+        $scope.ConfirmDelete = function (id) {
+            $scope.DeleteID = id;
+            $("#DeleteConfirmModal").modal("show");
+        }
+        $scope.IDelete = function () {
+            $("#DeleteConfirmModal").modal("hide");
+            API_UserType.Delete($scope.DeleteID).then(function () { $scope.IData_Get(); toastr.info('删除成功！'); });
+        }
+        $scope.GetSelectedIDs = function ()
+        {
+            var pmsIDs = new Array();
+            var ckdNodes = UserTypeTree.getCheckedNodes(true);
+            for (var i = 0; i < ckdNodes.length; i++) {
+                pmsIDs.push(ckdNodes[i].id);
+            }
+            return pmsIDs;
+        }
+        $scope.IDeleteByIDs = function () {
+            var cksIDs = $scope.GetSelectedIDs();
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何分类。'); return; }
+
+            $scope.loading = true;
+            API_UserType.DeleteByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('删除成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.IShowByIDs = function () {
+            var cksIDs = $scope.GetSelectedIDs();
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何分类。'); return; }
+            $scope.loading = true;
+            API_UserType.ShowByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('设置成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.IHideByIDs = function () {
+            var cksIDs = $scope.GetSelectedIDs();
+            if (cksIDs.length < 1)
+            { toastr.error('未选择任何分类。'); return; }
+            $scope.loading = true;
+            API_UserType.HideByIDs(cksIDs.join(",")).then(function () {
+                $scope.loading = false;
+                toastr.info('设置成功！');
+                $scope.IData_Get();
+            });
+        }
+        $scope.EditItem = function (id)
+        {
+            API_UserType.Detail(id).then(function (r)
+            {
+                $scope.Entity = r;
+                $scope.PID = r.PID;
+                $scope.IsEdit = true;
+                ZTreeObject.checkAllNodes(false);
+                var ckdIds = r.Permission.split(",");
+                if (ckdIds.length > 0) {
+                    for (var i = 0; i < ckdIds.length; i++) {
+                        var node = ZTreeObject.getNodeByParam("id", ckdIds[i], null);
+                        if (node == null) { continue; }
+                        ZTreeObject.checkNode(node);
+                    }
+                }
+
+                $("#myModal").modal("show");
+            });
+        }
+        $scope.ShowItem = function (id)
+        {
+            NProgress.start();
+            $scope.loading = true;
+            API_UserType.Detail(id).then(function (r)
+            {
+                NProgress.done();
+                $scope.loading = false;
+                $scope.Entity = r;
+                $scope.PermissionName = new Array();
+                var ckdIds = r.Permission.split(",");
+                if (ckdIds.length > 0) {
+                    for (var i = 0; i < ckdIds.length; i++) {
+                        var node = ZTreeObject.getNodeByParam("id", ckdIds[i], null);
+                        if (node == null) { continue; }
+                        $scope.PermissionName.push(node.name);
+                    }
+                }
+
+            });
+        }
+
+        $(function(){
+            ZTree_Init(@MvcHtmlString.Create(ViewBag.Permissions));
+        });
+
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: "<h4>用户分类</h4><p>1，支持无限分类、拖拽操作。</p><p>2，分类可以是公司、部门、职位、国家、地区、性别等等。</p><p>3，每个分类都可以分配系统权限，用户的权限 = 用户权限 + 分类权限。</p>"
+                  }
+                ]
+            });
+            intro.start();
+        };
+    });
+</script>

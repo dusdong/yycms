@@ -1,0 +1,21 @@
+﻿<div class="navbar navbar-inverse">
+    <div class="container" style="padding:0px 30px 0px 0px;">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="javascript:screenfull.request();">享搜运营中心</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <!--<ul class="nav navbar-nav">
+                <li>
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </li>
+            </ul>-->
+            <ul class="nav navbar-nav navbar-right" ng-if="PlatformUser.ID!=null">
+                <li><a href="#/index">系统首页</a></li>
+                <li><a href="javascript:void(0)">您好，{{PlatformUser.LoginName}}</a></li>
+                <li><a href="javascript:void(0)" ng-click="LoginOut()"><i class="fa fa-power-off"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>

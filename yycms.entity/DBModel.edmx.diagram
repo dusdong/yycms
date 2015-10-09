@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="811c7e70030e4c2da8998d81397764b4" Name="Diagram1" ZoomLevel="95">
+        <EntityTypeShape EntityType="DBModel.yy_Banner" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Banner_Type" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Fans_Wechat" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBModel.yy_FriendLink" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Keywords" Width="1.5" PointX="2.75" PointY="5.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Message" Width="1.5" PointX="4.75" PointY="5.75" />
+        <EntityTypeShape EntityType="DBModel.yy_News" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBModel.yy_News_Schedule" Width="1.5" PointX="6.75" PointY="6.75" />
+        <EntityTypeShape EntityType="DBModel.yy_News_Type" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Page" Width="1.5" PointX="8.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Page_Build_Config" Width="1.5" PointX="8.75" PointY="8.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Page_Build_Task" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Page_Type" Width="1.5" PointX="2.75" PointY="9.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Permission" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Permission_Type" Width="1.5" PointX="10.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Photo" Width="1.5" PointX="10.75" PointY="7.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Photo_Item" Width="1.5" PointX="4.75" PointY="11.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Photo_Type" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Platforms" Width="1.5" PointX="12.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Product" Width="1.5" PointX="6.75" PointY="12.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Product_Type" Width="1.5" PointX="8.75" PointY="12.75" />
+        <EntityTypeShape EntityType="DBModel.yy_RedPack" Width="1.5" PointX="10.75" PointY="12.75" />
+        <EntityTypeShape EntityType="DBModel.yy_RedPack_Order" Width="1.5" PointX="12.75" PointY="11.75" />
+        <EntityTypeShape EntityType="DBModel.yy_SinglePage" Width="1.5" PointX="14.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBModel.yy_SiteSetting" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Spider" Width="1.5" PointX="2.75" PointY="14.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Spider_Log" Width="1.5" PointX="14.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Spider_News" Width="1.5" PointX="14.75" PointY="7.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Statistics" Width="1.5" PointX="14.75" PointY="11.75" />
+        <EntityTypeShape EntityType="DBModel.yy_SynchronousTask" Width="1.5" PointX="14.75" PointY="14.75" />
+        <EntityTypeShape EntityType="DBModel.yy_SysError" Width="1.5" PointX="16.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBModel.yy_User" Width="1.5" PointX="16.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DBModel.yy_User_Type" Width="1.5" PointX="16.75" PointY="9.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Video" Width="1.5" PointX="16.75" PointY="13.75" />
+        <EntityTypeShape EntityType="DBModel.yy_Video_Type" Width="1.5" PointX="18.75" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

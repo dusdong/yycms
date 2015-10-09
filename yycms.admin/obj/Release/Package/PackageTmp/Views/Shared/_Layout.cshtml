@@ -1,0 +1,85 @@
+﻿@using Newtonsoft.Json
+@using yycms.entity;
+
+@{var crtPage = ViewBag.CurrentPage as yy_Permission;}<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <title>@crtPage.Name - 玥雅CMS</title>
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/js")
+    <script type="text/javascript" src="/signalr/hubs"></script>
+    <script type="text/javascript">
+      
+    APP.User =  @{
+                //当前用户
+                var User = ViewBag.User as yy_User;
+        if (User != null)
+        {
+                   @MvcHtmlString.Create(JsonConvert.SerializeObject(User));
+                }
+                else
+                {
+                    <text>{};</text>
+                }
+            }
+
+    angular.module("app").controller("GlobalCtrl", function ($location, $scope, API_User) {
+        $scope.PlatformUser = APP.User;
+        //当前访问页面分组ID
+        $scope.LaftBar_TypeID = @crtPage.TypeID;
+        //当前访问页面ID
+        $scope.LaftBar_PageID = @crtPage.ID;
+        
+        $scope.LoginOut = function () {
+            if (!confirm("是否确认退出系统？")) { return; }
+            API_User.LoginOut().then(function () {
+                document.location.href = "/Admin/Login";
+            });
+        };
+
+        /*监视分页组件的当前页，如果有变动就调用分页方法*/
+        $scope.$watch('Pager.PageIndex', function (newVal, oldVal)
+        {
+            if (newVal == undefined || oldVal == undefined) { return; }
+            $scope.IData_Get();
+        });
+
+        /*是新增页还是编辑页，用于返回按钮的路径判断*/
+        $scope.Flag_IsAddPage= isNaN(parseInt(location.href.substr(location.href.lastIndexOf("/")+1)));
+    });
+        
+        var chat = $.connection.globalHub;
+
+        $(function() 
+        {
+            chat.client.notify = function (code,msg)
+            {
+                if(code==1){toastr.success(msg);}
+                else if(code==2){toastr.warning(msg);}
+                else if(code==3){toastr.error(msg);}
+                else { toastr.info(msg); }
+            };
+
+            $.connection.hub.start();
+        });
+</script>
+</head>
+
+<body ng-cloak>
+    @RenderPage("~/Views/Shared/head.cshtml")
+    <div class="container">
+        <div id="page-wrapper">
+            @RenderBody()
+        </div>
+    </div>
+    <footer style="text-align: center;padding: 15px;">
+        <p>版权所有 &copy; @DateTime.Now.Year - 上海玥雅信息科技有限公司</p>
+    </footer>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+

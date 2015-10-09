@@ -1,0 +1,301 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="NewsIndexCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="/Admin/index">首页</a></li>
+                    <li><a href="/Page/Types">模板列表</a></li>
+                    <li class="active">生成进度</li>
+                    <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+                </ol>
+                <table class="table ListTable helpStep1">
+                    <tbody>
+                        <tr>
+                            <td width="140px">
+                                <a href="/Page/Progress/{{Filter.TypeID}}" class="btn btn-success">
+                                <i class="fa fa-search"></i> 
+                                查看生成进度
+                                </a>
+                            </td>
+                            <td></td>
+                            <td width="130px">
+                                <filter-btn></filter-btn>
+                            </td>
+                            <td width="90px">
+                                <table-pager-top></table-pager-top>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <loading></loading>
+                <table id="MainTable" ng-if="loading==false&&Pager.Data.length>0" ng-class="{fadeIn:loading==false}" class="table table-bordered table-striped table-hover animated helpStep2">
+                    <thead>
+                        <tr>
+                            <th width="40px" ng-init="ckAll=true"><input type="checkbox" ng-click="ckAll=!ckAll" ng-checked="ckAll==true" /></th>
+                            <th ng-repeat="d in TableHeads" ng-click="Filter.OrderBy=d.Name;Filter.IsDesc=!Filter.IsDesc;IData_Get();">
+                                {{d.Title}}
+                                <i ng-if="Filter.IsDesc==true&&Filter.OrderBy==d.Name" class="arrow_carrot-up"></i>
+                                <i ng-if="Filter.IsDesc!=true||Filter.OrderBy!=d.Name" class="arrow_carrot-down"></i>
+                            </th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in Pager.Data | orderBy:'BuildType':true">
+                            <td><input type="checkbox" value="{{d.ID}}" class="EntityItem" ng-checked="ckAll==true" /></td>
+                            <td>{{$index+1}}</td>
+                            <td>{{d.PageName}}</td>
+                            <td>{{d.SavePath}}/{{d.ExtensionName}}</td>
+                            <td>{{d.Summary}}</td>
+                            <td><a ng-if="d.BuildType>0&&d.BuildType<5" href="" class="tip" title="设置" ng-click="ShowConfig(d.BuildType,d.ID)"><i class="fa fa-cogs"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table-pager class="helpStep3"></table-pager>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="col-md-12 BtmLayer" id="BtmLayer">
+                            <button ng-if="loading==false" ng-click="AddTask()" class="btn btn-success btn-lg hvr-shadow-radial">
+                                <i class="icon_cloud-upload_alt"></i> 一键生成网站
+                            </button>
+                            <a href="" class="btn btn-success btn-lg disabled" ng-if="loading">正在生成，请您稍等...</a>
+                            &nbsp;
+                            <a href="/Page/Types" class="btn btn-default btn-lg hvr-shadow-radial">
+                                <i class="arrow_carrot-left"></i> 返回列表
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="modal fade bs-example-modal-sm" id="myModal">
+            <div class="modal-dialog" style="width:400px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">筛选{{CurrentBuildTypeName}}生成的数据</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            设置生成{{CurrentBuildTypeName}}的时间范围，以及所属类目。
+                        </div>
+
+                        <form name="myForm" class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">开始时间</label>
+                                <div class="col-sm-8">
+                                    <input type="text" 
+                                           id="StartTime" 
+                                           class="form-control form_datetime">
+                                    <span class="help-block">{{CurrentBuildTypeName}}的创建的最小时间。</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">结束时间</label>
+                                <div class="col-sm-8">
+                                    <input type="text"
+                                           id="EndTime"
+                                           class="form-control form_datetime">
+                                    <span class="help-block">{{CurrentBuildTypeName}}的创建的最大时间。</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Permission" class="col-sm-3 control-label">所属分类</label>
+                                <div class="col-sm-8">
+                                    <span class="help-block">&nbsp;当前{{CurrentBuildTypeName}}对应的分类。</span>
+                                    <ul id="DataFilterTree" class="ztree" style="margin-top: 0; width: 180px;"></ul>
+                                </div>
+                            </div>
+                            </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-success" ng-click="UpdateBuildConfig()">确认提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<script src="/Scripts/bootstrap-datetimepicker.min.js"></script>
+<link href="/Scripts/ZTree/zTreeStyle.css" rel="stylesheet" />
+<script src="/Scripts/ZTree/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript">
+    var Type_News = @MvcHtmlString.Create(ViewBag.Type_News);
+    var Type_Product = @MvcHtmlString.Create(ViewBag.Type_Product);
+    var Type_Photo = @MvcHtmlString.Create(ViewBag.Type_Photo);
+    var Type_Video = @MvcHtmlString.Create(ViewBag.Type_Video);
+
+    angular.module("app").controller("NewsIndexCtrl", function ($location, $scope, API_Page)
+    {
+        $(".form_datetime").datetimepicker({language:"zh-CN",format: 'yyyy-mm-dd hh:ii'});
+
+        $scope.FilterTree = null;
+
+        /*当前模板类型*/
+        $scope.CurrentBuildPage = null;
+        $scope.CurrentBuildType = null;
+        $scope.CurrentBuildTypeName = null;
+
+        $scope.FilterTree_Init=function(nodes)
+        {
+            var nodeArr = new Array();
+            for (var i = 0; i < nodes.length; i++)
+            {
+                nodeArr.push({ id: nodes[i].ID, pId: nodes[i].PID, name: nodes[i].Name, open: false, nocheck: false });
+            }
+            $scope.FilterTree = $.fn.zTree.init($("#DataFilterTree"),
+                {
+                    view: {selectedMulti: true },
+                    edit: { enable: false, editNameSelectAll: true },
+                    data: { simpleData: { enable: true } },
+                    check: { enable: true, chkboxType: { "Y": "ps", "N": "ps" } }
+                }, nodeArr);
+
+            $scope.FilterTree.expandAll(true);
+        };
+
+        $scope.ShowConfig=function(t,pid)
+        {
+            $scope.CurrentBuildType = t;
+            $scope.CurrentBuildPage = pid;
+
+            if(t==1)
+            {
+                $scope.FilterTree_Init(Type_News);
+                $scope.CurrentBuildTypeName="新闻";
+            }
+
+            else if(t==2)
+            {
+                $scope.FilterTree_Init(Type_Product);
+                $scope.CurrentBuildTypeName="产品";
+            }
+
+            else if(t==3)
+            {
+                $scope.FilterTree_Init(Type_Video);
+                $scope.CurrentBuildTypeName="视频";
+            }
+
+            else if(t==4)
+            {
+                $scope.FilterTree_Init(Type_Photo);
+                $scope.CurrentBuildTypeName="相册";
+            }
+
+            $("#myModal").modal("show");
+        }
+
+        $scope.TableHeads = [
+            { Title: "编号", Name: "ID" },
+            { Title: "标题", Name: "Title" },
+            { Title: "保存路径", Name: "SavePath" },
+            { Title: "页面备注", Name: "Summary" }];
+
+        $scope.OnSubmit=false;
+        $scope.IHelp=function()
+        {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress:false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      element: '.helpStep1',
+                      intro: "<p>1，您可以新增、批量隐藏、显示新闻。</p><p>2，选择新闻分类、输入标题筛选新闻。</p><p>3，查询、打印、导出、翻页新闻列表。</p>"
+                  },
+                  {
+                      element: '.helpStep2',
+                      intro: "<p>1，点击表格头部可以正/反排序。</p><p>2，可以设置每一篇新闻显示、隐藏、修改、删除。</p>",
+                      position: 'left'
+                  },
+                  {
+                      element: '.helpStep3',
+                      intro: '<p>1，点击可以进行分页。</p><p>2，查看数据总条数、总页数。</p>',
+                      position: 'top'
+                  }
+                ]
+            });
+            intro.start();
+        };
+        $scope.Pager = { PageIndex: 0, PageSize: 9999 };
+        $scope.Filter = { IsDesc: true, OrderBy: "ID",TypeID:@Html.ViewContext.RouteData.Values["id"]};
+        $scope.IData_Get = function () {
+            NProgress.start();
+            $scope.loading = true;
+            API_Page.Get($scope.Pager.PageIndex,
+                $scope.Pager.PageSize,
+                $scope.Filter.Title,
+                $scope.Filter.StartTime,
+                $scope.Filter.EndTime,
+                $scope.Filter.OrderBy,
+                $scope.Filter.IsDesc,
+                $scope.Filter.TypeID,0,1).then(function (r) {
+                    $scope.loading = false;
+                    NProgress.done();
+                    $scope.Pager = r;
+                    $scope.Pager.PageRange = APP.Range(r.PageCount);
+                    setTimeout(function () { $(".tip").tooltip(); }, 500);
+                });
+        }
+        $scope.OnEnterPress = function (evt) {
+            if (evt.keyCode == 13) {
+                $scope.IData_Get();
+            }
+        }
+
+        $scope.UpdateBuildConfig=function()
+        {
+            $scope.DataFilter = {
+                PageID: $scope.CurrentBuildPage,
+                PageTypeID:$scope.Filter.TypeID,
+                StartTime : $("#StartTime").val(),
+                EndTime : $("#EndTime").val(),
+                BuildType:$scope.CurrentBuildType,
+                CreateTime:new Date()
+            };
+
+            var pmsIDs = new Array();
+            var ckdNodes = $scope.FilterTree.getCheckedNodes(true);
+            for (var i = 0; i < ckdNodes.length; i++) {
+                pmsIDs.push(ckdNodes[i].id);
+            }
+            if (pmsIDs.length > 0) { $scope.DataFilter.DataTypeIDs = pmsIDs.join(","); }
+            else { $scope.DataFilter.DataTypeIDs = ""; }
+
+            API_Page.Config($scope.DataFilter).then(function()
+            {
+                toastr.success('配置' + $scope.CurrentBuildTypeName + '成功！');
+                $("#myModal").modal("hide");
+            });
+        };
+
+        $scope.AddTask=function()
+        {
+            var cks = $(".EntityItem:checked");
+            var cksIDs = new Array();
+            $(cks).each(function (a, b) { cksIDs.push($(b).val()); });
+
+            if(cksIDs.length<1)
+            {  toastr.error('未选择任何页面。'); return;}
+
+            $scope.loading = true;
+            API_Page.AddTask($scope.Filter.TypeID,cksIDs.join(",")).then(function () 
+            {
+                $scope.loading = false;
+                toastr.info('提交成功！'); 
+            });
+        }
+    });
+</script>

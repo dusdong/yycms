@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="yycms.v3" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^E:\\yueyasoft\\yycms\.v3\\WebApplication1\\yycms\.admin\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^E:\\yueyasoft\\yycms\.v3\\WebApplication1\\yycms\.admin\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="Add write permission to App_Data Folder" description="Add write permission to App_Data folder" value="yycms.v3/App_Data" tags="Hidden">
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^E:\\yueyasoft\\yycms\.v3\\WebApplication1\\yycms\.admin\\obj\\Release\\Package\\PackageTmp\\App_Data$" />
+  </parameter>
+  <parameter name="DBConnection-Web.config Connection String" description="DBConnection 由应用程序在 web.config 中用来访问数据库的连接字符串。" value="metadata=res://*/DBModel.csdl|res://*/DBModel.ssdl|res://*/DBModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=yyCms;persist security info=True;user id=sa;password=Wz6288778;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="E:\\yueyasoft\\yycms\.v3\\WebApplication1\\yycms\.admin\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DBConnection']/@connectionString" />
+  </parameter>
+</parameters>

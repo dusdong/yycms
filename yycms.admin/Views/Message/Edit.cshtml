@@ -1,0 +1,55 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="MessageEditCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li><a href="/Message">消息列表</a></li>
+        <li class="active">编辑消息</li>
+    </ol>
+
+    <form name="myForm" ng-submit="SubmitForm(myForm.$valid)" class="form-horizontal" role="form" novalidate>
+        <div class="col-md-12 animated fadeInRight">
+            <h5>{{Entity.Title}}</h5>
+            <hr />
+            <blockquote style="font-size:12px;">
+                {{Entity.Message}}
+            </blockquote>
+            <h6>时间：{{Entity.CreateDate}}</h6>
+            <h6>邮箱：{{Entity.Mail}}</h6>
+            <h6>电话：{{Entity.Mobile}}</h6>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="col-md-12 BtmLayer" id="BtmLayer">
+                    <a ng-if="!Flag_IsAddPage" href="/Message/Index" class="btn btn-success btn-lg hvr-shadow-radial">
+                        <i class="arrow_carrot-left"></i> 返回列表
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+        angular.module("app").controller("MessageEditCtrl", function ($location, $scope, API_Message)
+        {
+            API_Message.Detail(@Html.ViewContext.RouteData.Values["id"]).then(function (r) { $scope.Entity = r; });
+
+            $scope.OnSubmit = false;
+            $scope.SubmitForm = function (isValid)
+            {
+                if (!isValid) { toastr.error('验证失败'); return; }
+                $scope.OnSubmit = true;
+                API_Message.Put($scope.Entity).then(function (r)
+                {
+                    $scope.OnSubmit = false;
+                    if(r.code==0)
+                    {
+                        toastr.success('更新成功！');
+                    }
+                    else
+                    {
+                        toastr.error(r.Msg);
+                    }
+                });
+            };
+        });
+    </script>

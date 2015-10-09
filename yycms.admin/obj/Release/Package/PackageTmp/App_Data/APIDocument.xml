@@ -1,0 +1,3606 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>yycms.admin</name>
+    </assembly>
+    <members>
+        <member name="T:yycms.admin.API.WechatController">
+            <summary>
+            微信
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.WechatController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取微信列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.WechatController.Get(System.Int32)">
+            <summary>
+            获取微信详情
+            </summary>
+            <param name="id">微信ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.WechatController.RefreshFans">
+            <summary>
+            重新从微信服务器拉取粉丝
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.WechatController.MessageByIDs(yycms.admin.Models.WechatModel)">
+            <summary>
+            根据OpenID发送消息
+            </summary>
+            <param name="value">群发实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.WechatController.News(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取新闻列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:yycms.admin.API.BannerController">
+            <summary>
+            广告
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.BannerController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取广告列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.BannerController.Get(System.Int32)">
+            <summary>
+            获取广告详情
+            </summary>
+            <param name="id">广告ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.BannerController.Post(yycms.entity.yy_Banner)">
+            <summary>
+            添加广告
+            </summary>
+            <param name="value">广告实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.BannerController.Put(yycms.entity.yy_Banner)">
+            <summary>
+            修改广告
+            </summary>
+            <param name="value">广告实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.BannerController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">广告ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.BannerController.ShowHide(yycms.entity.yy_Banner)">
+            <summary>
+            显示或隐藏广告
+            </summary>
+            <param name="value">广告对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.BannerController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除广告
+            </summary>
+            <param name="ids">广告ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.BannerController.ShowByIDs(System.String)">
+            <summary>
+            批量显示广告
+            </summary>
+            <param name="ids">广告ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.BannerController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏广告
+            </summary>
+            <param name="ids">广告ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.BasicAPI.Message(System.String)">
+            <summary>
+            返回JSON对象到客户端
+            </summary>
+            <param name="_ResponseContent">JSON字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.BasicAPI.Message(System.Object)">
+            <summary>
+            返回JSON对象到客户端
+            </summary>
+            <param name="_ResponseContent">JSON字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.BasicAPI.ConvertDateTimeToUnixTime(System.DateTime)">
+            <summary>
+            datetime转换为unixtime
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.BasicAPI.User_Platforms_Wechat">
+            <summary>
+            刷新会话令牌
+            </summary>
+            <param name="_Mechant"></param>
+        </member>
+        <member name="T:yycms.admin.API.CommonController">
+            <summary>
+            通用
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.CommonController.Upload">
+            <summary>
+            上传文件
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.CommonController.UploadCertificate">
+            <summary>
+            上传证书文件
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.CommonController.UploadSkinPackage">
+            <summary>
+            上传证书文件
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.CommonController.UploadCrawler">
+            <summary>
+            上传蜘蛛
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.CommonController.SiteConfig(yycms.entity.yy_SiteSetting)">
+            <summary>
+            站点配置
+            </summary>
+        </member>
+        <member name="T:yycms.admin.API.BannerTypeController">
+            <summary>
+            广告分类
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.BannerTypeController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取广告分类列表
+            </summary>
+            <returns>广告分类列表</returns>
+        </member>
+        <member name="M:yycms.admin.API.BannerTypeController.Get(System.Int32)">
+            <summary>
+            获取广告分类详情
+            </summary>
+            <param name="id">广告分类ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.BannerTypeController.Post(yycms.entity.yy_Banner_Type)">
+            <summary>
+            添加广告分类
+            </summary>
+            <param name="value">广告分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.BannerTypeController.Put(yycms.entity.yy_Banner_Type)">
+            <summary>
+            修改广告分类
+            </summary>
+            <param name="value">广告分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.BannerTypeController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">广告分类ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.BannerTypeController.ShowHide(yycms.entity.yy_Banner_Type)">
+            <summary>
+            显示或隐藏广告分类
+            </summary>
+            <param name="value">广告分类对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.BannerTypeController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除广告分类
+            </summary>
+            <param name="ids">广告分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.BannerTypeController.ShowByIDs(System.String)">
+            <summary>
+            批量显示广告分类
+            </summary>
+            <param name="ids">广告分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.BannerTypeController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏广告分类
+            </summary>
+            <param name="ids">广告分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.FriendLinkController">
+            <summary>
+            友链
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.FriendLinkController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取友链列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.FriendLinkController.Get(System.Int32)">
+            <summary>
+            获取友链详情
+            </summary>
+            <param name="id">友链ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.FriendLinkController.Post(yycms.entity.yy_FriendLink)">
+            <summary>
+            添加友链
+            </summary>
+            <param name="value">友链实体</param>
+        </member>
+        <member name="M:yycms.admin.API.FriendLinkController.Put(yycms.entity.yy_FriendLink)">
+            <summary>
+            修改友链
+            </summary>
+            <param name="value">友链详情</param>
+        </member>
+        <member name="M:yycms.admin.API.FriendLinkController.ShowHide(yycms.entity.yy_FriendLink)">
+            <summary>
+            显示或隐藏友链
+            </summary>
+            <param name="value">友链对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.FriendLinkController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除友链
+            </summary>
+            <param name="ids">友链ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.FriendLinkController.ShowByIDs(System.String)">
+            <summary>
+            批量显示友链
+            </summary>
+            <param name="ids">友链ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.FriendLinkController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏友链
+            </summary>
+            <param name="ids">友链ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.KeywordsController">
+            <summary>
+            关键字
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.KeywordsController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取关键字列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.KeywordsController.Get(System.Int32)">
+            <summary>
+            获取关键字详情
+            </summary>
+            <param name="id">关键字ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.KeywordsController.Post(yycms.entity.yy_Keywords)">
+            <summary>
+            添加关键字
+            </summary>
+            <param name="value">关键字实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.KeywordsController.Put(yycms.entity.yy_Keywords)">
+            <summary>
+            修改关键字
+            </summary>
+            <param name="value">关键字实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.KeywordsController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">关键字ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.KeywordsController.ShowHide(yycms.entity.yy_Keywords)">
+            <summary>
+            显示或隐藏关键字
+            </summary>
+            <param name="value">关键字对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.KeywordsController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除关键字
+            </summary>
+            <param name="ids">关键字ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.KeywordsController.ShowByIDs(System.String)">
+            <summary>
+            批量显示关键字
+            </summary>
+            <param name="ids">关键字ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.KeywordsController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏关键字
+            </summary>
+            <param name="ids">关键字ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.MessageController">
+            <summary>
+            消息
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.MessageController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取消息列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.MessageController.Get(System.Int32)">
+            <summary>
+            获取消息详情
+            </summary>
+            <param name="id">消息ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.MessageController.Post(yycms.entity.yy_Message)">
+            <summary>
+            添加消息
+            </summary>
+            <param name="value">消息实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.MessageController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">消息ID。</param>
+        </member>
+        <member name="T:yycms.admin.API.UserTypeController">
+            <summary>
+            用户分类
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.UserTypeController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取用户分类列表
+            </summary>
+            <returns>用户分类列表</returns>
+        </member>
+        <member name="M:yycms.admin.API.UserTypeController.Get(System.Int32)">
+            <summary>
+            获取用户分类详情
+            </summary>
+            <param name="id">用户分类ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.UserTypeController.Post(yycms.entity.yy_User_Type)">
+            <summary>
+            添加用户分类
+            </summary>
+            <param name="value">用户分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.UserTypeController.Put(yycms.entity.yy_User_Type)">
+            <summary>
+            修改用户分类
+            </summary>
+            <param name="value">用户分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.UserTypeController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">用户分类ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.UserTypeController.ShowHide(yycms.entity.yy_User_Type)">
+            <summary>
+            显示或隐藏用户分类
+            </summary>
+            <param name="value">用户分类对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.UserTypeController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除用户分类
+            </summary>
+            <param name="ids">用户分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.UserTypeController.ShowByIDs(System.String)">
+            <summary>
+            批量显示用户分类
+            </summary>
+            <param name="ids">用户分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.UserTypeController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏用户分类
+            </summary>
+            <param name="ids">用户分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.SpiderNewsController">
+            <summary>
+            蜘蛛新闻
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.SpiderNewsController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取蜘蛛新闻列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.SpiderNewsController.Get(System.Int32)">
+            <summary>
+            获取蜘蛛新闻详情
+            </summary>
+            <param name="id">蜘蛛新闻ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.SpiderNewsController.Post(yycms.entity.yy_Spider_News)">
+            <summary>
+            添加蜘蛛新闻
+            </summary>
+            <param name="value">蜘蛛新闻实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.SpiderNewsController.Put(yycms.entity.yy_Spider_News)">
+            <summary>
+            修改蜘蛛新闻
+            </summary>
+            <param name="value">蜘蛛新闻实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.SpiderNewsController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">蜘蛛新闻ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.SpiderNewsController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除蜘蛛新闻
+            </summary>
+            <param name="ids">蜘蛛新闻ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.SpiderNewsController.ReleaseByIDs(System.String)">
+            <summary>
+            根据ID批量发布蜘蛛新闻
+            </summary>
+            <param name="ids">蜘蛛新闻ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.PageController">
+            <summary>
+            模板页
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.PageController.Get(yycms.admin.Models.PageFilterEntity)">
+            <summary>
+            获取模板页列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.PageController.Get(System.Int32)">
+            <summary>
+            获取模板页详情
+            </summary>
+            <param name="id">模板页ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.PageController.Post(yycms.entity.yy_Page)">
+            <summary>
+            添加模板页
+            </summary>
+            <param name="value">模板页实体</param>
+        </member>
+        <member name="M:yycms.admin.API.PageController.Put(yycms.entity.yy_Page)">
+            <summary>
+            修改模板页
+            </summary>
+            <param name="value">模板页详情</param>
+        </member>
+        <member name="M:yycms.admin.API.PageController.Delete(System.Int32)">
+            <summary>
+            删除模板页
+            </summary>
+            <param name="id">模板页ID</param>
+        </member>
+        <member name="M:yycms.admin.API.PageController.DeleteByIDs(System.String)">
+            <summary>
+            根据ID批量删除模板页
+            </summary>
+            <param name="ids">模板页ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.PageController.Config(yycms.entity.yy_Page_Build_Config)">
+            <summary>
+            生成模板页时数据的筛选配置
+            </summary>
+            <param name="value">筛选配置实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.PageController.AddTask(System.Int64,System.String)">
+            <summary>
+            发布模板页生成任务
+            </summary>
+            <param name="typeid">模板包ID。</param>
+            <param name="ids">模板页ID集合。</param>
+        </member>
+        <member name="M:yycms.admin.API.PageController.RetryTask(System.Int64)">
+            <summary>
+            重新运行生成任务
+            </summary>
+            <param name="taskid">任务ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.PageController.Task_Get(yycms.admin.Models.TaskFilterEntity)">
+            <summary>
+            生成任务列表
+            </summary>
+            <returns>生成任务列表</returns>
+        </member>
+        <member name="M:yycms.admin.API.PageController.Build(yycms.entity.yy_Page)">
+            <summary>
+            模板页编译
+            </summary>
+            <param name="value">单个模板页实体。</param>
+            <returns></returns>
+        </member>
+        <member name="T:yycms.admin.API.PageTypeController">
+            <summary>
+            页面分类
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.PageTypeController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取页面分类列表
+            </summary>
+            <returns>页面分类列表</returns>
+        </member>
+        <member name="M:yycms.admin.API.PageTypeController.Get(System.Int32)">
+            <summary>
+            获取页面分类详情
+            </summary>
+            <param name="id">页面分类ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.PageTypeController.Post(yycms.entity.yy_Page_Type)">
+            <summary>
+            添加页面分类
+            </summary>
+            <param name="value">页面分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.PageTypeController.Put(yycms.entity.yy_Page_Type)">
+            <summary>
+            修改页面分类
+            </summary>
+            <param name="value">页面分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.PageTypeController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">页面分类ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.PageTypeController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除页面分类
+            </summary>
+            <param name="ids">页面分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.PhotoController">
+            <summary>
+            相册
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.PhotoController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取相册列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.PhotoController.Get(System.Int32)">
+            <summary>
+            获取相册详情
+            </summary>
+            <param name="id">相册ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.PhotoController.Post(yycms.admin.Models.PhotoModel)">
+            <summary>
+            添加相册
+            </summary>
+            <param name="value">相册实体。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.PhotoController.Put(yycms.admin.Models.PhotoModel)">
+            <summary>
+            修改相册
+            </summary>
+            <param name="value">相册实体。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.PhotoController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">相册ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.PhotoController.ShowHide(yycms.entity.yy_Photo)">
+            <summary>
+            显示或隐藏相册
+            </summary>
+            <param name="value">相册对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.PhotoController.DeleteByIDs(System.String)">
+            <summary>
+            根据ID批量删除相册
+            </summary>
+            <param name="ids">相册ID集合，用英文逗号链接</param>
+        </member>
+        <member name="M:yycms.admin.API.PhotoController.ShowByIDs(System.String)">
+            <summary>
+            根据ID批量显示相册
+            </summary>
+            <param name="ids">相册ID集合，用英文逗号链接</param>
+        </member>
+        <member name="M:yycms.admin.API.PhotoController.HideByIDs(System.String)">
+            <summary>
+            根据ID批量隐藏相册
+            </summary>
+            <param name="ids">相册ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.PhotoTypeController">
+            <summary>
+            相册分类
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.PhotoTypeController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取相册分类列表
+            </summary>
+            <returns>相册分类列表</returns>
+        </member>
+        <member name="M:yycms.admin.API.PhotoTypeController.Get(System.Int32)">
+            <summary>
+            获取相册分类详情
+            </summary>
+            <param name="id">相册分类ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.PhotoTypeController.Post(yycms.entity.yy_Photo_Type)">
+            <summary>
+            添加相册分类
+            </summary>
+            <param name="value">相册分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.PhotoTypeController.Put(yycms.entity.yy_Photo_Type)">
+            <summary>
+            修改相册分类
+            </summary>
+            <param name="value">相册分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.PhotoTypeController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">相册分类ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.PhotoTypeController.ShowHide(yycms.entity.yy_Photo_Type)">
+            <summary>
+            显示或隐藏相册分类
+            </summary>
+            <param name="value">相册分类对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.PhotoTypeController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除相册分类
+            </summary>
+            <param name="ids">相册分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.PhotoTypeController.ShowByIDs(System.String)">
+            <summary>
+            批量显示相册分类
+            </summary>
+            <param name="ids">相册分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.PhotoTypeController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏相册分类
+            </summary>
+            <param name="ids">相册分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.SinglePageController">
+            <summary>
+            单页
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.SinglePageController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取单页列表
+            </summary>
+            <returns>单页列表</returns>
+        </member>
+        <member name="M:yycms.admin.API.SinglePageController.Get(System.Int32)">
+            <summary>
+            获取单页详情
+            </summary>
+            <param name="id">单页ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.SinglePageController.Post(yycms.entity.yy_SinglePage)">
+            <summary>
+            添加单页
+            </summary>
+            <param name="value">单页对象。</param>
+        </member>
+        <member name="M:yycms.admin.API.SinglePageController.Put(yycms.entity.yy_SinglePage)">
+            <summary>
+            修改单页
+            </summary>
+            <param name="value">单页对象。</param>
+        </member>
+        <member name="M:yycms.admin.API.SinglePageController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">单页ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.SinglePageController.ShowHide(yycms.entity.yy_SinglePage)">
+            <summary>
+            显示或隐藏单页
+            </summary>
+            <param name="value">单页对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.SinglePageController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除单页
+            </summary>
+            <param name="ids">单页ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.SinglePageController.ShowByIDs(System.String)">
+            <summary>
+            批量显示单页
+            </summary>
+            <param name="ids">单页ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.SinglePageController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏单页
+            </summary>
+            <param name="ids">单页ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.VideoController">
+            <summary>
+            视频
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.VideoController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取视频列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.VideoController.Get(System.Int32)">
+            <summary>
+            获取视频详情
+            </summary>
+            <param name="id">视频ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.VideoController.Post(yycms.entity.yy_Video)">
+            <summary>
+            添加视频
+            </summary>
+            <param name="value">视频实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.VideoController.Put(yycms.entity.yy_Video)">
+            <summary>
+            修改视频
+            </summary>
+            <param name="value">视频实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.VideoController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">视频ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.VideoController.ShowHide(yycms.entity.yy_Video)">
+            <summary>
+            显示或隐藏视频
+            </summary>
+            <param name="value">视频对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.VideoController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除视频
+            </summary>
+            <param name="ids">视频ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.VideoController.ShowByIDs(System.String)">
+            <summary>
+            批量显示视频
+            </summary>
+            <param name="ids">视频ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.VideoController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏视频
+            </summary>
+            <param name="ids">视频ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.VideoTypeController">
+            <summary>
+            视频分类
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.VideoTypeController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取视频分类列表
+            </summary>
+            <returns>视频分类列表</returns>
+        </member>
+        <member name="M:yycms.admin.API.VideoTypeController.Get(System.Int32)">
+            <summary>
+            获取视频分类详情
+            </summary>
+            <param name="id">视频分类ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.VideoTypeController.Post(yycms.entity.yy_Video_Type)">
+            <summary>
+            添加视频分类
+            </summary>
+            <param name="value">视频分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.VideoTypeController.Put(yycms.entity.yy_Video_Type)">
+            <summary>
+            修改视频分类
+            </summary>
+            <param name="value">视频分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.VideoTypeController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">视频分类ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.VideoTypeController.ShowHide(yycms.entity.yy_Video_Type)">
+            <summary>
+            显示或隐藏视频分类
+            </summary>
+            <param name="value">视频分类对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.VideoTypeController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除视频分类
+            </summary>
+            <param name="ids">视频分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.VideoTypeController.ShowByIDs(System.String)">
+            <summary>
+            批量显示视频分类
+            </summary>
+            <param name="ids">视频分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.VideoTypeController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏视频分类
+            </summary>
+            <param name="ids">视频分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.ProductTypeController">
+            <summary>
+            产品分类
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.ProductTypeController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取产品分类列表
+            </summary>
+            <returns>产品分类列表</returns>
+        </member>
+        <member name="M:yycms.admin.API.ProductTypeController.Get(System.Int32)">
+            <summary>
+            获取产品分类详情
+            </summary>
+            <param name="id">产品分类ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.ProductTypeController.Post(yycms.entity.yy_Product_Type)">
+            <summary>
+            添加产品分类
+            </summary>
+            <param name="value">产品分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.ProductTypeController.Put(yycms.entity.yy_Product_Type)">
+            <summary>
+            修改产品分类
+            </summary>
+            <param name="value">产品分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.ProductTypeController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">产品分类ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.ProductTypeController.ShowHide(yycms.entity.yy_Product_Type)">
+            <summary>
+            显示或隐藏产品分类
+            </summary>
+            <param name="value">产品分类对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.ProductTypeController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除产品分类
+            </summary>
+            <param name="ids">产品分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.ProductTypeController.ShowByIDs(System.String)">
+            <summary>
+            批量显示产品分类
+            </summary>
+            <param name="ids">产品分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.ProductTypeController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏产品分类
+            </summary>
+            <param name="ids">产品分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.ProductController">
+            <summary>
+            产品
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.ProductController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取产品列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.ProductController.Get(System.Int32)">
+            <summary>
+            获取产品详情
+            </summary>
+            <param name="id">产品ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.ProductController.Post(yycms.entity.yy_Product)">
+            <summary>
+            添加产品
+            </summary>
+            <param name="value">产品实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.ProductController.Put(yycms.entity.yy_Product)">
+            <summary>
+            修改产品
+            </summary>
+            <param name="value">产品实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.ProductController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">产品ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.ProductController.ShowHide(yycms.entity.yy_Product)">
+            <summary>
+            显示或隐藏产品
+            </summary>
+            <param name="value">产品对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.ProductController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除产品
+            </summary>
+            <param name="ids">产品ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.ProductController.ShowByIDs(System.String)">
+            <summary>
+            批量显示产品
+            </summary>
+            <param name="ids">产品ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.ProductController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏产品
+            </summary>
+            <param name="ids">产品ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.NewsController">
+            <summary>
+            新闻
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.NewsController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取新闻列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.NewsController.Get(System.Int32)">
+            <summary>
+            获取新闻详情
+            </summary>
+            <param name="id">新闻ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.NewsController.Post(yycms.entity.yy_News)">
+            <summary>
+            添加新闻
+            </summary>
+            <param name="value">新闻实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.NewsController.Put(yycms.entity.yy_News)">
+            <summary>
+            修改新闻
+            </summary>
+            <param name="value">新闻实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.NewsController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">新闻ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.NewsController.ShowHide(yycms.entity.yy_News)">
+            <summary>
+            显示或隐藏新闻
+            </summary>
+            <param name="value">新闻对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.NewsController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除新闻
+            </summary>
+            <param name="ids">新闻ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.NewsController.ShowByIDs(System.String)">
+            <summary>
+            批量显示新闻
+            </summary>
+            <param name="ids">新闻ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.NewsController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏新闻
+            </summary>
+            <param name="ids">新闻ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.NewsTypeController">
+            <summary>
+            新闻分类
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.NewsTypeController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取新闻分类列表
+            </summary>
+            <returns>新闻分类列表</returns>
+        </member>
+        <member name="M:yycms.admin.API.NewsTypeController.Get(System.Int32)">
+            <summary>
+            获取新闻分类详情
+            </summary>
+            <param name="id">新闻分类ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.NewsTypeController.Post(yycms.entity.yy_News_Type)">
+            <summary>
+            添加新闻分类
+            </summary>
+            <param name="value">新闻分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.NewsTypeController.Put(yycms.entity.yy_News_Type)">
+            <summary>
+            修改新闻分类
+            </summary>
+            <param name="value">新闻分类实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.NewsTypeController.Delete(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id">新闻分类ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.NewsTypeController.ShowHide(yycms.entity.yy_News_Type)">
+            <summary>
+            显示或隐藏新闻分类
+            </summary>
+            <param name="value">新闻分类对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.NewsTypeController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除新闻分类
+            </summary>
+            <param name="ids">新闻分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.NewsTypeController.ShowByIDs(System.String)">
+            <summary>
+            批量显示新闻分类
+            </summary>
+            <param name="ids">新闻分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.NewsTypeController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏新闻分类
+            </summary>
+            <param name="ids">新闻分类ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.PlatformController">
+            <summary>
+            平台
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.PlatformController.Put(yycms.entity.yy_Platforms)">
+            <summary>
+            修改平台
+            </summary>
+            <param name="value">平台详情</param>
+        </member>
+        <member name="T:yycms.admin.API.SpiderController">
+            <summary>
+            蜘蛛
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.SpiderController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取蜘蛛列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.SpiderController.Get(System.Int32)">
+            <summary>
+            获取蜘蛛详情
+            </summary>
+            <param name="id">蜘蛛ID。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.SpiderController.Post(yycms.entity.yy_Spider)">
+            <summary>
+            添加蜘蛛
+            </summary>
+            <param name="value">蜘蛛实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.SpiderController.Put(yycms.entity.yy_Spider)">
+            <summary>
+            修改蜘蛛
+            </summary>
+            <param name="value">蜘蛛实体。</param>
+        </member>
+        <member name="M:yycms.admin.API.SpiderController.Delete(System.Int32)">
+            <summary>
+            删除蜘蛛
+            </summary>
+            <param name="id">蜘蛛ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.SpiderController.ShowHide(yycms.entity.yy_Spider)">
+            <summary>
+            显示或隐藏蜘蛛
+            </summary>
+            <param name="value">蜘蛛对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.SpiderController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除蜘蛛
+            </summary>
+            <param name="ids">蜘蛛ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.SpiderController.ShowByIDs(System.String)">
+            <summary>
+            批量显示蜘蛛
+            </summary>
+            <param name="ids">蜘蛛ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.SpiderController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏蜘蛛
+            </summary>
+            <param name="ids">蜘蛛ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="T:yycms.admin.API.UserController">
+            <summary>
+            用户
+            </summary>
+        </member>
+        <member name="M:yycms.admin.API.UserController.Get(yycms.admin.Models.RequestEntity)">
+            <summary>
+            获取用户列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.UserController.Get(System.Int32)">
+            <summary>
+            获取用户详情
+            </summary>
+            <param name="id">用户ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.UserController.Post(yycms.entity.yy_User)">
+            <summary>
+            添加用户
+            </summary>
+            <param name="value">用户实体</param>
+        </member>
+        <member name="M:yycms.admin.API.UserController.Put(yycms.entity.yy_User)">
+            <summary>
+            修改用户
+            </summary>
+            <param name="value">用户详情</param>
+        </member>
+        <member name="M:yycms.admin.API.UserController.Delete(System.Int32)">
+            <summary>
+            删除用户
+            </summary>
+            <param name="id">用户ID。</param>
+        </member>
+        <member name="M:yycms.admin.API.UserController.Login">
+            <summary>
+            登陆
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.UserController.LoginOut">
+            <summary>
+            登陆
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.UserController.ShowHide(yycms.entity.yy_User)">
+            <summary>
+            显示或隐藏用户
+            </summary>
+            <param name="value">用户对象。</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.API.UserController.DeleteByIDs(System.String)">
+            <summary>
+            批量删除用户
+            </summary>
+            <param name="ids">用户ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.UserController.ShowByIDs(System.String)">
+            <summary>
+            批量显示用户
+            </summary>
+            <param name="ids">用户ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.API.UserController.HideByIDs(System.String)">
+            <summary>
+            批量隐藏用户
+            </summary>
+            <param name="ids">用户ID集合，用英文逗号链接。</param>
+        </member>
+        <member name="M:yycms.admin.GlobalHub.Notify(System.Int32,System.String)">
+            <summary>
+            通知
+            </summary>
+            <param name="code">消息代码</param>
+            <param name="msg">消息内容</param>
+        </member>
+        <member name="M:yycms.admin.GlobalHub.CompileEvent(System.Int32,System.String)">
+            <summary>
+            编译代码通知
+            </summary>
+            <param name="code">通知代码</param>
+            <param name="msg">编译结果</param>
+        </member>
+        <member name="T:yycms.admin.ImportSkin">
+            <summary>
+            导入风格包
+            </summary>
+        </member>
+        <member name="F:yycms.admin.ImportSkin.SkinBaseDirectory">
+            <summary>
+            模板的保存根目录，绝对路径，结尾加上\
+            </summary>
+        </member>
+        <member name="M:yycms.admin.ImportSkin.Import(System.Byte[],System.Int64)">
+            <summary>
+            导入模板
+            </summary>
+            <param name="FileData">模板包</param>
+            <param name="UserID">当前上传者的ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.ImportSkin.PageReference_Replace(System.Collections.Generic.List{yycms.entity.yy_Page},System.String)">
+            <summary>
+            页面模板引用组建替换
+            上传之前应为id="组件名称"，替换后即为对应的ID号
+            </summary>
+            <param name="pages">当前模板的组件集合</param>
+            <param name="htmlCode">当前模板页的源代码</param>
+            <returns>替换后的源代码</returns>
+        </member>
+        <member name="M:yycms.admin.ImportSkin.SourceReference_Replace(System.String,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            替换当前源代码中引用的.js/.css/img/video/audio路径
+            例如开发时可能使用的是script/script1.js，那么就替换为/SkinName/script/script1.js
+            </summary>
+            <param name="htmlCode">源代码</param>
+            <param name="SkinName">模板名称（模板根路径+模板名称+模板版本号）</param>
+            <param name="CompressScript">压缩脚本</param>
+            <param name="CompressStyle">压缩样式</param>
+            <param name="CompressDocument">压缩源码</param>
+            <returns>替换后的源代码</returns>
+        </member>
+        <member name="M:yycms.admin.ImportSkin.SourceReference_CanReplace(System.String)">
+            <summary>
+            根据资源连接地址，判断是否需要替换
+            </summary>
+            <param name="_SrcAddress"></param>
+            <returns></returns>
+        </member>
+        <member name="T:yycms.admin.SkinConfig">
+            <summary>
+            模板风格配置
+            </summary>
+        </member>
+        <member name="P:yycms.admin.SkinConfig.Name">
+            <summary>
+            风格名称 - 中文
+            </summary>
+        </member>
+        <member name="P:yycms.admin.SkinConfig.Name_En">
+            <summary>
+            风格名称 - 英文
+            </summary>
+        </member>
+        <member name="P:yycms.admin.SkinConfig.Version">
+            <summary>
+            当前版本
+            </summary>
+        </member>
+        <member name="P:yycms.admin.SkinConfig.Images">
+            <summary>
+            风格截图
+            </summary>
+        </member>
+        <member name="P:yycms.admin.SkinConfig.Pages">
+            <summary>
+            模板列表
+            </summary>
+        </member>
+        <member name="P:yycms.admin.SkinConfig.CompressStyle">
+            <summary>
+            特殊选项 要压缩的样式文件夹
+            </summary>
+        </member>
+        <member name="P:yycms.admin.SkinConfig.CompressScript">
+            <summary>
+            特殊选项 要压缩的脚本文件夹
+            </summary>
+        </member>
+        <member name="P:yycms.admin.SkinConfig.CompressImage">
+            <summary>
+            特殊选项 要压缩的图片文件夹
+            </summary>
+        </member>
+        <member name="T:yycms.admin.PageMaster">
+            <summary>
+            模板详情
+            </summary>
+        </member>
+        <member name="P:yycms.admin.PageMaster.Title">
+            <summary>
+            模板名称
+            </summary>
+        </member>
+        <member name="P:yycms.admin.PageMaster.PageType">
+            <summary>
+            0：单页模板
+            1：组件
+            2：列表页模板
+            3，其他
+            </summary>
+        </member>
+        <member name="P:yycms.admin.PageMaster.BuildType">
+            <summary>
+            页面类型
+            </summary>
+        </member>
+        <member name="P:yycms.admin.PageMaster.SaveDirectory">
+            <summary>
+            保存路径
+            </summary>
+        </member>
+        <member name="P:yycms.admin.PageMaster.SaveName">
+            <summary>
+            保存文件名称
+            </summary>
+        </member>
+        <member name="P:yycms.admin.PageMaster.Remark">
+            <summary>
+            模板备注
+            </summary>
+        </member>
+        <member name="P:yycms.admin.PageMaster.Source">
+            <summary>
+            模板代码
+            </summary>
+        </member>
+        <member name="P:yycms.admin.PageMaster.CanBuild">
+            <summary>
+            是否支持一键集成
+            </summary>
+        </member>
+        <member name="P:yycms.admin.PageMaster.CompressScript">
+            <summary>
+            特殊选项 在存储模板数据时，是否进行脚本压缩
+            </summary>
+        </member>
+        <member name="P:yycms.admin.PageMaster.CompressStyle">
+            <summary>
+            特殊选项 在存储模板数据时，是否进行样式压缩
+            </summary>
+        </member>
+        <member name="P:yycms.admin.PageMaster.CompressDocument">
+            <summary>
+            特殊选项 在存储模板数据时，是否进行模板代码压缩
+            </summary>
+        </member>
+        <member name="T:yycms.admin.PageType">
+            <summary>
+            页面类型
+            </summary>
+        </member>
+        <member name="F:yycms.admin.PageType.SinglePage">
+            <summary>
+            单页模板
+            </summary>
+        </member>
+        <member name="F:yycms.admin.PageType.Component">
+            <summary>
+            公用组件
+            </summary>
+        </member>
+        <member name="F:yycms.admin.PageType.ListPage">
+            <summary>
+            列表页
+            </summary>
+        </member>
+        <member name="F:yycms.admin.PageType.Other">
+            <summary>
+            其他
+            </summary>
+        </member>
+        <member name="T:yycms.admin.BuildType">
+            <summary>
+            页面生成的类型
+            </summary>
+        </member>
+        <member name="F:yycms.admin.BuildType.Page">
+            <summary>
+            普通页面
+            </summary>
+        </member>
+        <member name="F:yycms.admin.BuildType.NewsDetail">
+            <summary>
+            新闻详情页模板
+            将在发布新闻时自动生成该页面
+            </summary>
+        </member>
+        <member name="F:yycms.admin.BuildType.ProductDetail">
+            <summary>
+            产品详情页模板
+            将在发布产品时自动生成该页面
+            </summary>
+        </member>
+        <member name="F:yycms.admin.BuildType.VideoDetail">
+            <summary>
+            视频详情页模板
+            </summary>
+        </member>
+        <member name="F:yycms.admin.BuildType.PhotoDetail">
+            <summary>
+            相册详情页模板
+            </summary>
+        </member>
+        <member name="M:yycms.admin.KeywordReplace.Excute(yycms.entity.DBConnection,System.String,System.Int32,System.String)">
+            <summary>
+            替换内容
+            </summary>
+            <param name="DB"></param>
+            <param name="content"></param>
+            <param name="ApplyType">0，全部，1，新闻，2，产品</param>
+            <param name="TypeIDs">类目ID</param>
+            <returns></returns>
+        </member>
+        <member name="T:yycms.admin.SqlHelper">
+            <summary>
+            The SqlHelper class is intended to encapsulate high performance, scalable best practices for 
+            common uses of SqlClient
+            </summary>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.AttachParameters(System.Data.SqlClient.SqlCommand,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            This method is used to attach array of SqlParameters to a SqlCommand.
+            
+            This method will assign a value of DbNull to any parameter with a direction of
+            InputOutput and a value of null.  
+            
+            This behavior will prevent default values from being used, but
+            this will be the less common case than an intended pure output parameter (derived as InputOutput)
+            where the user provided no input value.
+            </summary>
+            <param name="command">The command to which the parameters will be added</param>
+            <param name="commandParameters">An array of SqlParameters to be added to command</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.AssignParameterValues(System.Data.SqlClient.SqlParameter[],System.Data.DataRow)">
+            <summary>
+            This method assigns dataRow column values to an array of SqlParameters
+            </summary>
+            <param name="commandParameters">Array of SqlParameters to be assigned values</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.AssignParameterValues(System.Data.SqlClient.SqlParameter[],System.Object[])">
+            <summary>
+            This method assigns an array of values to an array of SqlParameters
+            </summary>
+            <param name="commandParameters">Array of SqlParameters to be assigned values</param>
+            <param name="parameterValues">Array of objects holding the values to be assigned</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.PrepareCommand(System.Data.SqlClient.SqlCommand,System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[],System.Boolean@)">
+            <summary>
+            This method opens (if necessary) and assigns a connection, transaction, command type and parameters 
+            to the provided command
+            </summary>
+            <param name="command">The SqlCommand to be prepared</param>
+            <param name="connection">A valid SqlConnection, on which to execute this command</param>
+            <param name="transaction">A valid SqlTransaction, or 'null'</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParameters to be associated with the command or 'null' if no parameters are required</param>
+            <param name="mustCloseConnection"><c>true</c> if the connection was opened by the method, otherwose is false.</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQuery(System.String,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns no resultset and takes no parameters) against the database specified in 
+            the connection string
+            </summary>
+            <remarks>
+            e.g.:  
+             int result = ExecuteNonQuery(connString, CommandType.StoredProcedure, "PublishOrders");
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQuery(System.String,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns no resultset) against the database specified in the connection string 
+            using the provided parameters
+            </summary>
+            <remarks>
+            e.g.:  
+             int result = ExecuteNonQuery(connString, CommandType.StoredProcedure, "PublishOrders", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQuery(System.String,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns no resultset) against the database specified in 
+            the connection string using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             int result = ExecuteNonQuery(connString, "PublishOrders", 24, 36);
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="spName">The name of the stored prcedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQuery(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns no resultset and takes no parameters) against the provided SqlConnection. 
+            </summary>
+            <remarks>
+            e.g.:  
+             int result = ExecuteNonQuery(conn, CommandType.StoredProcedure, "PublishOrders");
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQuery(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns no resultset) against the specified SqlConnection 
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             int result = ExecuteNonQuery(conn, CommandType.StoredProcedure, "PublishOrders", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQuery(System.Data.SqlClient.SqlConnection,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns no resultset) against the specified SqlConnection 
+            using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             int result = ExecuteNonQuery(conn, "PublishOrders", 24, 36);
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQuery(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns no resultset and takes no parameters) against the provided SqlTransaction. 
+            </summary>
+            <remarks>
+            e.g.:  
+             int result = ExecuteNonQuery(trans, CommandType.StoredProcedure, "PublishOrders");
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQuery(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns no resultset) against the specified SqlTransaction
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             int result = ExecuteNonQuery(trans, CommandType.StoredProcedure, "GetOrders", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQuery(System.Data.SqlClient.SqlTransaction,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns no resultset) against the specified 
+            SqlTransaction using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             int result = ExecuteNonQuery(conn, trans, "PublishOrders", 24, 36);
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDataset(System.String,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns a resultset and takes no parameters) against the database specified in 
+            the connection string. 
+            </summary>
+            <remarks>
+            e.g.:  
+             DataSet ds = ExecuteDataset(connString, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDataset(System.String,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset) against the database specified in the connection string 
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             DataSet ds = ExecuteDataset(connString, CommandType.StoredProcedure, "GetOrders", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDataset(System.String,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the database specified in 
+            the connection string using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             DataSet ds = ExecuteDataset(connString, "GetOrders", 24, 36);
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDataset(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns a resultset and takes no parameters) against the provided SqlConnection. 
+            </summary>
+            <remarks>
+            e.g.:  
+             DataSet ds = ExecuteDataset(conn, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDataset(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset) against the specified SqlConnection 
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             DataSet ds = ExecuteDataset(conn, CommandType.StoredProcedure, "GetOrders", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDataset(System.Data.SqlClient.SqlConnection,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified SqlConnection 
+            using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             DataSet ds = ExecuteDataset(conn, "GetOrders", 24, 36);
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDataset(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns a resultset and takes no parameters) against the provided SqlTransaction. 
+            </summary>
+            <remarks>
+            e.g.:  
+             DataSet ds = ExecuteDataset(trans, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDataset(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset) against the specified SqlTransaction
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             DataSet ds = ExecuteDataset(trans, CommandType.StoredProcedure, "GetOrders", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDataset(System.Data.SqlClient.SqlTransaction,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified 
+            SqlTransaction using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             DataSet ds = ExecuteDataset(trans, "GetOrders", 24, 36);
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="T:yycms.admin.SqlHelper.SqlConnectionOwnership">
+            <summary>
+            This enum is used to indicate whether the connection was provided by the caller, or created by SqlHelper, so that
+            we can set the appropriate CommandBehavior when calling ExecuteReader()
+            </summary>
+        </member>
+        <member name="F:yycms.admin.SqlHelper.SqlConnectionOwnership.Internal">
+            <summary>Connection is owned and managed by SqlHelper</summary>
+        </member>
+        <member name="F:yycms.admin.SqlHelper.SqlConnectionOwnership.External">
+            <summary>Connection is owned and managed by the caller</summary>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReader(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[],yycms.admin.SqlHelper.SqlConnectionOwnership)">
+            <summary>
+            Create and prepare a SqlCommand, and call ExecuteReader with the appropriate CommandBehavior.
+            </summary>
+            <remarks>
+            If we created and opened the connection, we want the connection to be closed when the DataReader is closed.
+            
+            If the caller provided the connection, we want to leave it to them to manage.
+            </remarks>
+            <param name="connection">A valid SqlConnection, on which to execute this command</param>
+            <param name="transaction">A valid SqlTransaction, or 'null'</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParameters to be associated with the command or 'null' if no parameters are required</param>
+            <param name="connectionOwnership">Indicates whether the connection parameter was provided by the caller, or created by SqlHelper</param>
+            <returns>SqlDataReader containing the results of the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReader(System.String,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns a resultset and takes no parameters) against the database specified in 
+            the connection string. 
+            </summary>
+            <remarks>
+            e.g.:  
+             SqlDataReader dr = ExecuteReader(connString, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReader(System.String,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset) against the database specified in the connection string 
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             SqlDataReader dr = ExecuteReader(connString, CommandType.StoredProcedure, "GetOrders", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReader(System.String,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the database specified in 
+            the connection string using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             SqlDataReader dr = ExecuteReader(connString, "GetOrders", 24, 36);
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReader(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns a resultset and takes no parameters) against the provided SqlConnection. 
+            </summary>
+            <remarks>
+            e.g.:  
+             SqlDataReader dr = ExecuteReader(conn, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReader(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset) against the specified SqlConnection 
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             SqlDataReader dr = ExecuteReader(conn, CommandType.StoredProcedure, "GetOrders", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReader(System.Data.SqlClient.SqlConnection,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified SqlConnection 
+            using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             SqlDataReader dr = ExecuteReader(conn, "GetOrders", 24, 36);
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReader(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns a resultset and takes no parameters) against the provided SqlTransaction. 
+            </summary>
+            <remarks>
+            e.g.:  
+             SqlDataReader dr = ExecuteReader(trans, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReader(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset) against the specified SqlTransaction
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+              SqlDataReader dr = ExecuteReader(trans, CommandType.StoredProcedure, "GetOrders", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReader(System.Data.SqlClient.SqlTransaction,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified
+            SqlTransaction using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             SqlDataReader dr = ExecuteReader(trans, "GetOrders", 24, 36);
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalar(System.String,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns a 1x1 resultset and takes no parameters) against the database specified in 
+            the connection string. 
+            </summary>
+            <remarks>
+            e.g.:  
+             int orderCount = (int)ExecuteScalar(connString, CommandType.StoredProcedure, "GetOrderCount");
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalar(System.String,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a 1x1 resultset) against the database specified in the connection string 
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             int orderCount = (int)ExecuteScalar(connString, CommandType.StoredProcedure, "GetOrderCount", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalar(System.String,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a 1x1 resultset) against the database specified in 
+            the connection string using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             int orderCount = (int)ExecuteScalar(connString, "GetOrderCount", 24, 36);
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalar(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns a 1x1 resultset and takes no parameters) against the provided SqlConnection. 
+            </summary>
+            <remarks>
+            e.g.:  
+             int orderCount = (int)ExecuteScalar(conn, CommandType.StoredProcedure, "GetOrderCount");
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalar(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a 1x1 resultset) against the specified SqlConnection 
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             int orderCount = (int)ExecuteScalar(conn, CommandType.StoredProcedure, "GetOrderCount", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalar(System.Data.SqlClient.SqlConnection,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a 1x1 resultset) against the specified SqlConnection 
+            using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             int orderCount = (int)ExecuteScalar(conn, "GetOrderCount", 24, 36);
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalar(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns a 1x1 resultset and takes no parameters) against the provided SqlTransaction. 
+            </summary>
+            <remarks>
+            e.g.:  
+             int orderCount = (int)ExecuteScalar(trans, CommandType.StoredProcedure, "GetOrderCount");
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalar(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a 1x1 resultset) against the specified SqlTransaction
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             int orderCount = (int)ExecuteScalar(trans, CommandType.StoredProcedure, "GetOrderCount", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalar(System.Data.SqlClient.SqlTransaction,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a 1x1 resultset) against the specified
+            SqlTransaction using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             int orderCount = (int)ExecuteScalar(trans, "GetOrderCount", 24, 36);
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteXmlReader(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns a resultset and takes no parameters) against the provided SqlConnection. 
+            </summary>
+            <remarks>
+            e.g.:  
+             XmlReader r = ExecuteXmlReader(conn, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command using "FOR XML AUTO"</param>
+            <returns>An XmlReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteXmlReader(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset) against the specified SqlConnection 
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             XmlReader r = ExecuteXmlReader(conn, CommandType.StoredProcedure, "GetOrders", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command using "FOR XML AUTO"</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>An XmlReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteXmlReader(System.Data.SqlClient.SqlConnection,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified SqlConnection 
+            using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             XmlReader r = ExecuteXmlReader(conn, "GetOrders", 24, 36);
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="spName">The name of the stored procedure using "FOR XML AUTO"</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>An XmlReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteXmlReader(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String)">
+            <summary>
+            Execute a SqlCommand (that returns a resultset and takes no parameters) against the provided SqlTransaction. 
+            </summary>
+            <remarks>
+            e.g.:  
+             XmlReader r = ExecuteXmlReader(trans, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command using "FOR XML AUTO"</param>
+            <returns>An XmlReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteXmlReader(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset) against the specified SqlTransaction
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             XmlReader r = ExecuteXmlReader(trans, CommandType.StoredProcedure, "GetOrders", new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command using "FOR XML AUTO"</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <returns>An XmlReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteXmlReader(System.Data.SqlClient.SqlTransaction,System.String,System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified 
+            SqlTransaction using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             XmlReader r = ExecuteXmlReader(trans, "GetOrders", 24, 36);
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.FillDataset(System.String,System.Data.CommandType,System.String,System.Data.DataSet,System.String[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset and takes no parameters) against the database specified in 
+            the connection string. 
+            </summary>
+            <remarks>
+            e.g.:  
+             FillDataset(connString, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"});
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="dataSet">A dataset wich will contain the resultset generated by the command</param>
+            <param name="tableNames">This array will be used to create table mappings allowing the DataTables to be referenced
+            by a user defined name (probably the actual table name)</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.FillDataset(System.String,System.Data.CommandType,System.String,System.Data.DataSet,System.String[],System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset) against the database specified in the connection string 
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             FillDataset(connString, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"}, new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+            <param name="dataSet">A dataset wich will contain the resultset generated by the command</param>
+            <param name="tableNames">This array will be used to create table mappings allowing the DataTables to be referenced
+            by a user defined name (probably the actual table name)
+            </param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.FillDataset(System.String,System.String,System.Data.DataSet,System.String[],System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the database specified in 
+            the connection string using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             FillDataset(connString, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"}, 24);
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataSet">A dataset wich will contain the resultset generated by the command</param>
+            <param name="tableNames">This array will be used to create table mappings allowing the DataTables to be referenced
+            by a user defined name (probably the actual table name)
+            </param>    
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.FillDataset(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.DataSet,System.String[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset and takes no parameters) against the provided SqlConnection. 
+            </summary>
+            <remarks>
+            e.g.:  
+             FillDataset(conn, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"});
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="dataSet">A dataset wich will contain the resultset generated by the command</param>
+            <param name="tableNames">This array will be used to create table mappings allowing the DataTables to be referenced
+            by a user defined name (probably the actual table name)
+            </param>    
+        </member>
+        <member name="M:yycms.admin.SqlHelper.FillDataset(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.DataSet,System.String[],System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset) against the specified SqlConnection 
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             FillDataset(conn, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"}, new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="dataSet">A dataset wich will contain the resultset generated by the command</param>
+            <param name="tableNames">This array will be used to create table mappings allowing the DataTables to be referenced
+            by a user defined name (probably the actual table name)
+            </param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.FillDataset(System.Data.SqlClient.SqlConnection,System.String,System.Data.DataSet,System.String[],System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified SqlConnection 
+            using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             FillDataset(conn, "GetOrders", ds, new string[] {"orders"}, 24, 36);
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataSet">A dataset wich will contain the resultset generated by the command</param>
+            <param name="tableNames">This array will be used to create table mappings allowing the DataTables to be referenced
+            by a user defined name (probably the actual table name)
+            </param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.FillDataset(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.DataSet,System.String[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset and takes no parameters) against the provided SqlTransaction. 
+            </summary>
+            <remarks>
+            e.g.:  
+             FillDataset(trans, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"});
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="dataSet">A dataset wich will contain the resultset generated by the command</param>
+            <param name="tableNames">This array will be used to create table mappings allowing the DataTables to be referenced
+            by a user defined name (probably the actual table name)
+            </param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.FillDataset(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.DataSet,System.String[],System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Execute a SqlCommand (that returns a resultset) against the specified SqlTransaction
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             FillDataset(trans, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"}, new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="dataSet">A dataset wich will contain the resultset generated by the command</param>
+            <param name="tableNames">This array will be used to create table mappings allowing the DataTables to be referenced
+            by a user defined name (probably the actual table name)
+            </param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.FillDataset(System.Data.SqlClient.SqlTransaction,System.String,System.Data.DataSet,System.String[],System.Object[])">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified 
+            SqlTransaction using the provided parameter values.  This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <remarks>
+            This method provides no access to output parameters or the stored procedure's return value parameter.
+            
+            e.g.:  
+             FillDataset(trans, "GetOrders", ds, new string[]{"orders"}, 24, 36);
+            </remarks>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataSet">A dataset wich will contain the resultset generated by the command</param>
+            <param name="tableNames">This array will be used to create table mappings allowing the DataTables to be referenced
+            by a user defined name (probably the actual table name)
+            </param>
+            <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.FillDataset(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.DataSet,System.String[],System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Private helper method that execute a SqlCommand (that returns a resultset) against the specified SqlTransaction and SqlConnection
+            using the provided parameters.
+            </summary>
+            <remarks>
+            e.g.:  
+             FillDataset(conn, trans, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"}, new SqlParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">A valid SqlConnection</param>
+            <param name="transaction">A valid SqlTransaction</param>
+            <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="dataSet">A dataset wich will contain the resultset generated by the command</param>
+            <param name="tableNames">This array will be used to create table mappings allowing the DataTables to be referenced
+            by a user defined name (probably the actual table name)
+            </param>
+            <param name="commandParameters">An array of SqlParamters used to execute the command</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.UpdateDataset(System.Data.SqlClient.SqlCommand,System.Data.SqlClient.SqlCommand,System.Data.SqlClient.SqlCommand,System.Data.DataSet,System.String)">
+            <summary>
+            Executes the respective command for each inserted, updated, or deleted row in the DataSet.
+            </summary>
+            <remarks>
+            e.g.:  
+             UpdateDataset(conn, insertCommand, deleteCommand, updateCommand, dataSet, "Order");
+            </remarks>
+            <param name="insertCommand">A valid transact-SQL statement or stored procedure to insert new records into the data source</param>
+            <param name="deleteCommand">A valid transact-SQL statement or stored procedure to delete records from the data source</param>
+            <param name="updateCommand">A valid transact-SQL statement or stored procedure used to update records in the data source</param>
+            <param name="dataSet">The DataSet used to update the data source</param>
+            <param name="tableName">The DataTable used to update the data source.</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.CreateCommand(System.Data.SqlClient.SqlConnection,System.String,System.String[])">
+            <summary>
+            Simplify the creation of a Sql command object by allowing
+            a stored procedure and optional parameters to be provided
+            </summary>
+            <remarks>
+            e.g.:  
+             SqlCommand command = CreateCommand(conn, "AddCustomer", "CustomerID", "CustomerName");
+            </remarks>
+            <param name="connection">A valid SqlConnection object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="sourceColumns">An array of string to be assigned as the source columns of the stored procedure parameters</param>
+            <returns>A valid SqlCommand object</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQueryTypedParams(System.String,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns no resultset) against the database specified in 
+            the connection string using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on row values.
+            </summary>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQueryTypedParams(System.Data.SqlClient.SqlConnection,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns no resultset) against the specified SqlConnection 
+            using the dataRow column values as the stored procedure's parameters values.  
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on row values.
+            </summary>
+            <param name="connection">A valid SqlConnection object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteNonQueryTypedParams(System.Data.SqlClient.SqlTransaction,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns no resultset) against the specified
+            SqlTransaction using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on row values.
+            </summary>
+            <param name="transaction">A valid SqlTransaction object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>An int representing the number of rows affected by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDatasetTypedParams(System.String,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the database specified in 
+            the connection string using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on row values.
+            </summary>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDatasetTypedParams(System.Data.SqlClient.SqlConnection,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified SqlConnection 
+            using the dataRow column values as the store procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on row values.
+            </summary>
+            <param name="connection">A valid SqlConnection object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteDatasetTypedParams(System.Data.SqlClient.SqlTransaction,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified SqlTransaction 
+            using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on row values.
+            </summary>
+            <param name="transaction">A valid SqlTransaction object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>A dataset containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReaderTypedParams(System.String,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the database specified in 
+            the connection string using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReaderTypedParams(System.Data.SqlClient.SqlConnection,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified SqlConnection 
+            using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <param name="connection">A valid SqlConnection object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteReaderTypedParams(System.Data.SqlClient.SqlTransaction,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified SqlTransaction 
+            using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <param name="transaction">A valid SqlTransaction object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>A SqlDataReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalarTypedParams(System.String,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a 1x1 resultset) against the database specified in 
+            the connection string using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalarTypedParams(System.Data.SqlClient.SqlConnection,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a 1x1 resultset) against the specified SqlConnection 
+            using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <param name="connection">A valid SqlConnection object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteScalarTypedParams(System.Data.SqlClient.SqlTransaction,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a 1x1 resultset) against the specified SqlTransaction
+            using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <param name="transaction">A valid SqlTransaction object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteXmlReaderTypedParams(System.Data.SqlClient.SqlConnection,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified SqlConnection 
+            using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <param name="connection">A valid SqlConnection object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>An XmlReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelper.ExecuteXmlReaderTypedParams(System.Data.SqlClient.SqlTransaction,System.String,System.Data.DataRow)">
+            <summary>
+            Execute a stored procedure via a SqlCommand (that returns a resultset) against the specified SqlTransaction 
+            using the dataRow column values as the stored procedure's parameters values.
+            This method will query the database to discover the parameters for the 
+            stored procedure (the first time each stored procedure is called), and assign the values based on parameter order.
+            </summary>
+            <param name="transaction">A valid SqlTransaction object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="dataRow">The dataRow used to hold the stored procedure's parameter values.</param>
+            <returns>An XmlReader containing the resultset generated by the command</returns>
+        </member>
+        <member name="T:yycms.admin.SqlHelperParameterCache">
+            <summary>
+            SqlHelperParameterCache provides functions to leverage a static cache of procedure parameters, and the
+            ability to discover parameters for stored procedures at run-time.
+            </summary>
+        </member>
+        <member name="M:yycms.admin.SqlHelperParameterCache.DiscoverSpParameterSet(System.Data.SqlClient.SqlConnection,System.String,System.Boolean)">
+            <summary>
+            Resolve at run time the appropriate set of SqlParameters for a stored procedure
+            </summary>
+            <param name="connection">A valid SqlConnection object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="includeReturnValueParameter">Whether or not to include their return value parameter</param>
+            <returns>The parameter array discovered.</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelperParameterCache.CloneParameters(System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Deep copy of cached SqlParameter array
+            </summary>
+            <param name="originalParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelperParameterCache.CacheParameterSet(System.String,System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Add parameter array to the cache
+            </summary>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <param name="commandParameters">An array of SqlParamters to be cached</param>
+        </member>
+        <member name="M:yycms.admin.SqlHelperParameterCache.GetCachedParameterSet(System.String,System.String)">
+            <summary>
+            Retrieve a parameter array from the cache
+            </summary>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="commandText">The stored procedure name or T-SQL command</param>
+            <returns>An array of SqlParamters</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelperParameterCache.GetSpParameterSet(System.String,System.String)">
+            <summary>
+            Retrieves the set of SqlParameters appropriate for the stored procedure
+            </summary>
+            <remarks>
+            This method will query the database for this information, and then store it in a cache for future requests.
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <returns>An array of SqlParameters</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelperParameterCache.GetSpParameterSet(System.String,System.String,System.Boolean)">
+            <summary>
+            Retrieves the set of SqlParameters appropriate for the stored procedure
+            </summary>
+            <remarks>
+            This method will query the database for this information, and then store it in a cache for future requests.
+            </remarks>
+            <param name="connectionString">A valid connection string for a SqlConnection</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="includeReturnValueParameter">A bool value indicating whether the return value parameter should be included in the results</param>
+            <returns>An array of SqlParameters</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelperParameterCache.GetSpParameterSet(System.Data.SqlClient.SqlConnection,System.String)">
+            <summary>
+            Retrieves the set of SqlParameters appropriate for the stored procedure
+            </summary>
+            <remarks>
+            This method will query the database for this information, and then store it in a cache for future requests.
+            </remarks>
+            <param name="connection">A valid SqlConnection object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <returns>An array of SqlParameters</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelperParameterCache.GetSpParameterSet(System.Data.SqlClient.SqlConnection,System.String,System.Boolean)">
+            <summary>
+            Retrieves the set of SqlParameters appropriate for the stored procedure
+            </summary>
+            <remarks>
+            This method will query the database for this information, and then store it in a cache for future requests.
+            </remarks>
+            <param name="connection">A valid SqlConnection object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="includeReturnValueParameter">A bool value indicating whether the return value parameter should be included in the results</param>
+            <returns>An array of SqlParameters</returns>
+        </member>
+        <member name="M:yycms.admin.SqlHelperParameterCache.GetSpParameterSetInternal(System.Data.SqlClient.SqlConnection,System.String,System.Boolean)">
+            <summary>
+            Retrieves the set of SqlParameters appropriate for the stored procedure
+            </summary>
+            <param name="connection">A valid SqlConnection object</param>
+            <param name="spName">The name of the stored procedure</param>
+            <param name="includeReturnValueParameter">A bool value indicating whether the return value parameter should be included in the results</param>
+            <returns>An array of SqlParameters</returns>
+        </member>
+        <member name="M:yycms.admin.Watermark.AddImageSignPic(System.Drawing.Image,System.String,System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            加图片水印
+            </summary>
+            <param name="filename">文件名</param>
+            <param name="watermarkFilename">水印文件名</param>
+            <param name="watermarkStatus">图片水印位置 0=不使用 1=左上 2=中上 3=右上 4=左中  9=右下</param>
+            <param name="quality">附加图片质量，1是 0不是</param>
+            <param name="watermarkTransparency">水印的透明度 1--10 10为不透明</param>
+        </member>
+        <member name="M:yycms.admin.Watermark.AddImageSignText(System.Drawing.Image,System.String,System.String,System.Int32,System.Int32,System.String,System.Int32)">
+            <summary>
+            增加图片文字水印
+            </summary>
+            <param name="filename">文件名</param>
+            <param name="watermarkText">水印文字</param>
+            <param name="watermarkStatus">图片水印位置</param>
+        </member>
+        <member name="M:yycms.admin.Controllers.BasicController.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
+            <summary>
+            权限验证，无需权限请在action或controller标记AllowAnonymousAttribute
+            </summary>
+            <param name="filterContext"></param>
+        </member>
+        <member name="M:yycms.admin.Controllers.BasicController.Dispose(System.Boolean)">
+            <summary>
+            资源释放
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="T:yycms.admin.Controllers.UserController">
+            <summary>
+            用户列表
+            </summary>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
+            </summary>
+            <param name="description">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The ID as a string.</returns>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.HelpPageConfig">
+            <summary>
+            Use this class to customize the Help Page.
+            For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
+            or you can provide the samples for the requests/responses.
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.Controllers.HelpController">
+            <summary>
+            The controller that will handle requests for the help page.
+            </summary>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
+            <summary>
+            Sets the documentation provider for help page.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="documentationProvider">The documentation provider.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleObjects(System.Web.Http.HttpConfiguration,System.Collections.Generic.IDictionary{System.Type,System.Object})">
+            <summary>
+            Sets the objects that will be used by the formatters to produce sample requests/responses.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleObjects">The sample objects.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type and action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample request directly for the specified media type and action with parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type of the action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample response directly for the specified media type of the action with specific parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForMediaType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Sets the sample directly for all actions with the specified media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Sets the sample directly for all actions with the specified type and media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The parameter type or return type of an action.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The help page sample generator.</returns>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.SetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration,yycms.admin.Areas.HelpPage.HelpPageSampleGenerator)">
+            <summary>
+            Sets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleGenerator">The help page sample generator.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.GetModelDescriptionGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the model description generator.
+            </summary>
+            <param name="config">The configuration.</param>
+            <returns>The <see cref="T:yycms.admin.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator"/></returns>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageApiModel(System.Web.Http.HttpConfiguration,System.String)">
+            <summary>
+            Gets the model that represents an API displayed on the help page. The model is initialized on the first call and cached for subsequent calls.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="apiDescriptionId">The <see cref="T:System.Web.Http.Description.ApiDescription"/> ID.</param>
+            <returns>
+            An <see cref="T:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel"/>
+            </returns>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.ModelDescriptions.ModelDescription">
+            <summary>
+            Describes a type model.
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator">
+            <summary>
+            Generates model descriptions for given types.
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.ModelDescriptions.ModelNameAttribute">
+            <summary>
+            Use this attribute to change the name of the <see cref="T:yycms.admin.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel">
+            <summary>
+            The model that represents an API displayed on the help page.
+            </summary>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel"/> class.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription">
+            <summary>
+            Gets or sets the <see cref="P:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription"/> that describes the API.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.UriParameters">
+            <summary>
+            Gets or sets the <see cref="T:yycms.admin.Areas.HelpPage.ModelDescriptions.ParameterDescription"/> collection that describes the URI parameters for the API.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.RequestDocumentation">
+            <summary>
+            Gets or sets the documentation for the request.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.RequestModelDescription">
+            <summary>
+            Gets or sets the <see cref="T:yycms.admin.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the request body.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.RequestBodyParameters">
+            <summary>
+            Gets the request body parameter descriptions.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.ResourceDescription">
+            <summary>
+            Gets or sets the <see cref="T:yycms.admin.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the resource.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.ResourceProperties">
+            <summary>
+            Gets the resource property descriptions.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.SampleRequests">
+            <summary>
+            Gets the sample requests associated with the API.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.SampleResponses">
+            <summary>
+            Gets the sample responses associated with the API.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.Models.HelpPageApiModel.ErrorMessages">
+            <summary>
+            Gets the error messages associated with this model.
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator">
+            <summary>
+            This class will generate the samples for the help page.
+            </summary>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator"/> class.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
+            <summary>
+            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
+            <summary>
+            Gets the objects that are used directly as samples for certain actions.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
+            <summary>
+            Gets the objects that are serialized as samples by the supported formatters.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories">
+            <summary>
+            Gets factories for the objects that the supported formatters will serialize as samples. Processed in order,
+            stopping when the factory successfully returns a non-<see langref="null"/> object.
+            </summary>
+            <remarks>
+            Collection includes just <see cref="M:yycms.admin.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)"/> initially. Use
+            <code>SampleObjectFactories.Insert(0, func)</code> to provide an override and
+            <code>SampleObjectFactories.Add(func)</code> to provide a fallback.</remarks>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.GetSampleRequests(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the request body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.GetSampleResponses(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the response body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.GetSample(System.Web.Http.Description.ApiDescription,yycms.admin.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Gets the request or response body samples.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.GetActionSample(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Type,System.Net.Http.Formatting.MediaTypeFormatter,System.Net.Http.Headers.MediaTypeHeaderValue,yycms.admin.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Search for samples that are provided directly through <see cref="P:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples"/>.
+            </summary>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="type">The CLR type.</param>
+            <param name="formatter">The formatter.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The sample that matches the parameters.</returns>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.GetSampleObject(System.Type)">
+            <summary>
+            Gets the sample object that will be serialized by the formatters. 
+            First, it will look at the <see cref="P:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects"/>. If no sample object is found, it will try to create
+            one using <see cref="M:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.DefaultSampleObjectFactory(yycms.admin.Areas.HelpPage.HelpPageSampleGenerator,System.Type)"/> (which wraps an <see cref="T:yycms.admin.Areas.HelpPage.ObjectGenerator"/>) and other
+            factories in <see cref="P:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The sample object.</returns>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.ResolveHttpRequestMessageType(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Resolves the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The type.</returns>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.ResolveType(System.Web.Http.Description.ApiDescription,System.String,System.String,System.Collections.Generic.IEnumerable{System.String},yycms.admin.Areas.HelpPage.SampleDirection,System.Collections.ObjectModel.Collection{System.Net.Http.Formatting.MediaTypeFormatter}@)">
+            <summary>
+            Resolves the type of the action parameter or return value when <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/> is used.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or a response.</param>
+            <param name="formatters">The formatters.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleGenerator.WriteSampleObjectUsingFormatter(System.Net.Http.Formatting.MediaTypeFormatter,System.Object,System.Type,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Writes the sample object using formatter.
+            </summary>
+            <param name="formatter">The formatter.</param>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
+            <param name="mediaType">Type of the media.</param>
+            <returns></returns>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.HelpPageSampleKey">
+            <summary>
+            This is used to identify the place where the sample should be applied.
+            </summary>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Creates a new <see cref="T:yycms.admin.Areas.HelpPage.HelpPageSampleKey"/> based on media type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Creates a new <see cref="T:yycms.admin.Areas.HelpPage.HelpPageSampleKey"/> based on media type and CLR type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The CLR type.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleKey.#ctor(yycms.admin.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:yycms.admin.Areas.HelpPage.HelpPageSampleKey"/> based on <see cref="P:yycms.admin.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="sampleDirection">The <see cref="P:yycms.admin.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,yycms.admin.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:yycms.admin.Areas.HelpPage.HelpPageSampleKey"/> based on media type, <see cref="P:yycms.admin.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The <see cref="P:yycms.admin.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.HelpPageSampleKey.ControllerName">
+            <summary>
+            Gets the name of the controller.
+            </summary>
+            <value>
+            The name of the controller.
+            </value>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.HelpPageSampleKey.ActionName">
+            <summary>
+            Gets the name of the action.
+            </summary>
+            <value>
+            The name of the action.
+            </value>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.HelpPageSampleKey.MediaType">
+            <summary>
+            Gets the media type.
+            </summary>
+            <value>
+            The media type.
+            </value>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.HelpPageSampleKey.ParameterNames">
+            <summary>
+            Gets the parameter names.
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Areas.HelpPage.HelpPageSampleKey.SampleDirection">
+            <summary>
+            Gets the <see cref="P:yycms.admin.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.ImageSample">
+            <summary>
+            This represents an image sample on the help page. There's a display template named ImageSample associated with this class.
+            </summary>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.ImageSample.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:yycms.admin.Areas.HelpPage.ImageSample"/> class.
+            </summary>
+            <param name="src">The URL of an image.</param>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.InvalidSample">
+            <summary>
+            This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.ObjectGenerator">
+            <summary>
+            This class will create an object of a given type and populate it with sample data.
+            </summary>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)">
+            <summary>
+            Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
+            Simple types: <see cref="T:System.Int32"/>, <see cref="T:System.String"/>, <see cref="T:System.Enum"/>, <see cref="T:System.DateTime"/>, <see cref="T:System.Uri"/>, etc.
+            Complex types: POCO types.
+            Nullables: <see cref="T:System.Nullable`1"/>.
+            Arrays: arrays of simple types or complex types.
+            Key value pairs: <see cref="T:System.Collections.Generic.KeyValuePair`2"/>
+            Tuples: <see cref="T:System.Tuple`1"/>, <see cref="T:System.Tuple`2"/>, etc
+            Dictionaries: <see cref="T:System.Collections.Generic.IDictionary`2"/> or anything deriving from <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+            Collections: <see cref="T:System.Collections.Generic.IList`1"/>, <see cref="T:System.Collections.Generic.IEnumerable`1"/>, <see cref="T:System.Collections.Generic.ICollection`1"/>, <see cref="T:System.Collections.IList"/>, <see cref="T:System.Collections.IEnumerable"/>, <see cref="T:System.Collections.ICollection"/> or anything deriving from <see cref="T:System.Collections.Generic.ICollection`1"/> or <see cref="T:System.Collections.IList"/>.
+            Queryables: <see cref="T:System.Linq.IQueryable"/>, <see cref="T:System.Linq.IQueryable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>An object of the given type.</returns>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.SampleDirection">
+            <summary>
+            Indicates whether the sample is used for request or response
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.TextSample">
+            <summary>
+            This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Areas.HelpPage.XmlDocumentationProvider">
+            <summary>
+            A custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
+            </summary>
+        </member>
+        <member name="M:yycms.admin.Areas.HelpPage.XmlDocumentationProvider.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:yycms.admin.Areas.HelpPage.XmlDocumentationProvider"/> class.
+            </summary>
+            <param name="documentPath">The physical path to XML document.</param>
+        </member>
+        <member name="F:yycms.admin.Models.Const.SessionId">
+            <summary>
+            当前用户在客户端cookie的缓存Key
+            </summary>
+        </member>
+        <member name="F:yycms.admin.Models.Const.PermissionCacheKey">
+            <summary>
+            当前用户菜单的缓存key，使用时还需要搭配UserID做唯一标识
+            </summary>
+        </member>
+        <member name="F:yycms.admin.Models.Const.PermissionTypeCacheKey">
+            <summary>
+            当前用户菜单分组的缓存key
+            </summary>
+        </member>
+        <member name="F:yycms.admin.Models.Const.PermissionSql">
+            <summary>
+            用户权限查询语句 
+            </summary>
+        </member>
+        <member name="F:yycms.admin.Models.Const.SiteSettingKey">
+            <summary>
+            站点配置缓存Key
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Models.FansNewsItem">
+            <summary>
+            粉丝列表用到的新闻实体
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Models.PageFilterEntity">
+            <summary>
+            请求实体
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PageFilterEntity.IsDesc">
+            <summary>
+            是否倒序。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PageFilterEntity.OrderBy">
+            <summary>
+            排序字段名称。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PageFilterEntity.PageIndex">
+            <summary>
+            当前页码，默认从0开始。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PageFilterEntity.PageSize">
+            <summary>
+            每页条数，最少20条。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PageFilterEntity.Title">
+            <summary>
+            标题关键字。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PageFilterEntity.TypeID">
+            <summary>
+            所属分类ID。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PageFilterEntity.StartTime">
+            <summary>
+            新增数据的起止时间：开始。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PageFilterEntity.EndTime">
+            <summary>
+            新增数据的起止时间：结束。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PageFilterEntity.PageKind">
+            <summary>
+            页面类型
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PageFilterEntity.CanBuild">
+            <summary>
+            支持一键生成
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Models.PhotoModel">
+            <summary>
+            相册详情
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PhotoModel.Photo">
+            <summary>
+            相册实体。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.PhotoModel.Items">
+            <summary>
+            相册图片集合。
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Models.SettingModel">
+            <summary>
+            站点配置实体
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.SettingModel.Biz_SiteAddress">
+            <summary>
+            网站域名
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.SettingModel.watermark">
+            <summary>
+            水印图片
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.SettingModel.EnabelWatermark">
+            <summary>
+            自动加水印
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.SettingModel.Biz_AdminEmail">
+            <summary>
+            站长邮箱
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.SettingModel.MailUrl">
+            <summary>
+            邮件服务器IP
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.SettingModel.MailPort">
+            <summary>
+            邮件服务器端口
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.SettingModel.MailAccount">
+            <summary>
+            邮件服务器账号
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.SettingModel.MailPassword">
+            <summary>
+            邮件服务器密码
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.SettingModel.TopLinks">
+            <summary>
+            系统顶部自定义导航
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Models.TaskFilterEntity">
+            <summary>
+            请求实体
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.TaskFilterEntity.IsDesc">
+            <summary>
+            是否倒序。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.TaskFilterEntity.OrderBy">
+            <summary>
+            排序字段名称。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.TaskFilterEntity.PageIndex">
+            <summary>
+            当前页码，默认从0开始。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.TaskFilterEntity.PageSize">
+            <summary>
+            每页条数，最少20条。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.TaskFilterEntity.Title">
+            <summary>
+            标题关键字。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.TaskFilterEntity.TypeID">
+            <summary>
+            所属分类ID。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.TaskFilterEntity.StartTime">
+            <summary>
+            新增数据的起止时间：开始。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.TaskFilterEntity.EndTime">
+            <summary>
+            新增数据的起止时间：结束。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.TaskFilterEntity.PageID">
+            <summary>
+            所属页面ID。
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Models.RequestEntity">
+            <summary>
+            请求实体
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.RequestEntity.IsDesc">
+            <summary>
+            是否倒序。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.RequestEntity.OrderBy">
+            <summary>
+            排序字段名称。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.RequestEntity.PageIndex">
+            <summary>
+            当前页码，默认从0开始。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.RequestEntity.PageSize">
+            <summary>
+            每页条数，最少20条。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.RequestEntity.Title">
+            <summary>
+            标题关键字。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.RequestEntity.KeyWords">
+            <summary>
+            关键字
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.RequestEntity.TypeID">
+            <summary>
+            所属分类ID。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.RequestEntity.StartTime">
+            <summary>
+            新增数据的起止时间：开始。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.RequestEntity.EndTime">
+            <summary>
+            新增数据的起止时间：结束。
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Models.ResponseData`1">
+            <summary>
+            输出实体
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:yycms.admin.Models.ResponseData`1.PageSize">
+            <summary>
+            每页数量。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.ResponseData`1.PageIndex">
+            <summary>
+            当前页码。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.ResponseData`1.DataCount">
+            <summary>
+            数据总数。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.ResponseData`1.PageCount">
+            <summary>
+            分页数。
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.ResponseData`1.Data">
+            <summary>
+            数据集合
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Models.ResponseItem">
+            <summary>
+            响应实体
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.ResponseItem.code">
+            <summary>
+            响应代码
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.ResponseItem.msg">
+            <summary>
+            相应内容
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Models.Unions">
+            <summary>
+            第三方平台
+            </summary>
+        </member>
+        <member name="F:yycms.admin.Models.Unions.Default">
+            <summary>
+            默认（即不存在的平台，用于外部方法使用）
+            </summary>
+        </member>
+        <member name="T:yycms.admin.Models.UserModel">
+            <summary>
+            用户详情
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.UserModel.User">
+            <summary>
+            基本信息
+            </summary>
+        </member>
+        <member name="P:yycms.admin.Models.UserModel.wechat">
+            <summary>
+            微信信息
+            </summary>
+        </member>
+        <member name="T:Config">
+            <summary>
+            Config 的摘要说明
+            </summary>
+        </member>
+        <member name="T:ConfigHandler">
+            <summary>
+            Config 的摘要说明
+            </summary>
+        </member>
+        <member name="T:CrawlerHandler">
+            <summary>
+            Crawler 的摘要说明
+            </summary>
+        </member>
+        <member name="T:Handler">
+            <summary>
+            Handler 的摘要说明
+            </summary>
+        </member>
+        <member name="T:ListFileManager">
+            <summary>
+            FileManager 的摘要说明
+            </summary>
+        </member>
+        <member name="T:NotSupportedHandler">
+            <summary>
+            NotSupportedHandler 的摘要说明
+            </summary>
+        </member>
+        <member name="T:PathFormatter">
+            <summary>
+            PathFormater 的摘要说明
+            </summary>
+        </member>
+        <member name="T:UploadHandler">
+            <summary>
+            UploadHandler 的摘要说明
+            </summary>
+        </member>
+        <member name="P:UploadConfig.PathFormat">
+            <summary>
+            文件命名规则
+            </summary>
+        </member>
+        <member name="P:UploadConfig.UploadFieldName">
+            <summary>
+            上传表单域名称
+            </summary>
+        </member>
+        <member name="P:UploadConfig.SizeLimit">
+            <summary>
+            上传大小限制
+            </summary>
+        </member>
+        <member name="P:UploadConfig.AllowExtensions">
+            <summary>
+            上传允许的文件格式
+            </summary>
+        </member>
+        <member name="P:UploadConfig.Base64">
+            <summary>
+            文件是否以 Base64 的形式上传
+            </summary>
+        </member>
+        <member name="P:UploadConfig.Base64Filename">
+            <summary>
+            Base64 字符串所表示的文件名
+            </summary>
+        </member>
+    </members>
+</doc>

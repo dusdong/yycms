@@ -1,0 +1,63 @@
+﻿@using Newtonsoft.Json
+@using yycms.entity
+@using yycms.admin.Models;
+
+@{
+    //站点设置
+    var SettingItems = ViewBag.SiteSetting as yy_SiteSetting;
+    var TopLinksStr = SettingItems.SystemTopBar;
+    var TopLinks = new List<MenuItem>();
+    if (!String.IsNullOrEmpty(TopLinksStr))
+    {
+        try
+        {
+            TopLinks = JsonConvert.DeserializeObject<List<MenuItem>>(TopLinksStr);
+        }
+        catch { }
+    }
+    var TopLinks_Parents = TopLinks.Where(a => a.pId == 0).ToList();
+}
+<div class="navbar navbar-inverse" ng-controller="GlobalCtrl">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/Admin">玥雅CMS <span class="label label-success ylb">预览版</span></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @foreach (var m in TopLinks_Parents)
+                {
+                    //获取当前菜单子菜单
+                    var _items = TopLinks.Where(a => a.pId == m.id).ToList();
+
+                    if (_items == null || _items.Count < 1)
+                    {
+                        <li><a href="@m.url" target="@m.target">@m.name</a></li>
+                    }
+
+                    else
+                    {
+                        <li class="dropdown">
+                            <a href="@m.url" target="@m.target" data-toggle="dropdown" class="dropdown-toggle">
+                                @m.name <b class="caret"></b>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                @foreach (var vv in _items)
+                                {
+                                    <li><a href="@vv.url" target="@vv.target">@vv.name</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                }
+               
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/spider/news"><i class="ace-icon fa fa-tasks"></i></a></li>
+                <li><a href="/message/index"><i class="ace-icon fa fa-envelope"></i></a></li>
+                <li><a href="/Help">接口</a></li>
+                <li><a href="#" ng-click="LoginOut()"><i class="fa fa-power-off"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>

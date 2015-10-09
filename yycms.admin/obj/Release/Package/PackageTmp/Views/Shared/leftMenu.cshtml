@@ -1,0 +1,61 @@
+﻿@using Newtonsoft.Json
+@using yycms.entity;
+
+<div id="nav-col" ng-controller="GlobalCtrl">
+    <section id="col-left" class="col-left-nano">
+        <div id="col-left-inner" class="col-left-nano-content">
+            <div id="user-left-box" class="clearfix hidden-sm hidden-xs">
+                <img ng-src="{{PlatformUser.HeadImgUrl}}" />
+                <div class="user-box">
+                    <span class="name">
+                        Welcome,{{PlatformUser.UserName}}
+                    </span>
+                    <span class="status">
+                        <i class="fa fa-circle"></i> Online
+                    </span>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
+                <ul class="nav nav-pills nav-stacked">
+                    @{
+                        //当前用户
+                        var User = ViewBag.User as yy_User;
+                        //系统菜单分组
+                        var MenuItems = HttpRuntime.Cache.Get(yycms.admin.Models.Const.PermissionCacheKey + User.ID.ToString())
+                            as List<yy_Permission>;
+                        //当前用户有权使用的菜单
+                        var MenuTypes = HttpRuntime.Cache.Get(yycms.admin.Models.Const.PermissionTypeCacheKey)
+                            as List<yy_Permission_Type>;
+                        // 循环一级菜单
+                        foreach (var m in MenuTypes.OrderBy(x => x.ShowIndex))
+                        {
+                            //如果设置隐藏就跳过
+                            if (m.IsShow == 0) { continue; }
+                            //获取当前菜单子菜单
+                            var SubItems = MenuItems.Where(x => x.TypeID == m.ID).ToList().OrderBy(x => x.ShowIndex);
+                            if (SubItems.Count() < 1) { continue; }
+                            <li ng-class="{'active open':LaftBar_TypeID==@m.ID}">
+                                <a href="javascript:void(0)" class="dropdown-toggle" ng-click="LaftBar_TypeID=@m.ID">
+                                    <i class="@m.Icon"></i>
+                                    <span>@m.Name</span>
+                                    <i class="fa fa-chevron-circle-right drop-icon"></i>
+                                    @*<span class="label label-success pull-right">New</span>*@
+                                </a>
+                                <ul class="submenu">
+                                    @foreach (var v in SubItems)
+                                    {
+                                        if (v.IsShow == 0)
+                                        {
+                                            continue;
+                                        }
+                                        <li><a href="@v.PageName" ng-class="{'gr':LaftBar_PageID==@v.ID}">@v.MenuName</a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,202 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="KeywordsAddCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li><a href="/Keywords">关键字列表</a></li>
+        <li class="active">新增关键字</li>
+    </ol>
+    <br />
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+        配置关键字，在发布新闻、产品时自动替换的。
+    </div>
+
+    <form name="myForm" ng-submit="SubmitForm(myForm.$valid)" class="form-horizontal" role="form" novalidate>
+ 
+        <div class="col-md-6 animated fadeInRight">
+    <div class="form-group has-feedback"
+         ng-class="{'has-success':myForm.Title.$valid,'has-error':myForm.Title.$invalid&&myForm.Title.$dirty}">
+        <label class="col-sm-2 control-label">关键字</label>
+        <div class="col-sm-10">
+            <input type="text"
+                   name="Title"
+                   id="Title"
+                   ng-model="Entity.Title" required class="form-control" />
+            <span class="help-block">关键字。</span>
+            <span ng-if="myForm.Title.$valid&&!myForm.Title.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+            <span ng-if="myForm.Title.$invalid&&!myForm.Title.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+        </div>
+    </div>
+    
+ <div class="form-group has-feedback"
+     ng-class="{'has-success':myForm.ReplaceContent.$valid,'has-error':myForm.ReplaceContent.$invalid&&myForm.ReplaceContent.$dirty}">
+    <label class="col-sm-2 control-label">替换内容</label>
+    <div class="col-sm-10">
+        <input type="text"
+               name="ReplaceContent"
+               id="ReplaceContent"
+               ng-model="Entity.ReplaceContent" required class="form-control" />
+        <span class="help-block">替换内容。</span>
+        <span ng-if="myForm.ReplaceContent.$valid&&!myForm.ReplaceContent.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+        <span ng-if="myForm.ReplaceContent.$invalid&&!myForm.ReplaceContent.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+    </div>
+</div>
+    
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.IsShow.$valid,'has-error':myForm.IsShow.$invalid&&myForm.IsShow.$dirty}">
+                <label class="col-sm-2 control-label">适用内容{{TypeIDs_Name}}</label>
+                <div class="col-sm-10" ng-init='ApplyType_Prop=[{ID:0,Name:"全部",Desc:""},{ID:1,Name:"新闻",Desc:""},{ID:2,Name:"产品",Desc:""}]'>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a class="btn btn-default"
+                           ng-repeat="d in ApplyType_Prop"
+                           ng-class="{active:Entity.ApplyType==d.ID}"
+                           ng-click="Entity.ApplyType=d.ID">
+                            {{d.Name}}
+                        </a>
+                        <input type="hidden" name="ApplyType" ng-model="Entity.ApplyType" required />
+                    </div>
+                    <span class="help-block">是否启用</span>
+                </div>
+            </div>
+
+
+    <div class="form-group has-feedback"
+     ng-class="{'has-success':myForm.IsShow.$valid,'has-error':myForm.IsShow.$invalid&&myForm.IsShow.$dirty}">
+    <label class="col-sm-2 control-label">是否启用</label>
+    <div class="col-sm-10" ng-init='IsShow_Prop=[{ID:1,Name:"显示",Desc:""},{ID:0,Name:"隐藏",Desc:""}]'>
+        <div class="btn-group btn-group-sm" role="group">
+            <a class="btn btn-default"
+               ng-repeat="d in IsShow_Prop"
+               ng-class="{active:Entity.IsShow==d.ID}"
+               ng-click="Entity.IsShow=d.ID">
+                {{d.Name}}
+            </a>
+            <input type="hidden" name="IsShow" ng-model="Entity.IsShow" required />
+        </div>
+        <span class="help-block">是否启用</span>
+    </div>
+</div>
+    <div class="form-group has-feedback"
+     ng-class="{'has-success':myForm.ShowIndex.$valid,'has-error':myForm.ShowIndex.$invalid&&myForm.ShowIndex.$dirty}">
+    <label class="col-sm-2 control-label">展示位置</label>
+    <div class="col-sm-10">
+        <input type="text"
+               name="ShowIndex"
+               id="ShowIndex"
+               ng-model="Entity.ShowIndex" required class="form-control" />
+        <span class="help-block">前台显示的位置</span>
+        <span ng-if="myForm.ShowIndex.$valid&&!myForm.ShowIndex.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+        <span ng-if="myForm.ShowIndex.$invalid&&!myForm.ShowIndex.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+    </div>
+</div>
+
+    <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.ReplaceCount.$valid,'has-error':myForm.ReplaceCount.$invalid&&myForm.ReplaceCount.$dirty}">
+                <label class="col-sm-2 control-label">替换次数</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="ReplaceCount"
+                           id="ReplaceCount"
+                           ng-model="Entity.ReplaceCount" required class="form-control" />
+                    <span class="help-block">默认为0为，代表替换全部。</span>
+                    <span ng-if="myForm.ReplaceCount.$valid&&!myForm.ReplaceCount.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.ReplaceCount.$invalid&&!myForm.ReplaceCount.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 animated fadeInLeft">
+            <div class="form-group" ng-if="Entity.ApplyType!=0">
+                <label for="Permission" class="col-sm-2 control-label">所属分类</label>
+                <div class="col-sm-10">
+                    <span class="help-block">&nbsp;关键词对应的分类。</span>
+                    <ul id="TypeTree" class="ztree" style="margin-top: 0; width: 180px;"></ul>
+                </div>
+            </div>
+        </div>
+        <submit-btn></submit-btn>
+    </form>
+</div>
+
+<link href="/Scripts/ZTree/zTreeStyle.css" rel="stylesheet" />
+<script src="/Scripts/ZTree/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript">
+    var ZTreeObject = null;
+    function ZTree_Init(nodes) {
+        var nodeArr = new Array();
+        for (var i = 0; i < nodes.length; i++) {
+            nodeArr.push({ id: nodes[i].ID, pId: nodes[i].PID, name: nodes[i].Name, open: false, nocheck: false });
+        }
+        ZTreeObject = $.fn.zTree.init($("#TypeTree"),
+            {
+                view: { selectedMulti: true },
+                edit: { enable: false, editNameSelectAll: true },
+                data: { simpleData: { enable: true } },
+                check: { enable: true, chkboxType: { "Y": "ps", "N": "ps" } }
+            }, nodeArr);
+        //ZTreeObject.expandAll(true);
+    }
+    var newsTypes = @MvcHtmlString.Create(ViewBag.NewsTypes);
+    var productTypes = @MvcHtmlString.Create(ViewBag.ProductTypes);
+
+    angular.module("app").controller("KeywordsAddCtrl", function ($location, $scope, API_Keywords)
+    {
+        $scope.Entity = {};
+        $scope.OnSubmit = false;
+        $scope.SubmitForm = function (isValid)
+        {
+            if (!isValid) { toastr.error('验证失败'); return; }
+
+            $scope.Entity.UserID = APP.User.ID;
+            $scope.Entity.CreateDate = new Date();
+            $scope.Entity.TypeIDs="";
+
+            if($scope.Entity.ApplyType!=0)
+            {
+                try
+                {
+                    var pmsIDs = new Array();
+                    var ckdNodes = ZTreeObject.getCheckedNodes(true);
+                    for (var i = 0; i < ckdNodes.length; i++) {
+                        pmsIDs.push(ckdNodes[i].id);
+                    }
+                    if (pmsIDs.length > 0) { $scope.Entity.TypeIDs = pmsIDs.join(","); }
+                }
+                catch(err)
+                {
+                    $scope.Entity.TypeIDs="";
+                }
+            }
+
+            $scope.OnSubmit = true;
+
+            API_Keywords.Post($scope.Entity).then(function (r)
+            {
+                $scope.OnSubmit = false;
+                if(r.code==0)
+                {
+                    toastr.success('添加成功！');
+                    window.document.location.href="/Keywords";
+                }
+                else
+                {
+                    toastr.error(r.Msg);
+                }
+            });
+        };
+
+        $scope.$watch('Entity.ApplyType', function (newVal, oldVal)
+        {
+            if (newVal == undefined || oldVal == undefined) { return; }
+            if(newVal==1)
+            {
+                ZTree_Init(newsTypes);
+            }
+            else if(newVal==2)
+            {
+                ZTree_Init(productTypes);
+            }
+        });
+    });
+</script>

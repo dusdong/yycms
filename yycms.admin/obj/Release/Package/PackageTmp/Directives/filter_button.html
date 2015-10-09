@@ -1,0 +1,10 @@
+﻿<div class="btn-group">
+    <button type="button" class="btn btn-primary" ng-click="Pager.PageIndex=0; IData_Get();"><i class="icon_search"></i> 查询</button>
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="" onclick="toastr.info('生成打印预览...'); $('#MainTable').jqprint()"><i class="icon_printer"></i> 打印表格</a></li>
+        <li><a href="" onclick="return APP.export(this)"><i class="icon_cloud-download_alt"></i> 导出表格</a></li>
+    </ul>
+</div>

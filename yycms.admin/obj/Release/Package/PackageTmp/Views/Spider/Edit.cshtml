@@ -1,0 +1,481 @@
+﻿@RenderPage("~/Views/Shared/leftMenu.cshtml")
+<div id="content-wrapper" ng-controller="UserAddCtrl">
+    <ol class="breadcrumb">
+        <li><a href="/Admin">首页</a></li>
+        <li><a href="/Spider">蜘蛛列表</a></li>
+        <li class="active">新增蜘蛛</li>
+        <a href="" ng-click="IHelp()" style="float:right"><i class="icon_question_alt2"></i> 帮助</a>
+    </ol>
+    <br />
+    <form name="myForm" ng-submit="SubmitForm(myForm.$valid)" class="form-horizontal" role="form" novalidate>
+        <div class="col-md-6 animated fadeInRight">
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.Title.$valid,'has-error':myForm.Title.$invalid&&myForm.Title.$dirty}">
+                <label class="col-sm-2 control-label">蜘蛛名称</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="Title"
+                           id="Title"
+                           ng-model="Entity.Title"
+                           ng-pattern="/^.{4,12}$/"
+                           required class="form-control" />
+                    <span class="help-block">蜘蛛名称，由4至12字组成。</span>
+                    <span ng-if="myForm.Title.$valid&&!myForm.Title.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.Title.$invalid&&!myForm.Title.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.KeyWords.$valid,'has-error':myForm.KeyWords.$invalid&&myForm.KeyWords.$dirty}">
+                <label class="col-sm-2 control-label">关键字</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="KeyWords"
+                           id="KeyWords"
+                           ng-model="Entity.KeyWords"
+                           ng-pattern="/^.{2,}$/"
+                           required class="form-control" />
+                    <span class="help-block">关键字，2个字以上。</span>
+                    <span ng-if="myForm.KeyWords.$valid&&!myForm.KeyWords.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.KeyWords.$invalid&&!myForm.KeyWords.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">同步平台</label>
+                <div class="col-sm-10" ng-init="TargetPlatforms=[]">
+                    <label class="checkbox-inline" ng-repeat="d in Platforms">
+                        <input type="checkbox" value="d.ID" ng-model="TargetPlatforms[$index]" ng-true-value="{{d.ID}}"> {{d.Name}}
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.SpiderMode.$valid,'has-error':myForm.SpiderMode.$invalid&&myForm.SpiderMode.$dirty}">
+                <label class="col-sm-2 control-label">同步设置</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a class="btn btn-default"
+                           ng-repeat="d in Roles"
+                           ng-class="{active:Entity.SpiderMode==d.ID}"
+                           ng-click="Entity.SpiderMode=d.ID">
+                            {{d.Name}}
+                        </a>
+                        <input type="hidden"
+                               name="SpiderMode"
+                               ng-pattern="/^[0-9]{1,12}$/"
+                               ng-model="Entity.SpiderMode"
+                               required="" />
+                    </div>
+
+                    <span class="help-block animated fadeIn"
+                          ng-if="Entity.SpiderMode==d.ID"
+                          ng-repeat="d in Roles">{{d.Desc}}</span>
+
+                    <span class="help-block" ng-if="Entity.SpiderMode==null">抓取后进行的操作设置。</span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.IsShow.$valid,'has-error':myForm.IsShow.$invalid&&myForm.IsShow.$dirty}">
+                <label class="col-sm-2 control-label">是否可用</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a class="btn btn-default"
+                           ng-repeat="d in LockFlags"
+                           ng-class="{active:Entity.IsShow==d.ID}"
+                           ng-click="Entity.IsShow=d.ID">
+                            {{d.Name}}
+                        </a>
+                        <input type="hidden"
+                               name="LockFlag"
+                               ng-pattern="/^[0-9]{1,12}$/"
+                               ng-model="Entity.IsShow"
+                               required="" />
+                    </div>
+                    <span class="help-block">禁用后蜘蛛将不会执行抓取任务。</span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.ExecutionInterval.$valid,'has-error':myForm.ExecutionInterval.$invalid&&myForm.ExecutionInterval.$dirty}">
+                <label class="col-sm-2 control-label">执行间隔</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           id="ExecutionInterval"
+                           name="ExecutionInterval"
+                           ng-model="Entity.ExecutionInterval"
+                           ng-pattern="/^[0-9]{1,20}$/"
+                           required
+                           class="form-control" />
+                    <span class="help-block">循环执行的间隔时间，单位为秒。</span>
+                    <span ng-if="Entity.ExecutionInterval.$valid&&!Entity.ExecutionInterval.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="Entity.ExecutionInterval.$invalid&&!Entity.ExecutionInterval.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.SourceUrls.$valid,'has-error':myForm.SourceUrls.$invalid&&myForm.SourceUrls.$dirty}">
+                <label class="col-sm-2 control-label">抓取网址</label>
+                <div class="col-sm-10">
+                    <textarea id="SourceUrls"
+                              name="SourceUrls"
+                              ng-model="Entity.SourceUrls"
+                              required
+                              class="form-control"></textarea>
+                    <span class="help-block">新闻源的网址，1行1个。</span>
+                    <span ng-if="myForm.SourceUrls.$valid&&!myForm.SourceUrls.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.SourceUrls.$invalid&&!myForm.SourceUrls.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.SourceListMatch.$valid,'has-error':myForm.SourceListMatch.$invalid&&myForm.SourceListMatch.$dirty}">
+                <label class="col-sm-2 control-label">列表匹配</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="SourceListMatch"
+                           id="SourceListMatch"
+                           ng-model="Config.SourceListMatch"
+                           ng-pattern="/^.{1,}$/"
+                           required
+                           class="form-control" />
+                    <span class="help-block">列表的jQuery表达式，<a href="" class="demoTip" data-content="@MvcHtmlString.Create("//div[@class='Q-tpList']")">示例</a>。</span>
+                    <span ng-if="myForm.SourceListMatch.$valid&&!myForm.SourceListMatch.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.SourceListMatch.$invalid&&!myForm.SourceListMatch.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.TitleMatch.$valid,'has-error':myForm.TitleMatch.$invalid&&myForm.TitleMatch.$dirty}">
+                <label class="col-sm-2 control-label">标题匹配</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="TitleMatch"
+                           id="TitleMatch"
+                           ng-model="Config.TitleMatch"
+                           ng-pattern="/^.{1,}$/"
+                           required
+                           class="form-control" />
+                    <span class="help-block">标题的jQuery表达式，<a href="" class="demoTip" data-content="@MvcHtmlString.Create("./h3")">示例</a>。</span>
+                    <span ng-if="myForm.TitleMatch.$valid&&!myForm.TitleMatch.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.TitleMatch.$invalid&&!myForm.TitleMatch.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.TitleReplace.$valid,'has-error':myForm.TitleReplace.$invalid&&myForm.TitleReplace.$dirty}">
+                <label class="col-sm-2 control-label">标题替换</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="TitleReplace"
+                           id="TitleReplace"
+                           ng-model="Config.TitleReplace"
+                           ng-pattern="/^.{1,}$/"
+                           class="form-control" />
+                    <span class="help-block">“标题”匹配成功的替换表达式，<a href="" class="demoTip" data-content="关键字|替换内容,关键字|替换内容">表达式</a>。</span>
+                    <span ng-if="myForm.TitleReplace.$valid&&!myForm.TitleReplace.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.TitleReplace.$invalid&&!myForm.TitleReplace.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.SummaryMatch.$valid,'has-error':myForm.SummaryMatch.$invalid&&myForm.SummaryMatch.$dirty}">
+                <label class="col-sm-2 control-label">摘要匹配</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="SummaryMatch"
+                           id="SummaryMatch"
+                           ng-model="Config.SummaryMatch"
+                           ng-pattern="/^.{1,}$/"
+                           required
+                           class="form-control" />
+                    <span class="help-block">摘要的jQuery表达式，<a href="" class="demoTip" data-content="@MvcHtmlString.Create("./p")">示例</a>。</span>
+                    <span ng-if="myForm.SummaryMatch.$valid&&!myForm.SummaryMatch.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.SummaryMatch.$invalid&&!myForm.SummaryMatch.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.SummaryReplace.$valid,'has-error':myForm.SummaryReplace.$invalid&&myForm.SummaryReplace.$dirty}">
+                <label class="col-sm-2 control-label">摘要替换</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="SummaryReplace"
+                           id="SummaryReplace"
+                           ng-model="Config.SummaryReplace"
+                           ng-pattern="/^.{1,}$/"
+                           class="form-control" />
+                    <span class="help-block">“摘要”匹配成功的替换表达式，<a href="" class="demoTip" data-content="关键字|替换内容,关键字|替换内容">表达式</a>。</span>
+                    <span ng-if="myForm.SummaryReplace.$valid&&!myForm.SummaryReplace.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.SummaryReplace.$invalid&&!myForm.SummaryReplace.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.InfoMatch.$valid,'has-error':myForm.InfoMatch.$invalid&&myForm.InfoMatch.$dirty}">
+                <label class="col-sm-2 control-label">详情匹配</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="InfoMatch"
+                           id="InfoMatch"
+                           ng-model="Config.InfoMatch"
+                           ng-pattern="/^.{1,}$/"
+                           required
+                           class="form-control" />
+                    <span class="help-block">详情的jQuery表达式，<a href="" class="demoTip" data-content="@MvcHtmlString.Create("//div[@id='Cnt-Main-Article-QQ']")">示例</a>。</span>
+                    <span ng-if="myForm.InfoMatch.$valid&&!myForm.InfoMatch.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.InfoMatch.$invalid&&!myForm.InfoMatch.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.InfoReplace.$valid,'has-error':myForm.InfoReplace.$invalid&&myForm.InfoReplace.$dirty}">
+                <label class="col-sm-2 control-label">详情替换</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="InfoReplace"
+                           id="InfoReplace"
+                           ng-model="Config.InfoReplace"
+                           ng-pattern="/^.{1,}$/"
+                           class="form-control" />
+                    <span class="help-block">“详情”匹配成功的替换表达式，<a href="" class="demoTip" data-content="关键字|替换内容,关键字|替换内容">表达式</a>。</span>
+                    <span ng-if="myForm.InfoReplace.$valid&&!myForm.InfoReplace.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.InfoReplace.$invalid&&!myForm.InfoReplace.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.DefaultImgMatch.$valid,'has-error':myForm.DefaultImgMatch.$invalid&&myForm.DefaultImgMatch.$dirty}">
+                <label class="col-sm-2 control-label">主图匹配</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="DefaultImgMatch"
+                           id="DefaultImgMatch"
+                           ng-model="Config.DefaultImgMatch"
+                           ng-pattern="/^.{1,}$/"
+                           required
+                           class="form-control" />
+                    <span class="help-block">主图的jQuery表达式，<a href="" class="demoTip" data-content="@MvcHtmlString.Create("./a[@class='pic']/img")">示例</a>。</span>
+                    <span ng-if="myForm.DefaultImgMatch.$valid&&!myForm.DefaultImgMatch.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.DefaultImgMatch.$invalid&&!myForm.DefaultImgMatch.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.DefaultImgReplace.$valid,'has-error':myForm.DefaultImgReplace.$invalid&&myForm.DefaultImgReplace.$dirty}">
+                <label class="col-sm-2 control-label">主图替换</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="DefaultImgReplace"
+                           id="DefaultImgReplace"
+                           ng-model="Config.DefaultImgReplace"
+                           ng-pattern="/^.{1,}$/"
+                           class="form-control" />
+                    <span class="help-block">“主图”匹配成功的替换表达式，<a href="" class="demoTip" data-content="关键字|替换内容,关键字|替换内容">表达式</a>。</span>
+                    <span ng-if="myForm.DefaultImgReplace.$valid&&!myForm.DefaultImgReplace.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.DefaultImgReplace.$invalid&&!myForm.DefaultImgReplace.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.SourceFromMatch.$valid,'has-error':myForm.SourceFromMatch.$invalid&&myForm.SourceFromMatch.$dirty}">
+                <label class="col-sm-2 control-label">来源匹配</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="SourceFromMatch"
+                           id="SourceFromMatch"
+                           ng-model="Config.SourceFromMatch"
+                           ng-pattern="/^.{1,}$/"
+                           required
+                           class="form-control" />
+                    <span class="help-block">来源的jQuery表达式，<a href="" class="demoTip" data-content="@MvcHtmlString.Create(".//a")">示例</a>。</span>
+                    <span ng-if="myForm.SourceFromMatch.$valid&&!myForm.SourceFromMatch.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.SourceFromMatch.$invalid&&!myForm.SourceFromMatch.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.SourceFromReplace.$valid,'has-error':myForm.SourceFromReplace.$invalid&&myForm.SourceFromReplace.$dirty}">
+                <label class="col-sm-2 control-label">来源替换</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="SourceFromReplace"
+                           id="SourceFromReplace"
+                           ng-model="Config.SourceFromReplace"
+                           ng-pattern="/^.{1,}$/"
+                           class="form-control" /><span class="help-block">“来源”匹配成功的替换表达式，<a href="" class="demoTip" data-content="关键字|替换内容,关键字|替换内容">表达式</a>。</span>
+                    <span ng-if="myForm.SourceFromReplace.$valid&&!myForm.SourceFromReplace.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.SourceFromReplace.$invalid&&!myForm.SourceFromReplace.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.ReleaseTimeMatch.$valid,'has-error':myForm.ReleaseTimeMatch.$invalid&&myForm.ReleaseTimeMatch.$dirty}">
+                <label class="col-sm-2 control-label">日期匹配</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="ReleaseTimeMatch"
+                           id="ReleaseTimeMatch"
+                           ng-model="Config.ReleaseTimeMatch"
+                           ng-pattern="/^.{1,}$/"
+                           required
+                           class="form-control" />
+                    <span class="help-block">发布日期的jQuery表达式，<a href="" class="demoTip" data-content="@MvcHtmlString.Create(".//span")">示例</a>。</span>
+                    <span ng-if="myForm.ReleaseTimeMatch.$valid&&!myForm.ReleaseTimeMatch.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.ReleaseTimeMatch.$invalid&&!myForm.ReleaseTimeMatch.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback"
+                 ng-class="{'has-success':myForm.ReleaseTimeReplace.$valid,'has-error':myForm.ReleaseTimeReplace.$invalid&&myForm.ReleaseTimeReplace.$dirty}">
+                <label class="col-sm-2 control-label">日期替换</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           name="ReleaseTimeReplace"
+                           id="ReleaseTimeReplace"
+                           ng-model="Config.ReleaseTimeReplace"
+                           ng-pattern="/^.{1,}$/"
+                           class="form-control" />
+                    <span class="help-block">“日期”匹配成功后的的替换表达式，<a href="" class="demoTip" data-content="@MvcHtmlString.Create("更新|,\\n|,\\t|,       | ")">示例</a>。</span>
+                    <span ng-if="myForm.ReleaseTimeReplace.$valid&&!myForm.ReleaseTimeReplace.$pristine" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    <span ng-if="myForm.ReleaseTimeReplace.$invalid&&!myForm.ReleaseTimeReplace.$pristine" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 animated fadeInLeft">
+            <div class="form-group">
+                <label for="Permission" class="col-sm-2 control-label">所属分类</label>
+                <div class="col-sm-10">
+                    <span class="help-block">&nbsp;当前蜘蛛的对应的新闻分类。</span>
+                    <ul id="PermissionTree" class="ztree" style="margin-top: 0; width: 180px;"></ul>
+                </div>
+            </div>
+        </div>
+        <submit-btn></submit-btn>
+    </form>
+</div>
+<link href="/Scripts/ZTree/zTreeStyle.css" rel="stylesheet" />
+<script src="/Scripts/ZTree/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript">
+    var ZTreeObject = null;
+    function ZTree_Init(nodes)
+    {
+        var nodeArr = new Array();
+        for (var i = 0; i < nodes.length; i++)
+        {
+            nodeArr.push({ id: nodes[i].ID, pId: nodes[i].PID, name: nodes[i].Name, open: false, nocheck: false });
+        }
+        ZTreeObject = $.fn.zTree.init($("#PermissionTree"),
+            {
+                view: {selectedMulti: true },
+                edit: { enable: false, editNameSelectAll: true },
+                data: { simpleData: { enable: true } },
+                check: { enable: true, chkboxType: { "Y": "ps", "N": "ps" } }
+            }, nodeArr);
+
+        ZTreeObject.expandAll(true);
+    }
+
+    angular.module("app").controller("UserAddCtrl", function ($location, $scope, API_Spider)
+    {
+        $scope.Entity = {};
+        $scope.Provinces = Provinces;
+        $scope.Citys = Citys;
+        $scope.Districts = Districts;
+        $scope.Genders = [{ID:0,Name:'女士'},{ID:1,Name:'男士'}];
+        $scope.LockFlags = [{ID:1,Name:'正常'},{ID:0,Name:'冻结'}];
+        $scope.Roles = [{ ID: 1, Name: "自动", Desc: "自动同步。" }, { ID: 2, Name: "手动", Desc: "手动确认发布。" }, { ID: 3, Name: "人工", Desc: "人工编辑发布" }];
+        $scope.Platforms = APP.Platforms;
+
+        $scope.OnSubmit = false;
+
+        API_Spider.Detail(@Html.ViewContext.RouteData.Values["id"]).then(function (r)
+        {
+            $scope.Entity=r;
+            $scope.Config = JSON.parse(r.RuleConfig);
+           
+
+            var ckdIds = r.TypeIDs.split(",");
+            if (ckdIds.length > 0)
+            {
+                for (var i = 0; i < ckdIds.length; i++) {
+                    var node = ZTreeObject.getNodeByParam("id", ckdIds[i], null);
+                    if (node == null) { continue; }
+                    ZTreeObject.checkNode(node);
+                }
+            }
+
+            if (r.TargetPlatforms != ""){
+                var pltIDs = r.TargetPlatforms.split(",");
+                for (var i = 0; i < $scope.Platforms.length; i++){
+                    var current_plt = $scope.Platforms[i].ID;
+                    if (pltIDs.contains(current_plt.toString())){
+                        $scope.TargetPlatforms.push(current_plt);
+                    }
+                    else { $scope.TargetPlatforms.push(false); }
+                }
+            }
+        });
+
+        $scope.SubmitForm = function (isValid)
+        {
+            if (!isValid) { toastr.error('验证失败'); return; }
+            $scope.OnSubmit = true;
+
+            var pmsIDs = new Array();
+            var ckdNodes = ZTreeObject.getCheckedNodes(true);
+            for (var i = 0; i < ckdNodes.length; i++) {
+                pmsIDs.push(ckdNodes[i].id);
+            }
+            if (pmsIDs.length > 0) { $scope.Entity.TypeIDs = pmsIDs.join(","); }
+            else { $scope.Entity.TypeIDs = ""; }
+
+            var plts = new Array();
+            for (var i = 0; i < $scope.TargetPlatforms.length; i++)
+            {
+                var pltID = parseInt($scope.TargetPlatforms[i]);
+                if (isNaN(pltID)) { continue; }
+                plts.push(pltID);
+            }
+            $scope.Entity.TargetPlatforms = plts.join(",");
+            $scope.Entity.RuleConfig = JSON.stringify($scope.Config);
+
+            API_Spider.Put($scope.Entity).then(function (r)
+            {
+                $scope.OnSubmit = false;
+                if(r.code==0)
+                {
+                    toastr.success('更新成功！');
+                    window.document.location.href="../Index";
+                }
+                else
+                {
+                    toastr.error(r.Msg);
+                }
+            });
+        };
+
+        $(function(){
+            ZTree_Init(@MvcHtmlString.Create(ViewBag.Types));
+            $(".demoTip").popover({ placement: "top", trigger: "hover" });
+        });
+
+        $scope.IHelp = function () {
+            var intro = introJs();
+            intro.setOptions({
+                nextLabel: '下一步 <i class="arrow_carrot-right"></i>',
+                prevLabel: ' <i class="arrow_carrot-left"></i> 上一步',
+                skipLabel: '关闭',
+                doneLabel: '关闭',
+                showProgress: false,
+                overlayOpacity: 0.4,
+                steps: [
+                  {
+                      intro: "<p>1，蜘蛛是抓取新闻源的定时任务。</p><p>2，蜘蛛不会影响网站性能，由后台服务运行。</p><p>3，蜘蛛会自动给自己打分，评估好坏。</p>"
+                  },
+                  {
+                      intro: "<p>1，蜘蛛抓取后新闻源将同步到的平台。</p><p>2，您可是设置抓取后直接自动同步，也可以手动点击同步按钮，或是单个编辑后同步到平台。</p>"
+                  },
+                  {
+                      intro: '<p>最规则时需要查看XPath，用Chrome浏览器打开一个网页，F12，在弹出的小窗口中选中一个标签，右键，看到“copy XPath”了吧！</p>'
+                  }
+                ]
+            });
+            intro.start();
+        };
+    });
+</script>
